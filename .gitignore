@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/bnscup2025/App/AS_DEBUG/stats.txt
+/bnscup2025/App/bnscup2025(debug).exe
+/bnscup2025/App/bnscup2025.exe
