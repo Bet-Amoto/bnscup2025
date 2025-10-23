@@ -3,102 +3,109 @@
 Game::Game(const InitData& init)
 	: IScene{ init }
 {
-	for (int32 y = 0; y < 5; ++y)
+	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
+	for (size_t i = 0; i < 5; ++i)
 	{
-		for (int32 x = 0; x < (800 / BrickSize.x); ++x)
-		{
-			m_bricks << Rect{ (x * BrickSize.x), (60 + y * BrickSize.y), BrickSize };
-		}
+		m_dices << Dice{ Vec2{ 100 + i * 80, 500 } };
+	}
+	for (const auto& [index, category] : Indexed(Categories::UpperCategories))
+	{
+		m_categoryBoxes << CategoryBox{ Vec2{ 50, 50 + index * 60 }, category };
+	}
+	for (const auto& [index, category] : Indexed(Categories::LowerCategories))
+	{
+		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + index * 60 }, category };
 	}
 }
 
 void Game::update()
 {
-	// ボールを移動させる
-	m_ball.moveBy(m_ballVelocity * Scene::DeltaTime());
-
-	// ブロックを順にチェックする
-	for (auto it = m_bricks.begin(); it != m_bricks.end(); ++it)
+	rollAllDicesButton();
+	for(auto& dice : m_dices)
 	{
-		// ブロックとボールが交差していたら
-		if (it->intersects(m_ball))
+		if (dice.isClicked())
 		{
-			// ブロックの上辺、または底辺と交差していたら
-			if (it->bottom().intersects(m_ball) || it->top().intersects(m_ball))
-			{
-				m_ballVelocity.y *= -1;
-			}
-			else // ブロックの左辺または右辺と交差していたら
-			{
-				m_ballVelocity.x *= -1;
-			}
-
-			// ブロックを配列から削除する（イテレータは無効になる）
-			m_bricks.erase(it);
-
-			m_brickSound.playOneShot(0.5);
-
-			++m_score;
-
-			break;
+			dice.setLocked(!dice.isLocked());
 		}
 	}
 
-	// 天井にぶつかったら
-	if ((m_ball.y < 0) && (m_ballVelocity.y < 0))
-	{
-		m_ballVelocity.y *= -1;
+	for (auto& box : m_categoryBoxes) {
+		if (box.isClicked() &&  !box.getScore()) {
+			box.setScore(box.getProvisionalScore(m_dices));
+			m_rollsLeft = maxRolls;
+			for (auto& dice : m_dices) {
+				dice.Crear();
+			}
+		}
 	}
 
-	// 左右の壁にぶつかったら
-	if (((m_ball.x < 0) && (m_ballVelocity.x < 0))
-		|| ((800 < m_ball.x) && (0 < m_ballVelocity.x)))
-	{
-		m_ballVelocity.x *= -1;
-	}
-
-	// パドルにあたったらはね返る
-	if (const Rect paddle = getPaddle();
-		(0 < m_ballVelocity.y) && paddle.intersects(m_ball))
-	{
-		// パドルの中心からの距離に応じてはね返る方向を変える
-		m_ballVelocity = Vec2{ (m_ball.x - paddle.center().x) * 10, -m_ballVelocity.y }.setLength(BallSpeed);
-	}
-
-	// 画面外に出るか、ブロックが無くなったら
-	if ((600 < m_ball.y) || m_bricks.isEmpty())
-	{
-		// ランキング画面へ
-		changeScene(State::Title);
-
-		getData().lastScore = m_score;
+	if (KeyR.down()) {
+		m_rollsLeft = maxRolls;
+		for (auto& dice : m_dices) {
+			dice.Crear();
+		}
+		for (auto& box : m_categoryBoxes) {
+			box.reset();
+		}
 	}
 }
 
 void Game::draw() const
 {
-	Scene::SetBackground(ColorF{ 0.2 });
-
-	// すべてのブロックを描画する
-	for (const auto& brick : m_bricks)
+	constexpr int spacing = 80;
+	for (size_t i = 0; i < m_dices.size(); ++i)
 	{
-		brick.stretched(-1).draw(HSV{ brick.y - 40 });
+		m_dices[i].draw();
 	}
 
-	// ボールを描く
-	m_ball.draw();
+	m_rollButton.draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 });
+	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.1 });
 
-	// パドルを描く
-	getPaddle().rounded(3).draw();
-
-	// マウスカーソルを非表示にする
-	Cursor::RequestStyle(CursorStyle::Hidden);
-
-	// スコアを描く
-	FontAsset(U"Bold")(m_score).draw(24, Vec2{ 400, 16 });
+	for (auto& box : m_categoryBoxes) {
+		box.draw(m_dices);
+	}
+	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 55, 410, ColorF{ 0.1 });
+	if (isBonus()) {
+		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 190, 410, ColorF{ 1.0,1.0,0.0 });
+	}
+	FontAsset(U"Bold")(U"スコア　{}"_fmt(totalScore())).drawAt(Scene::CenterF().x, 22, ColorF{ 0.1 });
 }
 
-Rect Game::getPaddle() const
+void Game::rollAllDicesButton()
 {
-	return{ Arg::center(Cursor::Pos().x, 500), 60, 10 };
+	if (m_rollButton.leftClicked() && m_rollsLeft > 0)
+	{
+		for (auto& dice : m_dices)
+		{
+			dice.roll();
+		}
+		m_rollsLeft--;
+	}
+}
+
+int Game::UpperCategoriesScore() const
+{
+	int score = 0;
+	for (const auto& box : m_categoryBoxes) {
+		if (Categories::UpperCategories.contains(box.getCategory()) && box.getScore()) {
+			score += box.getScore().value();
+		}
+	}
+	return score;
+}
+
+int Game::totalScore() const {
+	int score = 0;
+	for (const auto& box : m_categoryBoxes) {
+		if (box.getScore()) {
+			score += box.getScore().value();
+		}
+	}
+
+	if (isBonus()) {
+		score += Categories::UpperSectionBonusScore;
+	}
+
+	return score;
 }

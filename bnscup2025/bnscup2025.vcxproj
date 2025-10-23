@@ -115,6 +115,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CategoryBox.cpp" />
+    <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -327,7 +329,10 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Category.hpp" />
+    <ClInclude Include="CategoryBox.hpp" />
     <ClInclude Include="Common.hpp" />
+    <ClInclude Include="Dice.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Title.hpp" />
