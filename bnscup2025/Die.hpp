@@ -9,7 +9,7 @@ enum class RollOrder {
 	FINAL = 30
 };
 
-using RollFunc = std::function<int(const Array<Die>&)>;
+using RollFunc = std::function<int(const Die&, const Array<Die>&)>;
 using DrawFunc = std::function<void(const Vec2&, const Die)>;
 
 struct Die
@@ -24,7 +24,7 @@ struct Die
 	void roll(const Array<Die>& dices)
 	{
 		if (locked) return;
-		value = rollFunc(dices);
+		value = rollFunc(*this, dices);
 	}
 	void clear()
 	{
@@ -38,13 +38,14 @@ struct Die
 };
 
 namespace Dice{
+	/// @brief 通常のダイス
 	const Die StandardDie{
 		Array<int>{ 1, 2, 3, 4, 5, 6 },
 		none,
 		RollOrder::PRIMARY,
-		[](const Array<Die>& dices) -> int
+		[](const Die& self, const Array<Die>& dices) -> int
 		{
-			return Random(1, 6);
+			return self.faces.choice();
 		},
 		[](const Vec2& centerPos, const Die self)
 		{
@@ -55,13 +56,14 @@ namespace Dice{
 		}
 	};
 
+	/// @brief コインダイス 二分の一の確率で1か6が出る
 	const Die Coin{
 		Array<int>{ 1, 6 },
 		none,
 		RollOrder::PRIMARY,
-		[](const Array<Die>& dices) -> int
+		[](const Die& self, const Array<Die>& dices) -> int
 		{
-			return RandomBool() ? 1 : 6;
+			return self.faces.choice();
 		},
 		[](const Vec2& centerPos, const Die self)
 		{
