@@ -14,6 +14,8 @@ using DrawFunc = std::function<void(const Vec2&, const Die)>;
 
 struct Die
 {
+	/// @brief 面
+	Array<int> faces;
 	Optional<int> value = none;
 	RollOrder order = RollOrder::PRIMARY;
 	RollFunc rollFunc;
@@ -37,6 +39,7 @@ struct Die
 
 namespace Dice{
 	const Die StandardDie{
+		Array<int>{ 1, 2, 3, 4, 5, 6 },
 		none,
 		RollOrder::PRIMARY,
 		[](const Array<Die>& dices) -> int
@@ -53,6 +56,7 @@ namespace Dice{
 	};
 
 	const Die Coin{
+		Array<int>{ 1, 6 },
 		none,
 		RollOrder::PRIMARY,
 		[](const Array<Die>& dices) -> int
