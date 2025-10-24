@@ -34,7 +34,7 @@ void Game::update()
 			box.setScore(box.getProvisionalScore(m_dices));
 			m_rollsLeft = maxRolls;
 			for (auto& dice : m_dices) {
-				dice.Crear();
+				dice.Clear();
 			}
 		}
 	}
@@ -42,7 +42,7 @@ void Game::update()
 	if (KeyR.down()) {
 		m_rollsLeft = maxRolls;
 		for (auto& dice : m_dices) {
-			dice.Crear();
+			dice.Clear();
 		}
 		for (auto& box : m_categoryBoxes) {
 			box.reset();

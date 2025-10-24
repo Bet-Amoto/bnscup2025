@@ -11,7 +11,7 @@ public:
 	bool isClicked() const;
 	void setLocked(bool locked) { m_locked = locked; }
 	bool isLocked() const { return m_locked; }
-	void Crear() { m_value = none; m_locked = false; }
+	void Clear() { m_value = none; m_locked = false; }
 private:
 	Optional<int> m_value;
 	Vec2 m_position;
