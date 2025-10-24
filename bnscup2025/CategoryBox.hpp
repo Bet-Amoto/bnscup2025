@@ -1,17 +1,17 @@
 ﻿#pragma once
-#include "Common.hpp"
 #include "Siv3D.hpp"
 #include "Category.hpp"
+#include "Die.hpp"
 
 class CategoryBox
 {
 public:
 	CategoryBox(const Vec2& position, const Category& category);
-	void draw(const Array<Dice>& dices) const;
+	void draw(const Array<Die>& dices) const;
 	bool isClicked() const;
 	void setScore(int score) { m_score = score; }
 	Optional<int> getScore() const;
-	int getProvisionalScore(const Array<Dice>& dices) const;
+	int getProvisionalScore(const Array<Die>& dices) const;
 	Category getCategory() const { return m_category; }
 	void reset() { m_score = none; }
 private:

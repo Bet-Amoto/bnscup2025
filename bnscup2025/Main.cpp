@@ -16,7 +16,7 @@ void Main()
 	manager.add<Game>(State::Game);
 
 	manager.init(State::Game);
-
+	manager.get()->status.init();
 	while (System::Update())
 	{
 		if (not manager.update())

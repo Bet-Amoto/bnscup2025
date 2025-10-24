@@ -102,6 +102,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -116,7 +117,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CategoryBox.cpp" />
-    <ClCompile Include="Dice.cpp" />
+    <ClCompile Include="DiceBox.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -332,8 +333,10 @@
     <ClInclude Include="Category.hpp" />
     <ClInclude Include="CategoryBox.hpp" />
     <ClInclude Include="Common.hpp" />
-    <ClInclude Include="Dice.hpp" />
+    <ClInclude Include="Die.hpp" />
+    <ClInclude Include="DiceBox.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Status.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Title.hpp" />
   </ItemGroup>

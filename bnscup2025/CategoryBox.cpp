@@ -10,7 +10,7 @@ CategoryBox::CategoryBox(const Vec2& position, const Category& category)
 {
 }
 
-void CategoryBox::draw(const Array<Dice>& dices) const
+void CategoryBox::draw(const Array<Die>& dices) const
 {
 	m_boxRect.draw(ColorF{ 1.0 }).drawFrame(1, ColorF{ 0 });
 	m_scoreRect.rounded(5).draw(m_score ? ColorF{ 0.7 } : ColorF{ 1.0 }).drawFrame(3, ColorF{ 0.1 });
@@ -34,6 +34,10 @@ Optional<int> CategoryBox::getScore() const
 	return m_score;
 }
 
-int CategoryBox::getProvisionalScore(const Array<Dice>& dices) const {
+int CategoryBox::getProvisionalScore(const Array<Die>& dices) const {
 	return m_category.calculateScore(dices);
+}
+Array<Die> CreateStandardDiceBox()
+{
+	return Array<Die>{ Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie };
 }

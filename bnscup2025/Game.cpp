@@ -1,18 +1,17 @@
 ﻿# include "Game.hpp"
 
 Game::Game(const InitData& init)
-	: IScene{ init }
+	: IScene{ init },
+	maxRolls{ getData().status.maxRolls },
+	m_rollsLeft{ getData().status.maxRolls },
+	m_diceBox{ Vec2{100, 500}, getData().status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
-	for (size_t i = 0; i < 5; ++i)
-	{
-		m_dices << Dice{ Vec2{ 100 + i * 80, 500 } };
-	}
-	for (const auto& [index, category] : Indexed(Categories::UpperCategories))
+	for (const auto& [index, category] : Indexed(getData().status.upperCategories))
 	{
 		m_categoryBoxes << CategoryBox{ Vec2{ 50, 50 + index * 60 }, category };
 	}
-	for (const auto& [index, category] : Indexed(Categories::LowerCategories))
+	for (const auto& [index, category] : Indexed(getData().status.lowerCategories))
 	{
 		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + index * 60 }, category };
 	}
@@ -21,29 +20,19 @@ Game::Game(const InitData& init)
 void Game::update()
 {
 	rollAllDicesButton();
-	for(auto& dice : m_dices)
-	{
-		if (dice.isClicked())
-		{
-			dice.setLocked(!dice.isLocked());
-		}
-	}
+	m_diceBox.update();
 
 	for (auto& box : m_categoryBoxes) {
 		if (box.isClicked() &&  !box.getScore()) {
-			box.setScore(box.getProvisionalScore(m_dices));
+			box.setScore(box.getProvisionalScore(m_diceBox.getDice()));
 			m_rollsLeft = maxRolls;
-			for (auto& dice : m_dices) {
-				dice.Clear();
-			}
+			m_diceBox.clear();
 		}
 	}
 
 	if (KeyR.down()) {
 		m_rollsLeft = maxRolls;
-		for (auto& dice : m_dices) {
-			dice.Clear();
-		}
+		m_diceBox.clear();
 		for (auto& box : m_categoryBoxes) {
 			box.reset();
 		}
@@ -53,18 +42,15 @@ void Game::update()
 void Game::draw() const
 {
 	constexpr int spacing = 80;
-	for (size_t i = 0; i < m_dices.size(); ++i)
-	{
-		m_dices[i].draw();
-	}
+	m_diceBox.draw();
 
 	m_rollButton.draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 });
 	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.1 });
-
-	for (auto& box : m_categoryBoxes) {
-		box.draw(m_dices);
+	for (auto& category : m_categoryBoxes) {
+		category.draw(m_diceBox.getDice());
 	}
+	m_diceBox.draw();
 	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 55, 410, ColorF{ 0.1 });
 	if (isBonus()) {
 		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 190, 410, ColorF{ 1.0,1.0,0.0 });
@@ -76,10 +62,7 @@ void Game::rollAllDicesButton()
 {
 	if (m_rollButton.leftClicked() && m_rollsLeft > 0)
 	{
-		for (auto& dice : m_dices)
-		{
-			dice.roll();
-		}
+		m_diceBox.roll();
 		m_rollsLeft--;
 	}
 }

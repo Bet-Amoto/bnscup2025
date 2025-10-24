@@ -1,8 +1,8 @@
 ﻿# pragma once
-#include "Common.hpp"
-#include "Dice.hpp"
+#include "Siv3d.hpp"
+#include "Die.hpp"
 
-using scoreFunc = std::function<int(const Array<Dice>&)>;
+using scoreFunc = std::function<int(const Array<Die>&)>;
 
 struct Category
 {
@@ -19,65 +19,65 @@ namespace Categories
 {
 	const Category Ones{
 		U"エース",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 1; }).size() * 1;
+			return dices.filter([](const Die& d) { return d.value == 1; }).size() * 1;
 		}
 	};
 	const Category Twos{
 		U"デュース",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 2; }).size() * 2;
+			return dices.filter([](const Die& d) { return d.value == 2; }).size() * 2;
 		}
 	};
 	const Category Threes{
 		U"トレイ",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 3; }).size() * 3;
+			return dices.filter([](const Die& d) { return d.value == 3; }).size() * 3;
 		}
 	};
 	const Category Fours{
 		U"フォー",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 4; }).size() * 4;
+			return dices.filter([](const Die& d) { return d.value == 4; }).size() * 4;
 		}
 	};
 	const Category Fives{
 		U"ファイブ",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 5; }).size() * 5;
+			return dices.filter([](const Die& d) { return d.value == 5; }).size() * 5;
 		}
 	};
 	const Category Sixes{
 		U"シックス",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			return dices.filter([](const Dice& d) { return d.getValue() == 6; }).size() * 6;
+			return dices.filter([](const Die& d) { return d.value == 6; }).size() * 6;
 		}
 	};
 	const Category Yatzy{
 		U"ヤッツィー",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
-			const auto firstValue = dices[0].getValue();
+			const auto firstValue = dices[0].value;
 			if (not firstValue) return 0;
-			bool allSame = dices.all([firstValue](const Dice& d) { return d.getValue() == firstValue; });
+			bool allSame = dices.all([firstValue](const Die& d) { return d.value == firstValue; });
 			return allSame ? 50 : 0;
 		}
 	};
 	const Category threeCards{
 		U"スリーダイス",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			// 各目の出現回数をカウント
 			std::array<int, 6> counts = {};
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				counts[value.value() - 1]++;
 			}
@@ -92,7 +92,7 @@ namespace Categories
 				int sum = 0;
 				for (const auto& dice : dices)
 				{
-					const auto value = dice.getValue();
+					const auto value = dice.value;
 					if (value) sum += value.value();
 				}
 				return sum;
@@ -103,12 +103,12 @@ namespace Categories
 	};
 	const Category fourCards{
 		U"フォーダイス",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			std::array<int, 6> counts = {};
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				counts[value.value() - 1]++;
 			}
@@ -121,7 +121,7 @@ namespace Categories
 				int sum = 0;
 				for (const auto& dice : dices)
 				{
-					const auto value = dice.getValue();
+					const auto value = dice.value;
 					if (value) sum += value.value();
 				}
 				return sum;
@@ -132,12 +132,12 @@ namespace Categories
 	};
 	const Category FullHouse{
 		U"フルハウス",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			std::array<int, 6> counts = {};
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				counts[value.value() - 1]++;
 			}
@@ -153,7 +153,7 @@ namespace Categories
 				int sum = 0;
 				for (const auto& dice : dices)
 				{
-					const auto value = dice.getValue();
+					const auto value = dice.value;
 					if (value) sum += value.value();
 				}
 				return sum;
@@ -163,12 +163,12 @@ namespace Categories
 	};
 	const Category SmallStraight{
 		U"スモールストレート",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			std::array<bool, 6> present = {};
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				present[value.value() - 1] = true;
 			}
@@ -183,12 +183,12 @@ namespace Categories
 	};
 	const Category LargeStraight{
 		U"ラージストレート",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			std::array<bool, 6> present = {};
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				present[value.value() - 1] = true;
 			}
@@ -202,12 +202,12 @@ namespace Categories
 	};
 	const Category Chance{
 		U"チャンス",
-		[](const Array<Dice>& dices) -> int
+		[](const Array<Die>& dices) -> int
 		{
 			int sum = 0;
 			for (const auto& dice : dices)
 			{
-				const auto value = dice.getValue();
+				const auto value = dice.value;
 				if (not value) return 0;
 				sum += value.value();
 			}

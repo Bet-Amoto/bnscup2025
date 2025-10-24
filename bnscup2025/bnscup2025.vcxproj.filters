@@ -162,10 +162,10 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Dice.cpp">
+    <ClCompile Include="CategoryBox.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="CategoryBox.cpp">
+    <ClCompile Include="DiceBox.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -833,23 +833,29 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Common.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Title.hpp">
       <Filter>Header Files\Title</Filter>
     </ClInclude>
     <ClInclude Include="Game.hpp">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Dice.hpp">
+    <ClInclude Include="Status.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CategoryBox.hpp">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Category.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Die.hpp">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DiceBox.hpp">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

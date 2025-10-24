@@ -1,6 +1,7 @@
 ﻿# pragma once
 # include "Common.hpp"
-# include "Dice.hpp"
+# include "Die.hpp"
+# include "DiceBox.hpp"
 # include "CategoryBox.hpp"
 # include "Category.hpp"
 // ゲームシーン
@@ -15,13 +16,13 @@ public:
 	void draw() const override;
 
 private:
-	Array<Dice> m_dices;
+	DiceBox m_diceBox;
 	Array<CategoryBox> m_categoryBoxes;
 	const RectF m_rollButton{ 500, 500, 150, 60 };
 	void rollAllDicesButton();
 	int UpperCategoriesScore() const;
 	int totalScore() const;
 	bool isBonus() const { return UpperCategoriesScore() > Categories::UpperSectionBonusThreshold; }
-	const int maxRolls = 3;
-	int m_rollsLeft = maxRolls;
+	const int maxRolls;
+	int m_rollsLeft;
 };
