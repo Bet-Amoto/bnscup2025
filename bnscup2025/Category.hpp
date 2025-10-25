@@ -74,17 +74,17 @@ namespace Categories
 		[](const Array<Die>& dices) -> int
 		{
 			// 各目の出現回数をカウント
-			std::array<int, 6> counts = {};
+			HashTable<int, int> counts;
 			for (const auto& dice : dices)
 			{
 				const auto value = dice.value;
 				if (not value) return 0;
-				counts[value.value() - 1]++;
+				counts[value.value()]++;
 			}
 
 			// 3つ以上同じ目があるかチェック
 			bool hasThreeOfKind = std::any_of(counts.begin(), counts.end(),
-				[](int count) { return count >= 3; });
+				[](const auto& kv) { return kv.second >= 3; });
 
 			// 3カードが成立する場合、全ダイスの合計を返す
 			if (hasThreeOfKind)
@@ -105,18 +105,19 @@ namespace Categories
 		U"フォーダイス",
 		[](const Array<Die>& dices) -> int
 		{
-			std::array<int, 6> counts = {};
+			HashTable<int, int> counts;
 			for (const auto& dice : dices)
 			{
 				const auto value = dice.value;
 				if (not value) return 0;
-				counts[value.value() - 1]++;
+				counts[value.value()]++;
 			}
-			bool hasThreeOfKind = std::any_of(counts.begin(), counts.end(),
-				[](int count) { return count >= 4; });
 
-			// 3カードが成立する場合、全ダイスの合計を返す
-			if (hasThreeOfKind)
+			bool hasFourOfKind = std::any_of(counts.begin(), counts.end(),
+				[](const auto& kv) { return kv.second >= 4; });
+
+			// 4カードが成立する場合、全ダイスの合計を返す
+			if (hasFourOfKind)
 			{
 				int sum = 0;
 				for (const auto& dice : dices)
@@ -134,20 +135,21 @@ namespace Categories
 		U"フルハウス",
 		[](const Array<Die>& dices) -> int
 		{
-			std::array<int, 6> counts = {};
+			HashTable<int, int> counts;
 			for (const auto& dice : dices)
 			{
 				const auto value = dice.value;
 				if (not value) return 0;
-				counts[value.value() - 1]++;
+				counts[value.value()]++;
 			}
 			bool hasThree = false;
 			bool hasTwo = false;
-			for (const auto count : counts)
+			for (const auto& count : counts)
 			{
-				if (count == 3) hasThree = true;
-				if (count == 2) hasTwo = true;
+				if (count.second == 3) hasThree = true;
+				else if (count.second == 2) hasTwo = true;
 			}
+
 			if (hasThree && hasTwo)
 			{
 				int sum = 0;
@@ -158,6 +160,7 @@ namespace Categories
 				}
 				return sum;
 			}
+
 			return 0;
 		}
 	};
