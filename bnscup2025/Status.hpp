@@ -13,7 +13,7 @@ struct Status
 	int UpperSectionBonusScore = Categories::UpperSectionBonusScore;
 
 	Status()
-		: dices({ Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie }),
+		: dices({ Dice::StandardDie, Dice::StandardDie, Dice::EvenDie, Dice::OddDie, Dice::Coin }),
 		upperCategories(Categories::UpperCategories),
 		lowerCategories(Categories::LowerCategories),
 		maxRolls(3),
@@ -24,7 +24,7 @@ struct Status
 
 	void init()
 	{
-		dices = { Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie };
+		dices = { Dice::StandardDie, Dice::StandardDie, Dice::EvenDie, Dice::OddDie, Dice::Coin };
 		upperCategories = Categories::UpperCategories;
 		lowerCategories = Categories::LowerCategories;
 		maxRolls = 3;

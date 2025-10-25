@@ -50,8 +50,44 @@ namespace Dice{
 		[](const Vec2& centerPos, const Die self)
 		{
 			RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-			faceRect.draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
-			faceRect.drawFrame(1, ColorF{ 0 });
+			faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{0.6} : ColorF{1.0});
+			faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+			if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+		}
+	};
+
+	/// @brief 偶数ダイス
+	const Die EvenDie{
+		Array<int>{ 2, 2, 4, 4, 6, 6 },
+		none,
+		RollOrder::PRIMARY,
+		[](const Die& self, const Array<Die>& dices) -> int
+		{
+			return self.faces.choice();
+		},
+		[](const Vec2& centerPos, const Die self)
+		{
+			RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+			faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(180, 0.12, 0.8) : HSV(180, 0.12, 1));
+			faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+			if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+		}
+	};
+
+	/// @brief 奇数ダイス
+	const Die OddDie{
+		Array<int>{ 1, 1, 3, 3, 5, 5 },
+		none,
+		RollOrder::PRIMARY,
+		[](const Die& self, const Array<Die>& dices) -> int
+		{
+			return self.faces.choice();
+		},
+		[](const Vec2& centerPos, const Die self)
+		{
+			RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+			faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(0, 0.12, 0.8) : HSV(0, 0.12, 1));
+			faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
 			if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 		}
 	};
@@ -68,8 +104,29 @@ namespace Dice{
 		[](const Vec2& centerPos, const Die self)
 		{
 			Circle faceCircle(centerPos, 30);
-			faceCircle.draw(ColorF{ 1.0 });
+			faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 			faceCircle.drawFrame(1, ColorF{ 0 });
+			if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
 		}
 	};
+
+	/// @brief コインダイス 二分の一の確率で1か8が出る
+	const Die HighCoin{
+		Array<int>{ 1, 8 },
+		none,
+		RollOrder::PRIMARY,
+		[](const Die& self, const Array<Die>& dices) -> int
+		{
+			return self.faces.choice();
+		},
+		[](const Vec2& centerPos, const Die self)
+		{
+			Circle faceCircle(centerPos, 30);
+			faceCircle.draw((self.locked || !self.value) ? HSV(38, 1, 0.8) : HSV(38, 1, 1));
+			faceCircle.drawFrame(1, ColorF{ 0 });
+			if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+		}
+	};
+
+
 }
