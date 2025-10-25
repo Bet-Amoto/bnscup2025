@@ -5,7 +5,8 @@
 enum class State
 {
 	Title,
-	Game
+	Game,
+	Shop
 };
 
 // 共有するデータ

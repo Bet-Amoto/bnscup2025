@@ -1,7 +1,7 @@
 ﻿# include "Common.hpp"
 # include "Title.hpp"
 # include "Game.hpp"
-
+# include "Shop.hpp"
 void Main()
 {
 	Window::Resize(1280, 720);
@@ -16,8 +16,9 @@ void Main()
 	App manager;
 	manager.add<Title>(State::Title);
 	manager.add<Game>(State::Game);
+	manager.add<Shop>(State::Shop);
 
-	manager.init(State::Game);
+	manager.init(State::Shop);
 	manager.get()->status.init();
 	while (System::Update())
 	{

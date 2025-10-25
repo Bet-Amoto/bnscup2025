@@ -148,6 +148,9 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{317cf855-287e-4794-9800-16e074d19979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shop">
+      <UniqueIdentifier>{ba2c6d9a-af32-479d-b890-0446d32e6994}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -167,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="DiceBox.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -856,6 +862,15 @@
     </ClInclude>
     <ClInclude Include="DiceBox.hpp">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.hpp">
+      <Filter>Header Files\Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="merchandise.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

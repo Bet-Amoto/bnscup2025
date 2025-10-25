@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Siv3D.hpp"
+#include "Rarity.hpp"
 
 struct Die;
 
@@ -9,12 +10,6 @@ enum class RollOrder {
 	FINAL = 30
 };
 
-enum class Rarity {
-	Common,
-	Rare,
-	Epic,
-	Legendary
-};
 
 using RollFunc = std::function<int(const Die&, const Array<Die>&)>;
 using DrawFunc = std::function<void(const Vec2&, const Die)>;

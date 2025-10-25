@@ -2,7 +2,7 @@
 #include "Siv3D.hpp"
 #include "Category.hpp"
 #include "Die.hpp"
-
+#include "Rarity.hpp"
 /// @brief ノルマ
 struct Quota
 {
@@ -24,6 +24,15 @@ struct Status
 	int32 selectionsLeft = 5;    // 残りの役選択回数
 	int32 gold = 0;				 // 所持金
 	Quota quota;				 // ノルマ
+
+
+	DiscreteDistribution distribution{ // レアリティごとの出現確率
+	{
+		1000, // Common
+		300,  // Rare
+		100,  // Epic
+		20    // Legendary
+	} };
 
 	Status()
 		: dices({ Dice::StandardDie, Dice::EvenDie, Dice::OddDie, Dice::Coin, Dice::HighCoin }),
@@ -66,4 +75,5 @@ struct Status
 		quota.target *= 1.1;
 		beginTurn();
 	}
+
 };

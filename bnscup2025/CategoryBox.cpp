@@ -1,5 +1,4 @@
 ﻿#include "CategoryBox.hpp"
-
 CategoryBox::CategoryBox(const Vec2& position, const Category& category)
 	: m_position(position)
 	, m_category(category)
