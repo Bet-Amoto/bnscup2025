@@ -168,39 +168,61 @@ namespace Categories
 		U"スモールストレート",
 		[](const Array<Die>& dices) -> int
 		{
-			std::array<bool, 6> present = {};
+			// ハッシュセットで重複を消す
+			HashSet<int> set;
+
 			for (const auto& dice : dices)
 			{
 				const auto value = dice.value;
 				if (not value) return 0;
-				present[value.value() - 1] = true;
+				set.emplace(value.value());
 			}
-			if (   (present[0] && present[1] && present[2] && present[3])
-				|| (present[1] && present[2] && present[3] && present[4])
-				|| (present[2] && present[3] && present[4] && present[5]))
+
+			Array<int> a(set.begin(), set.end());
+			a.sort();
+
+			// 連続になった長さを計算 4以上ならSストレート成立
+			int best = 0, current = 0;
+			Optional<int> prev = none;
+			for (int v : a)
 			{
-				return 30;
+				if (!prev.has_value() || v != prev.value() + 1) current = 1;
+				else current += 1;
+				best = Max(best, current);
+				prev = v;
 			}
-			return 0;
+
+			return (best >= 4) ? 30 : 0;
 		}
 	};
 	const Category LargeStraight{
 		U"ラージストレート",
 		[](const Array<Die>& dices) -> int
 		{
-			std::array<bool, 6> present = {};
+			HashSet<int> set;
+
 			for (const auto& dice : dices)
 			{
 				const auto value = dice.value;
 				if (not value) return 0;
-				present[value.value() - 1] = true;
+				set.emplace(value.value());
 			}
-			if (   (present[0] && present[1] && present[2] && present[3] && present[4])
-				|| (present[1] && present[2] && present[3] && present[4] && present[5]))
+
+			Array<int> a(set.begin(), set.end());
+			a.sort();
+
+			// 連続になった長さを計算 4以上ならSストレート成立
+			int best = 0, current = 0;
+			Optional<int> prev = none;
+			for (int v : a)
 			{
-				return 40;
+				if (!prev.has_value() || v != prev.value() + 1) current = 1;
+				else current += 1;
+				best = Max(best, current);
+				prev = v;
 			}
-			return 0;
+
+			return (best >= 5) ? 40 : 0;
 		}
 	};
 	const Category Chance{

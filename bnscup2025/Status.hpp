@@ -13,7 +13,7 @@ struct Status
 	int UpperSectionBonusScore = Categories::UpperSectionBonusScore;
 
 	Status()
-		: dices({ Dice::StandardDie, Dice::StandardDie, Dice::EvenDie, Dice::OddDie, Dice::Coin }),
+		: dices({ Dice::StandardDie, Dice::EvenDie, Dice::OddDie, Dice::Coin, Dice::HighCoin }),
 		upperCategories(Categories::UpperCategories),
 		lowerCategories(Categories::LowerCategories),
 		maxRolls(3),
