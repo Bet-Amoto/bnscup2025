@@ -52,4 +52,17 @@ struct Status
 		gold = 0;
 		quota = Quota();
 	}
+
+	void beginTurn()
+	{
+		selectionsLeft = selectionsPerTurn;
+		quota.earned = 0;
+	}
+
+	void endTurn()
+	{
+		gold += quota.earned;
+		quota.turn += 1;
+		quota.target *= 1.1;
+	}
 };
