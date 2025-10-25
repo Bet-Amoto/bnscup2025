@@ -18,7 +18,7 @@ public:
 private:
 	DiceBox m_diceBox;
 	Array<CategoryBox> m_categoryBoxes;
-	const RectF m_rollButton{ 500, 500, 150, 60 };
+	const RectF m_rollButton{ 500, 600, 150, 60 };
 	void rollAllDicesButton();
 	int UpperCategoriesScore() const;
 	int totalScore() const;

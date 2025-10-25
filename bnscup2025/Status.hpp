@@ -64,5 +64,6 @@ struct Status
 		gold += quota.earned;
 		quota.turn += 1;
 		quota.target *= 1.1;
+		beginTurn();
 	}
 };

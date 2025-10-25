@@ -4,7 +4,7 @@ Game::Game(const InitData& init)
 	: IScene{ init },
 	maxRolls{ getData().status.maxRolls },
 	m_rollsLeft{ getData().status.maxRolls },
-	m_diceBox{ Vec2{100, 500}, getData().status.dices }
+	m_diceBox{ Vec2{100, 600}, getData().status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
 	for (const auto& [index, category] : Indexed(getData().status.upperCategories))
@@ -24,9 +24,21 @@ void Game::update()
 
 	for (auto& box : m_categoryBoxes) {
 		if (box.isClicked() &&  !box.getScore()) {
-			box.setScore(box.getProvisionalScore(m_diceBox.getDice()));
+			const int prov = box.getProvisionalScore(m_diceBox.getDice());
+			box.setScore(prov);
+			getData().status.quota.earned += prov;
+			getData().status.selectionsLeft -= 1;
 			m_rollsLeft = maxRolls;
 			m_diceBox.clear();
+
+			if (getData().status.selectionsLeft <= 0)
+			{
+				for (auto& box : m_categoryBoxes)
+				{
+					box.reset();
+				}
+				getData().status.endTurn();
+			}
 		}
 	}
 
@@ -56,6 +68,12 @@ void Game::draw() const
 		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 190, 410, ColorF{ 1.0,1.0,0.0 });
 	}
 	FontAsset(U"Bold")(U"スコア　{}"_fmt(totalScore())).drawAt(Scene::CenterF().x, 22, ColorF{ 0.1 });
+
+	FontAsset(U"Regular")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(24, 20, 500, ColorF{0.1});
+	FontAsset(U"Regular")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(24, 20, 530, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"達成 {}"_fmt(getData().status.quota.earned)).draw(24, 160, 530, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).draw(24, 300, 530, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"所持G {}"_fmt(getData().status.gold)).draw(24, 450, 530, ColorF{ 0.1 });
 }
 
 void Game::rollAllDicesButton()
