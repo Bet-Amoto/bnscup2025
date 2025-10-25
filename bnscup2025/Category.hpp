@@ -4,9 +4,19 @@
 
 using scoreFunc = std::function<int(const Array<Die>&)>;
 
+enum class CategoryType
+{
+	Upper,
+	Lower
+};
+
 struct Category
 {
-	String name;
+	String name = U"";
+	String discription = U"";
+	CategoryType type = CategoryType::Upper;
+	Rarity rarity = Rarity::Common;
+	int cost = 0;
 	scoreFunc calculateScore;
 
 	bool operator==(const Category& rhs) const
@@ -19,6 +29,10 @@ namespace Categories
 {
 	const Category Ones{
 		U"エース",
+		U"1の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 1; }).size() * 1;
@@ -26,6 +40,10 @@ namespace Categories
 	};
 	const Category Twos{
 		U"デュース",
+		U"2の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 2; }).size() * 2;
@@ -33,6 +51,10 @@ namespace Categories
 	};
 	const Category Threes{
 		U"トレイ",
+		U"3の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 3; }).size() * 3;
@@ -40,6 +62,10 @@ namespace Categories
 	};
 	const Category Fours{
 		U"フォー",
+		U"4の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 4; }).size() * 4;
@@ -47,6 +73,10 @@ namespace Categories
 	};
 	const Category Fives{
 		U"ファイブ",
+		U"5の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 5; }).size() * 5;
@@ -54,6 +84,10 @@ namespace Categories
 	};
 	const Category Sixes{
 		U"シックス",
+		U"6の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Common,
+		100,
 		[](const Array<Die>& dices) -> int
 		{
 			return dices.filter([](const Die& d) { return d.value == 6; }).size() * 6;
@@ -61,6 +95,10 @@ namespace Categories
 	};
 	const Category Yatzy{
 		U"ヤッツィー",
+		U"全てのダイスの目が同じなら50点。",
+		CategoryType::Lower,
+		Rarity::Epic,
+		400, 
 		[](const Array<Die>& dices) -> int
 		{
 			const auto firstValue = dices[0].value;
@@ -71,6 +109,10 @@ namespace Categories
 	};
 	const Category threeCards{
 		U"スリーダイス",
+		U"3つ以上同じ目がある場合、全ダイスの合計点数が得点となる。",
+		CategoryType::Lower,
+		Rarity::Rare,
+		200,
 		[](const Array<Die>& dices) -> int
 		{
 			// 各目の出現回数をカウント
@@ -103,6 +145,10 @@ namespace Categories
 	};
 	const Category fourCards{
 		U"フォーダイス",
+		U"4つ以上同じ目がある場合、全ダイスの合計点数が得点となる。",
+		CategoryType::Lower,
+		Rarity::Rare,
+		200,
 		[](const Array<Die>& dices) -> int
 		{
 			HashTable<int, int> counts;
@@ -133,6 +179,10 @@ namespace Categories
 	};
 	const Category FullHouse{
 		U"フルハウス",
+		U"3つ同じ目と2つ同じ目があると25点",
+		CategoryType::Lower,
+		Rarity::Rare,
+		200,
 		[](const Array<Die>& dices) -> int
 		{
 			HashTable<int, int> counts;
@@ -150,22 +200,15 @@ namespace Categories
 				else if (count.second == 2) hasTwo = true;
 			}
 
-			if (hasThree && hasTwo)
-			{
-				int sum = 0;
-				for (const auto& dice : dices)
-				{
-					const auto value = dice.value;
-					if (value) sum += value.value();
-				}
-				return sum;
-			}
-
-			return 0;
+			return (hasThree && hasTwo) ? 25 : 0;
 		}
 	};
 	const Category SmallStraight{
 		U"スモールストレート",
+		U"4つ連続した目があると30点",
+		CategoryType::Lower,
+		Rarity::Rare,
+		200,
 		[](const Array<Die>& dices) -> int
 		{
 			// ハッシュセットで重複を消す
@@ -197,6 +240,10 @@ namespace Categories
 	};
 	const Category LargeStraight{
 		U"ラージストレート",
+		U"5つ連続した目があると40点",
+		CategoryType::Lower,
+		Rarity::Epic,
+		300,
 		[](const Array<Die>& dices) -> int
 		{
 			HashSet<int> set;
@@ -227,6 +274,10 @@ namespace Categories
 	};
 	const Category Chance{
 		U"チャンス",
+		U"出た目の合計点数が得点となる。",
+		CategoryType::Lower,
+		Rarity::Rare,
+		200,
 		[](const Array<Die>& dices) -> int
 		{
 			int sum = 0;
