@@ -93,6 +93,39 @@ namespace Categories
 			return dices.filter([](const Die& d) { return d.value == 6; }).size() * 6;
 		}
 	};
+	const Category Sevens{
+		U"セブン",
+		U"7の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Rare,
+		200,
+		[](const Array<Die>& dices) -> int
+		{
+			return dices.filter([](const Die& d) { return d.value == 7; }).size() * 7;
+		}
+	};
+	const Category Eights{
+		U"エイト",
+		U"8の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Rare,
+		200,
+		[](const Array<Die>& dices) -> int
+		{
+			return dices.filter([](const Die& d) { return d.value == 8; }).size() * 8;
+		}
+	};
+	const Category Nines{
+		U"ナイン",
+		U"9の目の合計点数が得点となる。",
+		CategoryType::Upper,
+		Rarity::Rare,
+		200,
+		[](const Array<Die>& dices) -> int
+		{
+			return dices.filter([](const Die& d) { return d.value == 9; }).size() * 9;
+		}
+	};
 	const Category Yatzy{
 		U"ヤッツィー",
 		U"全てのダイスの目が同じなら50点。",
@@ -298,6 +331,9 @@ namespace Categories
 		Fours,
 		Fives,
 		Sixes,
+		Sevens,
+		Eights,
+		Nines,
 		threeCards,
 		fourCards,
 		FullHouse,
@@ -312,7 +348,10 @@ namespace Categories
 		Threes,
 		Fours,
 		Fives,
-		Sixes
+		Sixes,
+		Sevens,
+		Eights,
+		Nines,
 	};
 	const Array<Category> LowerCategories{
 		threeCards,
