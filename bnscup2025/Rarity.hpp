@@ -29,3 +29,16 @@ enum class Rarity {
 }
 
 const Array<Rarity> AllRarities{ Rarity::Common, Rarity::Rare, Rarity::Epic, Rarity::Legendary };
+
+inline Rarity pickRarity(int turn)
+{
+	DiscreteDistribution dist{ // レアリティごとの出現確率
+	{
+		0.64, // Common
+		0.24, // Rare
+		0.10, // Epic
+		0.02  // Legendary
+	} };
+
+	return DiscreteSample(AllRarities, dist);
+}

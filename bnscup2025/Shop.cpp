@@ -13,6 +13,11 @@ void Shop::update()
 	{
 		changeScene(State::Game);
 	}
+
+	if (KeyR.down())
+	{
+		Print << RarityToString(pickRarity(5));
+	}
 }
 
 void Shop::draw() const

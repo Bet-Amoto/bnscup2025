@@ -337,7 +337,7 @@
     <ClInclude Include="Die.hpp" />
     <ClInclude Include="DiceBox.hpp" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="Item.hpp" />
+    <ClInclude Include="ItemBase.hpp" />
     <ClInclude Include="Rarity.hpp" />
     <ClInclude Include="Shop.hpp" />
     <ClInclude Include="Status.hpp" />
