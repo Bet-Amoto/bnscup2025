@@ -38,5 +38,5 @@ int CategoryBox::getProvisionalScore(const Array<Die>& dices) const {
 }
 Array<Die> CreateStandardDiceBox()
 {
-	return Array<Die>{ Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie, Dice::StandardDie };
+	return Array<Die>{ Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie() };
 }
