@@ -15,7 +15,7 @@ struct ItemBase
 	virtual ~ItemBase() = default;
 
 	// 種類(カテゴリー、ダイスなど)
-	virtual String type() const = 0;
+	virtual String itemType() const = 0;
 
 	// 購入時の適用効果
 	virtual bool apply(Status& s) = 0;

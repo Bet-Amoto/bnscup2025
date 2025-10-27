@@ -26,7 +26,7 @@ struct Die : ItemBase
 
 	bool locked = false;
 
-	String type() const override { return U"ダイス"; }
+	String itemType() const override { return U"ダイス"; }
 
 	bool apply(Status& s) override { return true; }
 
