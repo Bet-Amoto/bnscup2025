@@ -3,9 +3,6 @@
 DiceBox::DiceBox(const Vec2& position, Array<Die>& dice)
 	: m_position(position), m_dice(dice), m_clickedDie(nullptr)
 {
-	for (auto i : step(m_dice.size())) {
-		m_boxes << RectF{ position.x + i * (faceSize + 10), position.y, faceSize, faceSize };
-	}
 }
 
 void DiceBox::roll()
@@ -26,16 +23,18 @@ void DiceBox::draw() const
 {
 	for (size_t i = 0; i < m_dice.size(); ++i)
 	{
-		m_dice[i].draw(m_boxes[i].center());
+		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		m_dice[i].draw(box.center());
 	}
 }
 
 void DiceBox::update()
 {
 	m_clickedDie = nullptr;
-	for (size_t i = 0; i < m_boxes.size(); ++i)
+	for (const auto i : step(m_dice.size()))
 	{
-		if (m_boxes[i].leftClicked())
+		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		if (box.leftClicked())
 		{
 			m_clickedDie = &m_dice[i];
 		}

@@ -18,7 +18,6 @@ public:
 	}
 private:
 	Vec2 m_position;
-	Array<RectF> m_boxes;
 	Die* m_clickedDie;
 	Array<Die>& m_dice;
 	const double faceSize = 60;

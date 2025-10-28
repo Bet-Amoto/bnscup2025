@@ -25,6 +25,11 @@ struct Status
 	int32 gold = 0;				 // 所持金
 	Quota quota;				 // ノルマ
 
+	Array<Die> availableDices; // ショップで購入可能なダイス
+	Array<Category> availableCategories; // ショップで購入可能なカテゴリ
+	int ShopDiceCount = 3;	// ショップで表示するダイスの数
+	int ShopCategoryCount = 3;	// ショップで表示するカテゴリの数
+
 
 	DiscreteDistribution distribution{ // レアリティごとの出現確率
 	{
@@ -44,7 +49,12 @@ struct Status
 		selectionsPerTurn(5),
 		selectionsLeft(5),
 		gold(0),
-		quota(Quota())
+		quota(Quota()),
+		availableDices(Dice::AllDice),
+		availableCategories(Categories::AllCategories),
+		ShopDiceCount(3),
+		ShopCategoryCount(3),
+		distribution({ 1000, 300, 100, 20 })
 	{
 	};
 
@@ -60,6 +70,16 @@ struct Status
 		selectionsLeft = 5;
 		gold = 0;
 		quota = Quota();
+		availableDices = Dice::AllDice;
+		availableCategories = Categories::AllCategories;
+		ShopDiceCount = 3;
+		ShopCategoryCount = 3;
+		distribution = DiscreteDistribution({
+			1000, // Common
+			300,  // Rare
+			100,  // Epic
+			20    // Legendary
+			});
 	}
 
 	void beginTurn()
