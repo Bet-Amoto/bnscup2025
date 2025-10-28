@@ -2,6 +2,7 @@
 # include "Title.hpp"
 # include "Game.hpp"
 # include "Shop.hpp"
+# include "Rarity.hpp"
 void Main()
 {
 	Window::Resize(1280, 720);
@@ -14,12 +15,12 @@ void Main()
 	FontAsset::Register(U"Category", FontMethod::MSDF, 28, Typeface::Bold);
 
 	App manager;
+	manager.get()->status.init();
 	manager.add<Title>(State::Title);
 	manager.add<Game>(State::Game);
 	manager.add<Shop>(State::Shop);
 
 	manager.init(State::Shop);
-	manager.get()->status.init();
 	while (System::Update())
 	{
 		if (not manager.update())

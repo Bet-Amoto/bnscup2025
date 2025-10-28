@@ -5,11 +5,11 @@
 class DiceBox
 {
 public:
-	DiceBox(const Vec2& position, const Array<Die>& dice);
+	DiceBox(const Vec2& position, Array<Die>& dice);
 	void roll();
 	void draw() const;
 	void update();
-	Array<Die> getDice() const{ return m_dice; }
+	Die* getClickedDie() const { return m_clickedDie; }
 	void clear()
 	{
 		for (auto& die : m_dice) {
@@ -18,8 +18,9 @@ public:
 	}
 private:
 	Vec2 m_position;
-	Array<Die> m_dice;
 	Array<RectF> m_boxes;
+	Die* m_clickedDie;
+	Array<Die>& m_dice;
 	const double faceSize = 60;
 	bool m_locked = false;
 };
