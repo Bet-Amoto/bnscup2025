@@ -16,7 +16,7 @@ struct Category : ItemBase
 	CategoryType type = CategoryType::Upper;
 	scoreFunc calculateScore;
 
-	String itemType() const override { return U"カテゴリー"; }
+	String itemType() const override { return U"役"; }
 
 	bool apply(Status& s) override { return true; }
 

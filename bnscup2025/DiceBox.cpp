@@ -8,7 +8,7 @@ DiceBox::DiceBox(const Vec2& position, const Array<Die>& dice)
 	}
 }
 
-void DiceBox::roll()
+void DiceBox::roll(Status& status)
 {
 	Array<Die*> dice;
 	for (auto& die : m_dice) {
@@ -19,6 +19,17 @@ void DiceBox::roll()
 	});
 	for (auto* die : dice) {
 		die->roll(m_dice);
+		if (die->afterSelfFunc)
+		{
+			die->afterSelfFunc(*die, m_dice, status);
+		}
+	}
+	for (auto* die : dice)
+	{
+		if (die->afterAllFunc)
+		{
+			die->afterAllFunc(*die, m_dice, status);
+		}
 	}
 }
 
@@ -36,7 +47,10 @@ void DiceBox::update()
 	{
 		if (m_boxes[i].leftClicked())
 		{
-			m_dice[i].locked = !m_dice[i].locked;
+			if (m_dice[i].canUnlock)
+			{
+				m_dice[i].locked = !m_dice[i].locked;
+			}
 		}
 	}
 }

@@ -80,7 +80,7 @@ void Game::rollAllDicesButton()
 {
 	if (m_rollButton.leftClicked() && m_rollsLeft > 0)
 	{
-		m_diceBox.roll();
+		m_diceBox.roll(getData().status);
 		m_rollsLeft--;
 	}
 }

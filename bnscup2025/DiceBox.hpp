@@ -6,7 +6,7 @@ class DiceBox
 {
 public:
 	DiceBox(const Vec2& position, const Array<Die>& dice);
-	void roll();
+	void roll(Status& status);
 	void draw() const;
 	void update();
 	Array<Die> getDice() const{ return m_dice; }
