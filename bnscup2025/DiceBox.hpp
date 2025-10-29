@@ -2,6 +2,7 @@
 #include "Siv3D.hpp"
 #include "Die.hpp"
 #include "Explanation.hpp"
+
 class DiceBox
 {
 public:
@@ -24,5 +25,4 @@ private:
 	Array<Die>& m_dice;
 	const double faceSize = 60;
 	bool m_locked = false;
-	Explanation m_explanation;
 };

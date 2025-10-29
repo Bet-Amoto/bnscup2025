@@ -1,7 +1,15 @@
 ﻿# include "Explanation.hpp"
 
+// 最初に呼ばれたときに一回だけ初期化される
+Explanation& GetExplanation()
+{
+	static Explanation instance;
+	return instance;
+}
+
 void Explanation::update(Vec2 position)
 {
+	m_item = nullptr;
 	if (m_t < m_startTime)
 	{
 		m_t += Scene::DeltaTime();
@@ -17,13 +25,13 @@ void Explanation::update(Vec2 position)
 	}
 }
 
-void Explanation::draw(const ItemBase& item, Vec2 position, const Rect& drawArea) const
+void Explanation::draw(Vec2 position, const Rect& drawArea) const
 {
-	if (m_t < m_startTime) return;
+	if (m_t < m_startTime || !m_item) return;
 
 	constexpr int padding = 10;
-	const Vec2 NameGlyphsSize = GlyphsSize(FontAsset(U"Regular"), item.name, 20.0);
-	const Vec2 DescriptionGlyphsSize = GlyphsSize(FontAsset(U"Regular"), item.description, 16.0);
+	const Vec2 NameGlyphsSize = GlyphsSize(FontAsset(U"Regular"), m_item->name, 20.0);
+	const Vec2 DescriptionGlyphsSize = GlyphsSize(FontAsset(U"Regular"), m_item->description, 16.0);
 	const Vec2 size = DescriptionGlyphsSize
 		+ Vec2{ 0, NameGlyphsSize.y }
 		+ Vec2{ padding * 2, padding * 3 + 20 };
@@ -32,13 +40,13 @@ void Explanation::draw(const ItemBase& item, Vec2 position, const Rect& drawArea
 	position.x = Min(position.x, drawArea.w - size.x);
 	RectF box{ position, size.x, size.y };
 	box.rounded(5).draw(ColorF{ 1.0, 0.97, 0.6 }).drawFrame(2, ColorF{ 0.1 });
-	DrawGlyphs(FontAsset(U"Regular"), item.name, 20, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
+	DrawGlyphs(FontAsset(U"Regular"), m_item->name, 20, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
 	position.y += NameGlyphsSize.y + padding;
-	DrawGlyphs(FontAsset(U"Regular"), item.description, 16, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
+	DrawGlyphs(FontAsset(U"Regular"), m_item->description, 16, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
 }
 
-void Explanation::draw(const ItemBase& item, Vec2 position) const {
-	draw(item, position, m_drawArea);
+void Explanation::draw(Vec2 position) const {
+	draw(position, m_drawArea);
 }
 
 void Explanation::DrawGlyphs(const Font& font, const String& text, const double fontSize, const Vec2& basePos, const ColorF& color) const

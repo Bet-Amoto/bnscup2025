@@ -96,6 +96,7 @@ void Shop::update()
 		{
 			m_holdedItem = nullptr;
 		}
+		return;
 	}
 
 	for(auto& merch : m_merchandises)
@@ -141,7 +142,12 @@ void Shop::draw() const
 			{
 				m_diceBox.draw(viewportRect.stretched(-10));
 			}
+			GetExplanation().draw(Cursor::PosF(), viewportRect.stretched(-10));
 		}
+	}
+	else
+	{
+		GetExplanation().draw(Cursor::PosF());
 	}
 
 }

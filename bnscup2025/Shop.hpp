@@ -3,6 +3,7 @@
 #include "Status.hpp"
 #include "DiceBox.hpp"
 #include "Merchandice.hpp"
+#include "Explanation.hpp"
 
 class Shop : public App::Scene
 {

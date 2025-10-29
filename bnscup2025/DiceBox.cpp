@@ -37,10 +37,6 @@ void DiceBox::draw() const
 		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		m_dice[i].draw(box.center());
 	}
-	if (m_hoveredDie)
-	{
-		m_explanation.draw(*m_hoveredDie, Cursor::Pos());
-	}
 }
 
 void DiceBox::draw(const Rect& drawArea) const
@@ -49,10 +45,6 @@ void DiceBox::draw(const Rect& drawArea) const
 	{
 		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		m_dice[i].draw(box.center());
-	}
-	if (m_hoveredDie)
-	{
-		m_explanation.draw(*m_hoveredDie, Cursor::Pos(), drawArea);
 	}
 }
 
@@ -70,7 +62,7 @@ void DiceBox::update()
 		if(box.mouseOver())
 		{
 			m_hoveredDie = &m_dice[i];
-			m_explanation.update(Cursor::Pos());
+			GetExplanation().setItem(m_hoveredDie);
 		}
 	}
 }

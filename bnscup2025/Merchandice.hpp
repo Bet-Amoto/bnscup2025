@@ -1,6 +1,7 @@
 ﻿# pragma once
 # include "Siv3D.hpp"
 # include "ItemBase.hpp"
+# include "Explanation.hpp"
 
 class Merchandise
 {

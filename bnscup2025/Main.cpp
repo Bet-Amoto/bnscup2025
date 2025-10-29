@@ -3,6 +3,8 @@
 # include "Game.hpp"
 # include "Shop.hpp"
 # include "Rarity.hpp"
+# include "Explanation.hpp"
+
 void Main()
 {
 	Window::Resize(1280, 720);
@@ -23,6 +25,7 @@ void Main()
 	manager.init(State::Shop);
 	while (System::Update())
 	{
+		GetExplanation().update(Cursor::PosF());
 		if (not manager.update())
 		{
 			break;

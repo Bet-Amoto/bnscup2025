@@ -2,7 +2,9 @@
 
 void Merchandise::update()
 {
-	// ここに更新処理を追加することができます
+	if (m_box.mouseOver()) {
+		GetExplanation().setItem(m_item.get());
+	}
 }
 
 void Merchandise::draw() const
