@@ -118,6 +118,7 @@
   <ItemGroup>
     <ClCompile Include="CategoryBox.cpp" />
     <ClCompile Include="DiceBox.cpp" />
+    <ClCompile Include="Explantion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Merchandice.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Die.hpp" />
     <ClInclude Include="DiceBox.hpp" />
+    <ClInclude Include="Explanation.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Merchandice.hpp" />
     <ClInclude Include="ItemBase.hpp" />

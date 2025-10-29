@@ -125,6 +125,8 @@ void Shop::draw() const
 	}
 
 	if (m_holdedItem) {
+		const Transformer2D t{ Mat3x2::Identity(), Mat3x2::Translate(240,60) };
+
 		Rect{ 0,0,Scene::Size() }.draw(ColorF{ 0, 0, 0, 0.5 });
 		viewportRect.rounded(10).draw(ColorF{ 1.0 }).drawFrame(3, ColorF{ 0.1 });
 		{
@@ -137,7 +139,7 @@ void Shop::draw() const
 			const auto item = m_holdedItem->getItem();
 			if (item && item->itemType() == U"ダイス")
 			{
-				m_diceBox.draw();
+				m_diceBox.draw(viewportRect.stretched(-10));
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 #include "Siv3D.hpp"
 #include "Category.hpp"
 #include "Die.hpp"
-
+#include "Explanation.hpp"
 class CategoryBox
 {
 public:
