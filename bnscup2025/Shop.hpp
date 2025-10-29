@@ -23,4 +23,11 @@ private:
 	const Rect boughtButtonRect = Rect{ 450,500,150,60 };
 	const Rect cancelButtonRect = Rect{ 200,500,150,60 };
 	bool m_selected = false;
+
+	const Vec2 categorySelectRectSize = Vec2{ 500, 40 };
+	Category* selectedCategory = nullptr;
+	void categorySelect();
+	void categorySelectDraw() const;
+
+	void clearSelect();
 };

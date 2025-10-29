@@ -85,6 +85,8 @@ void Game::draw() const
 	FontAsset(U"Regular")(U"達成 {}"_fmt(getData().status.quota.earned)).draw(24, 160, 530, ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).draw(24, 300, 530, ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"所持G {}"_fmt(getData().status.gold)).draw(24, 450, 530, ColorF{ 0.1 });
+
+	GetExplanation().draw(Cursor::PosF());
 }
 
 void Game::rollAllDicesButton()
