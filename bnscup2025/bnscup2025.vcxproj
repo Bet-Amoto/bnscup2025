@@ -120,6 +120,7 @@
     <ClCompile Include="DiceBox.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Merchandice.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -337,6 +338,7 @@
     <ClInclude Include="Die.hpp" />
     <ClInclude Include="DiceBox.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Merchandice.hpp" />
     <ClInclude Include="ItemBase.hpp" />
     <ClInclude Include="Rarity.hpp" />
     <ClInclude Include="Shop.hpp" />

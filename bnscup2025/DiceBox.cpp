@@ -1,11 +1,8 @@
 ﻿#include "DiceBox.hpp"
 
-DiceBox::DiceBox(const Vec2& position, const Array<Die>& dice)
-	: m_position(position), m_dice(dice)
+DiceBox::DiceBox(const Vec2& position, Array<Die>& dice)
+	: m_position(position), m_dice(dice), m_clickedDie(nullptr)
 {
-	for(auto i : step(m_dice.size())) {
-		m_boxes << RectF{ position.x + i * (faceSize + 10), position.y, faceSize, faceSize };
-	}
 }
 
 void DiceBox::roll(Status& status)
@@ -37,20 +34,20 @@ void DiceBox::draw() const
 {
 	for (size_t i = 0; i < m_dice.size(); ++i)
 	{
-		m_dice[i].draw(m_boxes[i].center());
+		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		m_dice[i].draw(box.center());
 	}
 }
 
 void DiceBox::update()
 {
-	for (size_t i = 0; i < m_boxes.size(); ++i)
+	m_clickedDie = nullptr;
+	for (const auto i : step(m_dice.size()))
 	{
-		if (m_boxes[i].leftClicked())
+		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		if (box.leftClicked())
 		{
-			if (m_dice[i].canUnlock)
-			{
-				m_dice[i].locked = !m_dice[i].locked;
-			}
+			m_clickedDie = &m_dice[i];
 		}
 	}
 }

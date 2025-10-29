@@ -15,39 +15,50 @@ Game::Game(const InitData& init)
 	{
 		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + index * 60 }, category };
 	}
+	m_diceBox.clear();
 }
 
 void Game::update()
 {
 	rollAllDicesButton();
 	m_diceBox.update();
+	if(m_diceBox.getClickedDie())
+	{
+		m_diceBox.getClickedDie()->locked = !m_diceBox.getClickedDie()->locked;
 
+	}
 	for (auto& box : m_categoryBoxes) {
-		if (box.isClicked() &&  !box.getScore()) {
-			const int prov = box.getProvisionalScore(m_diceBox.getDice());
+		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
+			const int prov = box.getProvisionalScore(getData().status.dices);
 			box.setScore(prov);
 			getData().status.quota.earned += prov;
 			getData().status.selectionsLeft -= 1;
 			m_rollsLeft = maxRolls;
 			m_diceBox.clear();
 
-			if (getData().status.selectionsLeft <= 0)
-			{
-				for (auto& box : m_categoryBoxes)
-				{
-					box.reset();
-				}
-				getData().status.endTurn();
+		}
+	}
+
+	if (getData().status.selectionsLeft == 0) {
+		for (auto& box : m_categoryBoxes) {
+			if (!box.getScore()) {
+				box.setScore(0);
 			}
 		}
 	}
 
-	if (KeyR.down()) {
+	if (getData().status.selectionsLeft <= 0 && KeyR.down()) {
 		m_rollsLeft = maxRolls;
 		m_diceBox.clear();
 		for (auto& box : m_categoryBoxes) {
 			box.reset();
 		}
+		getData().status.endTurn();
+	}
+
+	if (getData().status.selectionsLeft <= 0 && KeySpace.down()) {
+		changeScene(State::Shop);
+		getData().status.endTurn();
 	}
 }
 
@@ -60,7 +71,7 @@ void Game::draw() const
 	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.1 });
 	for (auto& category : m_categoryBoxes) {
-		category.draw(m_diceBox.getDice());
+		category.draw(getData().status.dices);
 	}
 	m_diceBox.draw();
 	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 55, 410, ColorF{ 0.1 });

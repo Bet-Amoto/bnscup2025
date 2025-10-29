@@ -44,7 +44,12 @@ struct Die : ItemBase
 
 	void drawIcon(const Vec2& pos) const override
 	{
-
+		//仮
+		Die die = *this;
+		die.value = 1;
+		if (die.faces.isEmpty())die.value = 1;
+		else die.value = die.faces.sorted().front();
+		drawFunc(pos, die);
 	}
 
 	void roll(const Array<Die>& dices)
@@ -60,7 +65,11 @@ struct Die : ItemBase
 	void draw(const Vec2& centerPos) const
 	{
 		drawFunc(centerPos, *this);
-	} 
+	}
+	void setMinVal() {
+		if (faces.isEmpty())value = 1;
+		else value = faces.sorted().front();
+	}
 };
 
 namespace Dice{
@@ -272,4 +281,9 @@ namespace Dice{
 
 		return d;
 	}
+
+	const Array<Die> AllDice = {
+		StandardDie(),
+		Coin(),
+	};
 }
