@@ -40,7 +40,7 @@ struct Status
 	} };
 
 	Status()
-		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::StandardDie(), Dice::Coin(), Dice::Coin() }),
+		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() }),
 		upperCategories(Categories::UpperCategories),
 		lowerCategories(Categories::LowerCategories),
 		maxRolls(3),
@@ -60,7 +60,7 @@ struct Status
 
 	void init()
 	{
-		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::StandardDie(), Dice::Coin(), Dice::Coin() };
+		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() };
 		upperCategories = Categories::UpperCategories;
 		lowerCategories = Categories::LowerCategories;
 		maxRolls = 3;

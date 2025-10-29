@@ -197,27 +197,51 @@ namespace Dice{
 		return d;
 	}
 
-	inline Die Coin()
+	inline Die QuakeDie()
 	{
 		Die d;
-		d.name = U"コイン";
-		d.rarity = Rarity::Common;
-		d.cost = 50;
-		d.description = U"普通のコイン。二分の一の確率で1か6が出る。";
-		d.textureKey = U"Coin";
+		d.name = U"震ダイス";
+		d.rarity = Rarity::Epic;
+		d.cost = 200;
+		d.description = U"震えるダイス。振った後、ロックされていない全てのダイスをもう一度振る。";
+		d.textureKey = U"QuakeDice";
 
-		d.faces = Array<int>{ 1, 6 };
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
 				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
-				Circle faceCircle(centerPos, 30);
-				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
-				faceCircle.drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
+
+		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
+			{
+				auto reroll = [&](Die& t)
+					{
+						int v = t.rollFunc ? t.rollFunc(t, dices)
+							: (t.faces.isEmpty() ? Random(1, 6) : t.faces.choice());
+						t.value.value() = v;
+
+						if (t.afterSelfFunc)
+						{
+							t.afterSelfFunc(t, dices, status);
+						}
+					};
+
+				for (auto& t : dices)
+				{
+					if (&t == &self) continue;
+					if (t.name == U"震ダイス") continue;
+					if (t.locked) continue;
+					reroll(t);
+				}
+			};
+		d.canUnlock = false;
 
 		return d;
 	}
@@ -225,7 +249,7 @@ namespace Dice{
 	inline Die GoldDie()
 	{
 		Die d;
-		d.name = U"黄金ダイス";
+		d.name = U"金ダイス";
 		d.rarity = Rarity::Epic;
 		d.cost = 200;
 		d.description = U"黄金に輝くダイス。出た目と同じ値のゴールドを獲得する。";
@@ -252,14 +276,39 @@ namespace Dice{
 		return d;
 	}
 
-	inline Die TradersCoin()
+	inline Die Coin()
 	{
 		Die d;
-		d.name = U"商人のコイン";
+		d.name = U"コイン";
+		d.rarity = Rarity::Common;
+		d.cost = 50;
+		d.description = U"普通のコイン。二分の一の確率で1か6が出る。";
+		d.textureKey = U"Coin";
+
+		d.faces = Array<int>{ 1, 6 };
+		d.value = none;
+		d.order = RollOrder::PRIMARY;
+		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
+		d.drawFunc = [](const Vec2& centerPos, const Die self)
+			{
+				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				Circle faceCircle(centerPos, 30);
+				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
+				faceCircle.drawFrame(1, ColorF{ 0 });
+				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+			};
+
+		return d;
+	}
+
+	inline Die GoldCoin()
+	{
+		Die d;
+		d.name = U"金コイン";
 		d.rarity = Rarity::Rare;
 		d.cost = 100;
-		d.description = U"商人のコイン。二分の一の確率で0か5が出る。出た目と同じ値のゴールドを獲得する。";
-		d.textureKey = U"TradersCoin";
+		d.description = U"黄金に輝くコイン。二分の一の確率で0か5が出る。出た目と同じ値のゴールドを獲得する。";
+		d.textureKey = U"GoldCoin";
 
 		d.faces = Array<int>{ 0, 5 };
 		d.value = none;
@@ -284,6 +333,12 @@ namespace Dice{
 
 	const Array<Die> AllDice = {
 		StandardDie(),
+		SleepDie(),
+		HeartDie(),
+		MirageDie(),
+		GoldDie(),
+		QuakeDie(),
 		Coin(),
+		GoldCoin(),
 	};
 }
