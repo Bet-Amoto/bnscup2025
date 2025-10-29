@@ -24,7 +24,7 @@ void Game::update()
 	m_diceBox.update();
 	if(m_diceBox.getClickedDie())
 	{
-		m_diceBox.getClickedDie()->locked = !m_diceBox.getClickedDie()->locked;
+		m_diceBox.getClickedDie()->locked = !m_diceBox.getClickedDie()->locked || !m_diceBox.getClickedDie()->canUnlock;
 
 	}
 	for (auto& box : m_categoryBoxes) {
