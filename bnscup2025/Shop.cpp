@@ -6,29 +6,8 @@ Shop::Shop(const InitData& init)
 	m_diceBox{ Vec2{ 100, 300 }, m_status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.9, 0.9, 0.8 });
-	int marchX = 100;
-	for(const auto i: step(m_status.ShopDiceCount))
-	{
-		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
-		const Array<Die> filteredDices = m_status.availableDices.filter([&](const Die& d) { return d.rarity == rarity; });
-		if (not filteredDices.empty())
-		{
-			const Die dice = filteredDices.choice();
-			m_merchandises << Merchandise{ dice.clone(), Vec2{ marchX, 200 } };
-			marchX += 150;
-		}
-	}
-	for (const auto i : step(m_status.ShopCategoryCount))
-	{
-		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
-		const Array<Category> filteredCategories = m_status.availableCategories.filter([&](const Category& c) { return c.rarity == rarity; });
-		if (not filteredCategories.empty())
-		{
-			const Category category = filteredCategories.choice();
-			m_merchandises << Merchandise{ category.clone(), Vec2{ marchX, 200 } };
-			marchX += 150;
-		}
-	}
+	reroll();
+	m_status.ShopRerollPrice = m_status.ShopRerollBasePrice;
 	for (auto& die : m_status.dices) {
 		die.setMinVal();
 	}
@@ -114,16 +93,31 @@ void Shop::update()
 			}
 		}
 	}
+
+	if (RerollButtonRect.leftClicked() && m_status.gold > m_status.ShopRerollPrice) {
+		addGold(m_status, -m_status.ShopRerollPrice);
+		m_status.ShopRerollPrice += m_status.ShopRerollPriceIncrease;
+		reroll();
+	}
+	if (NextTurnButtonRect.leftClicked()) {
+		changeScene(State::Game);
+	}
 }
 
 void Shop::draw() const
 {
 	FontAsset(U"Bold")(U"ショップ").drawAt(Scene::CenterF().x, 50, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"所持: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });
 	for (const auto& merch : m_merchandises)
 	{
 		merch.draw();
 	}
 
+	const ColorF rerollButtonCol = m_status.gold > m_status.ShopRerollPrice ? ColorF{ 0.9 } : ColorF{ 0.5 };
+	RerollButtonRect.rounded(5).draw(rerollButtonCol).drawFrame(3, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"更新").drawAt(28, RerollButtonRect.center().movedBy(0,-50), ColorF{0.1});
+	FontAsset(U"Bold")(U"{}G"_fmt(m_status.ShopRerollPrice)).drawAt(32, RerollButtonRect.center(), ColorF{0.1});
+	FontAsset(U"Bold")(U"次のターンへ").drawAt(40, NextTurnButtonRect.center(), ColorF{ 0.1 });
 	if (m_holdedItem) {
 		const Transformer2D t{ Mat3x2::Identity(), Mat3x2::Translate(240,60) };
 
@@ -132,7 +126,7 @@ void Shop::draw() const
 		{
 			const ScopedViewport2D viewport{ viewportRect };
 			boughtButtonRect.rounded(5).draw(ColorF{ 0.2, 0.8, 0.2 });
-			FontAsset(U"Bold")(U"購入する").drawAt(32, boughtButtonRect.center(), ColorF{ 1.0 });
+			FontAsset(U"Bold")(U"{}G"_fmt(m_holdedItem->getItem()->cost)).drawAt(32, boughtButtonRect.center(), ColorF{ 1.0 });
 			cancelButtonRect.rounded(5).draw(ColorF{ 0.8, 0.2, 0.2 });
 			FontAsset(U"Bold")(U"キャンセル").drawAt(32, cancelButtonRect.center(), ColorF{ 1.0 });
 
@@ -153,6 +147,33 @@ void Shop::draw() const
 		GetExplanation().draw(Cursor::PosF());
 	}
 
+}
+
+void Shop::reroll() {
+	int marchX = 100;
+	m_merchandises.clear();
+	for (const auto i : step(m_status.ShopDiceCount))
+	{
+		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
+		const Array<Die> filteredDices = m_status.availableDices.filter([&](const Die& d) { return d.rarity == rarity; });
+		if (not filteredDices.empty())
+		{
+			const Die dice = filteredDices.choice();
+			m_merchandises << Merchandise{ dice.clone(), Vec2{ marchX, 200 } };
+			marchX += 150;
+		}
+	}
+	for (const auto i : step(m_status.ShopCategoryCount))
+	{
+		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
+		const Array<Category> filteredCategories = m_status.availableCategories.filter([&](const Category& c) { return c.rarity == rarity; });
+		if (not filteredCategories.empty())
+		{
+			const Category category = filteredCategories.choice();
+			m_merchandises << Merchandise{ category.clone(), Vec2{ marchX, 200 } };
+			marchX += 150;
+		}
+	}
 }
 
 void Shop::categorySelect() {

@@ -17,17 +17,21 @@ private:
 	Array<Die> m_availableDices = m_status.availableDices;
 	Array<Category> m_availableCategories = m_status.availableCategories;
 	Array<Merchandise> m_merchandises;
+
+	const Rect RerollButtonRect = Rect{ 750,600,120,60 };
+	const Rect NextTurnButtonRect = Rect{ 900,580,250,100 };
+
 	Merchandise* m_holdedItem = nullptr;
 	DiceBox m_diceBox;
 	const Rect viewportRect = Rect{ 240, 60, 800, 600 };
-	const Rect boughtButtonRect = Rect{ 450,500,150,60 };
-	const Rect cancelButtonRect = Rect{ 200,500,150,60 };
+	const Rect boughtButtonRect = Rect{ 430,500,190,60 };
+	const Rect cancelButtonRect = Rect{ 180,500,190,60 };
 	bool m_selected = false;
 
 	const Vec2 categorySelectRectSize = Vec2{ 500, 40 };
 	Category* selectedCategory = nullptr;
 	void categorySelect();
 	void categorySelectDraw() const;
-
+	void reroll();
 	void clearSelect();
 };

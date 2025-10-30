@@ -9,8 +9,10 @@ void Merchandise::update()
 
 void Merchandise::draw() const
 {
-	m_box.draw(ColorF{ 0.95, 0.9, 0.8 });
-	m_box.drawFrame(2, ColorF{ 0.7, 0.5, 0.3 });
+	ColorF color = m_item ? RarityToColor(m_item->rarity) : RarityToColor(Rarity::Common);
+	m_box.draw(color);
+	m_box.drawFrame(2, color * 0.5);
+	
 	if (m_item)
 	{
 		m_item->drawIcon(m_pos.movedBy(0,-40));

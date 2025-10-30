@@ -2,7 +2,7 @@
 # include "Siv3D.hpp"
 # include "ItemBase.hpp"
 # include "Explanation.hpp"
-
+# include "Rarity.hpp"
 class Merchandise
 {
 public:
