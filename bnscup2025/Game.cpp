@@ -7,13 +7,14 @@ Game::Game(const InitData& init)
 	m_diceBox{ Vec2{100, 600}, getData().status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
-	for (const auto& [index, category] : Indexed(getData().status.upperCategories))
-	{
-		m_categoryBoxes << CategoryBox{ Vec2{ 50, 50 + index * 60 }, category };
+	for (int i : step(getData().status.upperCategories.size())) {
+		m_categoryBoxes << CategoryBox{ Vec2{ 50, 50 + i * 60 }, getData().status.upperCategories[i]};
 	}
-	for (const auto& [index, category] : Indexed(getData().status.lowerCategories))
-	{
-		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + index * 60 }, category };
+	for (int i : step(getData().status.lowerCategories.size())) {
+		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + i * 60 }, getData().status.lowerCategories[i] };
+	}
+	for (auto& cateBox : m_categoryBoxes) {
+		cateBox.reset();
 	}
 	m_diceBox.clear();
 }
@@ -102,7 +103,7 @@ int Game::UpperCategoriesScore() const
 {
 	int score = 0;
 	for (const auto& box : m_categoryBoxes) {
-		if (Categories::UpperCategories.contains(box.getCategory()) && box.getScore()) {
+		if (box.getCategory().type == CategoryType::Upper && box.getScore()) {
 			score += box.getScore().value();
 		}
 	}
