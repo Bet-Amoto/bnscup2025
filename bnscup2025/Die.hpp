@@ -161,7 +161,7 @@ namespace Dice{
 					if (dice.name == U"心ダイス") heartNum++;
 				}
 
-				if (self.value) self.value.value() += heartNum / 2;
+				if (self.value && !self.locked) self.value.value() += heartNum / 2;
 			};
 
 		return d;
