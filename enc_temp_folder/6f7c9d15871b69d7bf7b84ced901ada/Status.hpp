@@ -46,7 +46,7 @@ struct Status
 	int ShopDiceCount = 3;	// ショップで表示するダイスの数
 	int ShopCategoryCount = 3;	// ショップで表示するカテゴリの数
 	int ShopRerollPrice = 50;          // 現在のリロール価格
-	int ShopRerollPriceIncrease = 50;  // リロールごとの値上げ幅
+	int ShopRerollPriceIncrease = 10;  // リロールごとの値上げ幅
 	int ShopRerollBasePrice = 50;      // リロールの初期価格（リセット用）
 
 

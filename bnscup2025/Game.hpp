@@ -4,6 +4,7 @@
 # include "DiceBox.hpp"
 # include "CategoryBox.hpp"
 # include "Category.hpp"
+# include "Item.hpp"
 // ゲームシーン
 class Game : public App::Scene
 {

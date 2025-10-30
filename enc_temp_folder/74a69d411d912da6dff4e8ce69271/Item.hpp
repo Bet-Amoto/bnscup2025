@@ -88,6 +88,23 @@ struct Item : ItemBase
 	}
 };
 
+/// @brief 指定したタイミングで発動するアイテムを抽出する
+/// @param items アイテムの配列
+/// @param timing 発動タイミング
+/// @return 指定したタイミングで発動するアイテムの配列
+inline Array<Item*> FilterItemsByTiming(Array<Item>& items, ActivationTiming timing, const Status& status)
+{
+	Array<Item*> result;
+	for (auto& item : items)
+	{
+		if (item.condition(timing, status))
+		{
+			result.push_back(&item);
+		}
+	}
+	return result;
+}
+
 inline void ActivateItemsByTiming(Array<Item>& items, ActivationTiming timing, Status& status)
 {
 	for (auto& item : items)
@@ -154,7 +171,6 @@ namespace Items
 		return item;
 	}
 
-	/// @brief 進化したエース 
 	inline Item EvolvedOne();
 
 	const Array<Item> AllItems = {

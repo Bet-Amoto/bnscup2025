@@ -17,6 +17,7 @@ Game::Game(const InitData& init)
 		cateBox.reset();
 	}
 	m_diceBox.clear();
+	getData().status.items << Items::EvolvedOne();
 }
 
 void Game::update()
@@ -34,6 +35,9 @@ void Game::update()
 			box.setScore(prov);
 			getData().status.quota.earned += prov;
 			getData().status.selectionsLeft -= 1;
+			getData().status.gameStats.lastAchievedCategory = box.category;
+			getData().status.gameStats.lastAchievedDices = getData().status.dices;
+			ActivateItemsByTiming(getData().status.items, ActivationTiming::OnDiceResult, getData().status);
 			m_rollsLeft = maxRolls;
 			m_diceBox.clear();
 
