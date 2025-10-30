@@ -4,6 +4,7 @@
 #include "DiceBox.hpp"
 #include "Merchandice.hpp"
 #include "Explanation.hpp"
+#include "Item.hpp"
 
 class Shop : public App::Scene
 {

@@ -85,7 +85,15 @@ void Shop::update()
 			const auto item = merch.getItem();
 			if (item)
 			{
-				if (m_status.gold >= item->cost)
+				if (item->itemType() == U"アイテム" && m_status.gold >= item->cost)
+				{
+					Artifact artifact = *std::dynamic_pointer_cast<Artifact>(item->clone());
+					m_status.artifacts.push_back(artifact);
+					artifact.apply(m_status);
+					m_status.gold -= item->cost;
+					merch.setSoldOut(true);
+				}
+				else if (m_status.gold >= item->cost)
 				{
 					m_holdedItem = &merch;
 					m_selected = false;
@@ -171,6 +179,16 @@ void Shop::reroll() {
 		{
 			const Category category = filteredCategories.choice();
 			m_merchandises << Merchandise{ category.clone(), Vec2{ marchX, 200 } };
+			marchX += 150;
+		}
+	}
+	for (const auto i : step(m_status.ShopArtifactCount)) {
+		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
+		const Array<Artifact> filteredItems = m_status.availableArtifacts.filter([&](const Artifact& c) { return c.rarity == rarity; });
+		if (not filteredItems.empty())
+		{
+			const Artifact item = filteredItems.choice();
+			m_merchandises << Merchandise{ item.clone(), Vec2{ marchX, 200 } };
 			marchX += 150;
 		}
 	}

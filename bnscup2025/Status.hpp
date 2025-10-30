@@ -29,7 +29,7 @@ struct Status
 	Array<Die> dices;
 	Array<Category> upperCategories;
 	Array<Category> lowerCategories;
-	Array<Item> items;
+	Array<Artifact> artifacts;
 	int maxRolls = 3;
 	int upperSectionBonusThreshold = Categories::UpperSectionBonusThreshold;
 	int UpperSectionBonusScore = Categories::UpperSectionBonusScore;
@@ -42,9 +42,11 @@ struct Status
 
 
 	Array<Die> availableDices; // ショップで購入可能なダイス
-	Array<Category> availableCategories; // ショップで購入可能なカテゴリ
+	Array<Category> availableCategories; // ショップで購入可能な役
+	Array<Artifact> availableArtifacts; // ショップで購入可能なアイテム
 	int ShopDiceCount = 3;	// ショップで表示するダイスの数
 	int ShopCategoryCount = 3;	// ショップで表示するカテゴリの数
+	int ShopArtifactCount = 3;
 	int ShopRerollPrice = 50;          // 現在のリロール価格
 	int ShopRerollPriceIncrease = 50;  // リロールごとの値上げ幅
 	int ShopRerollBasePrice = 50;      // リロールの初期価格（リセット用）
@@ -62,7 +64,7 @@ struct Status
 		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() }),
 		upperCategories(Categories::UpperCategories),
 		lowerCategories(Categories::LowerCategories),
-		items(),
+		artifacts(),
 		maxRolls(3),
 		upperSectionBonusThreshold(Categories::UpperSectionBonusThreshold),
 		UpperSectionBonusScore(Categories::UpperSectionBonusScore),
@@ -72,8 +74,10 @@ struct Status
 		quota(Quota()),
 		availableDices(Dice::AllDice),
 		availableCategories(Categories::AllCategories),
+		availableArtifacts(Items::AllItems),
 		ShopDiceCount(3),
 		ShopCategoryCount(3),
+		ShopArtifactCount(3),
 		distribution({ 1000, 300, 100, 20 })
 	{
 	};
@@ -83,7 +87,7 @@ struct Status
 		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() };
 		upperCategories = Categories::UpperCategories;
 		lowerCategories = Categories::LowerCategories;
-		items.clear();
+		artifacts.clear();
 		maxRolls = 3;
 		upperSectionBonusThreshold = Categories::UpperSectionBonusThreshold;
 		UpperSectionBonusScore = Categories::UpperSectionBonusScore;
@@ -93,8 +97,11 @@ struct Status
 		quota = Quota();
 		availableDices = Dice::AllDice;
 		availableCategories = Categories::AllCategories;
+		availableArtifacts = Items::AllItems;
+		availableArtifacts = Items::AllItems;
 		ShopDiceCount = 3;
 		ShopCategoryCount = 3;
+		ShopArtifactCount = 3;
 		distribution = DiscreteDistribution({
 			1000, // Common
 			300,  // Rare

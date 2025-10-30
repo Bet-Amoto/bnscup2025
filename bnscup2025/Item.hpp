@@ -13,20 +13,20 @@ enum class ActivationTiming
 	OnGameEnd,       // ゲーム終了時
 };
 
-struct Item;
+struct Artifact;
 struct Status;
 
 void addGold(Status& s, int32 amount);
 
-using ActivateFunc = std::function<void(Item&, ActivationTiming, Status&)>;
-using ConditionFunc = std::function<bool(const Item&, ActivationTiming, const Status&)>;
-using ItemDrawFunc = std::function<void(const Vec2&, const Item&)>;
+using ActivateFunc = std::function<void(Artifact&, ActivationTiming, Status&)>;
+using ConditionFunc = std::function<bool(const Artifact&, ActivationTiming, const Status&)>;
+using ItemDrawFunc = std::function<void(const Vec2&, const Artifact&)>;
 
-struct Item : ItemBase
+struct Artifact : ItemBase
 {
 	ActivationTiming timing = ActivationTiming::OnPurchase;
 	ActivateFunc activateFunc = nullptr;
-	ConditionFunc conditionFunc = [](const Item& self, ActivationTiming timing, const Status& status) {
+	ConditionFunc conditionFunc = [](const Artifact& self, ActivationTiming timing, const Status& status) {
 		return timing == self.timing;
 		};
 	ItemDrawFunc drawFunc = nullptr;
@@ -52,7 +52,7 @@ struct Item : ItemBase
 
 	std::shared_ptr<ItemBase> clone() const override
 	{
-		return std::make_shared<Item>(*this);
+		return std::make_shared<Artifact>(*this);
 	}
 
 	void drawIcon(const Vec2& pos) const override
@@ -88,9 +88,9 @@ struct Item : ItemBase
 	}
 };
 
-inline void ActivateItemsByTiming(Array<Item>& items, ActivationTiming timing, Status& status)
+inline void ActivateArtifactsByTiming(Array<Artifact>& artifacts, ActivationTiming timing, Status& status)
 {
-	for (auto& item : items)
+	for (auto& item : artifacts)
 	{
 		if (item.condition(timing, status))
 		{
@@ -102,9 +102,9 @@ inline void ActivateItemsByTiming(Array<Item>& items, ActivationTiming timing, S
 namespace Items
 {
 	/// @brief 金貨袋
-	inline Item GoldPouch()
+	inline Artifact GoldPouch()
 	{
-		Item item;
+		Artifact item;
 		item.name = U"金貨袋";
 		item.rarity = Rarity::Common;
 		item.cost = 30;
@@ -113,12 +113,12 @@ namespace Items
 		item.timing = ActivationTiming::OnPurchase;
 		item.usageLimit = 1; // 1回使い切り
 
-		item.activateFunc = [](Item& self, ActivationTiming timing, Status& status)
+		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
 			{
 				addGold(status, 50);
 			};
 
-		item.drawFunc = [](const Vec2& pos, const Item& self)
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos, 60, 60, 5 }.draw(HSV(54, 0.77, 0.9));
 				SimpleGUI::GetFont()(U"💰").drawAt(pos.x + 30, pos.y + 30);
@@ -128,9 +128,9 @@ namespace Items
 	}
 
 	/// @brief ラッキーチャーム
-	inline Item LuckyCharm()
+	inline Artifact LuckyCharm()
 	{
-		Item item;
+		Artifact item;
 		item.name = U"幸運のお守り";
 		item.rarity = Rarity::Epic;
 		item.cost = 80;
@@ -139,13 +139,13 @@ namespace Items
 		item.timing = ActivationTiming::OnGameStart;
 		item.usageLimit = none; // 無制限
 
-		item.activateFunc = [](Item& self, ActivationTiming timing, Status& status)
+		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
 			{
 				// ゲーム開始時の処理（ダイスの補正など）
 				// 実装はStatusの構造に依存
 			};
 
-		item.drawFunc = [](const Vec2& pos, const Item& self)
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos, 60, 60, 5 }.draw(HSV(160, 0.5, 0.9));
 				SimpleGUI::GetFont()(U"🍀").drawAt(pos.x + 30, pos.y + 30);
@@ -154,12 +154,12 @@ namespace Items
 		return item;
 	}
 
-	/// @brief 進化したエース 
-	inline Item EvolvedOne();
+	/// @brief 真・エース 
+	inline Artifact TrueOne();
 
-	const Array<Item> AllItems = {
+	const Array<Artifact> AllItems = {
 		GoldPouch(),
 		LuckyCharm(),
-		EvolvedOne()
+		TrueOne()
 	};
 }
