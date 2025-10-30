@@ -52,10 +52,14 @@ struct Die : ItemBase
 		drawFunc(pos, die);
 	}
 
-	void roll(const Array<Die>& dices)
+	void roll(Array<Die>& dices, Status& status)
 	{
 		if (locked) return;
 		value = rollFunc(*this, dices);
+		if (afterSelfFunc)
+		{
+			afterSelfFunc(*this, dices, status);
+		}
 	}
 	void clear()
 	{
@@ -221,27 +225,15 @@ namespace Dice{
 
 		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
 			{
-				auto reroll = [&](Die& t)
-					{
-						int v = t.rollFunc ? t.rollFunc(t, dices)
-							: (t.faces.isEmpty() ? Random(1, 6) : t.faces.choice());
-						t.value.value() = v;
-
-						if (t.afterSelfFunc)
-						{
-							t.afterSelfFunc(t, dices, status);
-						}
-					};
 
 				for (auto& t : dices)
 				{
 					if (&t == &self) continue;
 					if (t.name == U"震ダイス") continue;
 					if (t.locked) continue;
-					reroll(t);
+					t.roll(dices, status);
 				}
 			};
-		d.canUnlock = false;
 
 		return d;
 	}

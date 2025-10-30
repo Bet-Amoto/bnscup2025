@@ -15,11 +15,7 @@ void DiceBox::roll(Status& status)
 		return static_cast<int>(a->order) < static_cast<int>(b->order);
 	});
 	for (auto* die : dice) {
-		die->roll(m_dice);
-		if (die->afterSelfFunc)
-		{
-			die->afterSelfFunc(*die, m_dice, status);
-		}
+		die->roll(m_dice, status);
 	}
 	for (auto* die : dice)
 	{
