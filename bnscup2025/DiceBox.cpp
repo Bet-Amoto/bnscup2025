@@ -19,7 +19,7 @@ void DiceBox::roll(Status& status)
 	}
 	for (auto* die : dice)
 	{
-		if (die->afterAllFunc)
+		if (die->afterAllFunc && !die->locked)
 		{
 			die->afterAllFunc(*die, m_dice, status);
 		}
