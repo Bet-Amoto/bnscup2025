@@ -6,19 +6,18 @@
 class CategoryBox
 {
 public:
-	CategoryBox(const Vec2& position, const Category& category);
+	CategoryBox(const Vec2& position, Category& category);
 	void draw(const Array<Die>& dices) const;
 	bool isClicked() const;
-	void setScore(int score) { m_score = score; }
-	Optional<int> getScore() const;
+	void setScore(int score) { m_category->score = score; }
+	Optional<int> getScore() const { return m_category->score; }
 	int getProvisionalScore(const Array<Die>& dices) const;
-	Category getCategory() const { return m_category; }
-	void reset() { m_score = none; }
+	const Category& getCategory() const { return *m_category; } // ★ constバージョンを追加
+	void reset() { m_category->score = none; }
 private:
 	Vec2 m_position;
 	RectF m_boxRect;
 	RectF m_nameRect;
 	RectF m_scoreRect;
-	Category m_category;
-	Optional<int> m_score;
+	Category* m_category;
 };
