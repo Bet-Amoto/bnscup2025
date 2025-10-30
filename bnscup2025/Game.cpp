@@ -30,7 +30,7 @@ void Game::update()
 	}
 	for (auto& box : m_categoryBoxes) {
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
-			const int prov = box.getProvisionalScore(getData().status.dices);
+			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
 			getData().status.quota.earned += prov;
 			getData().status.selectionsLeft -= 1;
@@ -75,7 +75,7 @@ void Game::draw() const
 	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.1 });
 	for (auto& category : m_categoryBoxes) {
-		category.draw(getData().status.dices);
+		category.draw(getData().status.dices, getData().status);
 	}
 	m_diceBox.draw();
 	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 55, 410, ColorF{ 0.1 });

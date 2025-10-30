@@ -51,7 +51,11 @@ struct Status
 	int ShopRerollPriceIncrease = 50;  // リロールごとの値上げ幅
 	int ShopRerollBasePrice = 50;      // リロールの初期価格（リセット用）
 
-
+	// レアリティごとの出現確率
+	double rarityWeightCommon = 1000.0;     // Common
+	double rarityWeightRare = 300.0;        // Rare
+	double rarityWeightEpic = 100.0;        // Epic
+	double rarityWeightLegendary = 20.0;    // Legendary
 	DiscreteDistribution distribution{ // レアリティごとの出現確率
 	{
 		1000, // Common
@@ -78,7 +82,11 @@ struct Status
 		ShopDiceCount(3),
 		ShopCategoryCount(3),
 		ShopArtifactCount(3),
-		distribution({ 1000, 300, 100, 20 })
+		rarityWeightCommon(1000.0),
+		rarityWeightRare(300.0),
+		rarityWeightEpic(100.0),
+		rarityWeightLegendary(20.0),
+		distribution({ rarityWeightCommon, rarityWeightRare, rarityWeightEpic, rarityWeightLegendary })
 	{
 	};
 
@@ -98,16 +106,14 @@ struct Status
 		availableDices = Dice::AllDice;
 		availableCategories = Categories::AllCategories;
 		availableArtifacts = Items::AllItems;
-		availableArtifacts = Items::AllItems;
 		ShopDiceCount = 3;
 		ShopCategoryCount = 3;
 		ShopArtifactCount = 3;
-		distribution = DiscreteDistribution({
-			1000, // Common
-			300,  // Rare
-			100,  // Epic
-			20    // Legendary
-			});
+		rarityWeightCommon = 1000.0;
+		rarityWeightRare = 300.0;
+		rarityWeightEpic = 100.0;
+		rarityWeightLegendary = 20.0;
+		updateDistribution();
 	}
 
 	void beginTurn()
@@ -124,6 +130,16 @@ struct Status
 		beginTurn();
 	}
 
+	/// @brief レアリティの出現確率分布を更新する
+	void updateDistribution()
+	{
+		distribution = DiscreteDistribution({
+			rarityWeightCommon,
+			rarityWeightRare,
+			rarityWeightEpic,
+			rarityWeightLegendary
+		});
+	}
 };
 
 inline void addGold(Status& s, int32 amount)

@@ -2,15 +2,19 @@
 #include <Siv3D.hpp>
 #include "ItemBase.hpp"
 #include "Rarity.hpp"
+
+// 前方宣言
+struct Category;
+struct Die;
+
 enum class ActivationTiming
 {
 	OnPurchase,      // 購入時
-	OnGameStart,     // ゲーム開始時
 	OnTurnStart,     // ターン開始時
 	OnTurnEnd,       // ターン終了時
 	OnDiceRoll,      // サイコロを振る時
 	OnDiceResult,    // サイコロの結果確定時
-	OnGameEnd,       // ゲーム終了時
+	OnScorePreview,  // スコアプレビュー時（予想スコア計算時）
 };
 
 struct Artifact;
@@ -21,6 +25,8 @@ void addGold(Status& s, int32 amount);
 using ActivateFunc = std::function<void(Artifact&, ActivationTiming, Status&)>;
 using ConditionFunc = std::function<bool(const Artifact&, ActivationTiming, const Status&)>;
 using ItemDrawFunc = std::function<void(const Vec2&, const Artifact&)>;
+// スコア修正用の関数型
+using ScoreModifierFunc = std::function<int(int baseScore, const Category&, const Array<Die>&, const Status&)>;
 
 struct Artifact : ItemBase
 {
@@ -30,6 +36,7 @@ struct Artifact : ItemBase
 		return timing == self.timing;
 		};
 	ItemDrawFunc drawFunc = nullptr;
+	ScoreModifierFunc scoreModifier;  // 予想スコア計算用の修正関数
 
 	bool isActive = true; // アイテムが有効かどうか
 	Optional<int32> usageLimit = none; // 使用回数制限。noneの場合は無制限
@@ -128,38 +135,17 @@ namespace Items
 	}
 
 	/// @brief ラッキーチャーム
-	inline Artifact LuckyCharm()
-	{
-		Artifact item;
-		item.name = U"幸運のお守り";
-		item.rarity = Rarity::Epic;
-		item.cost = 80;
-		item.description = U"幸運を呼ぶお守り。ゲーム開始時にランダムでダイスの目を1つ+1する。";
-		item.textureKey = U"LuckyCharm";
-		item.timing = ActivationTiming::OnGameStart;
-		item.usageLimit = none; // 無制限
-
-		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
-			{
-				// ゲーム開始時の処理（ダイスの補正など）
-				// 実装はStatusの構造に依存
-			};
-
-		item.drawFunc = [](const Vec2& pos, const Artifact& self)
-			{
-				RoundRect{ pos, 60, 60, 5 }.draw(HSV(160, 0.5, 0.9));
-				SimpleGUI::GetFont()(U"🍀").drawAt(pos.x + 30, pos.y + 30);
-			};
-
-		return item;
-	}
+	inline Artifact LuckyCharm();
 
 	/// @brief 真・エース 
 	inline Artifact TrueOne();
 
+	inline Artifact Siso();
+
 	const Array<Artifact> AllItems = {
 		GoldPouch(),
 		LuckyCharm(),
-		TrueOne()
+		TrueOne(),
+		Siso()
 	};
 }
