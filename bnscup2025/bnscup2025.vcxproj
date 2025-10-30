@@ -340,6 +340,7 @@
     <ClInclude Include="DiceBox.hpp" />
     <ClInclude Include="Explanation.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Item.hpp" />
     <ClInclude Include="Merchandice.hpp" />
     <ClInclude Include="ItemBase.hpp" />
     <ClInclude Include="Rarity.hpp" />

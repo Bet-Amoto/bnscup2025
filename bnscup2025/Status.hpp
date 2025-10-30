@@ -2,6 +2,7 @@
 #include "Siv3D.hpp"
 #include "Category.hpp"
 #include "Die.hpp"
+#include "Item.hpp"
 #include "Rarity.hpp"
 /// @brief ノルマ
 struct Quota
@@ -11,11 +12,23 @@ struct Quota
 	int32 earned = 0;   // そのターンに稼いだスコア
 };
 
+/// @brief ゲーム統計情報
+struct GameStats
+{
+	int32 totalRerolls = 0;        // これまでの総リロール回数
+	int32 currentGameRerolls = 0;  // 現在のゲームでのリロール回数
+	int32 highScore = 0;           // ハイスコア
+	int32 gamesPlayed = 0;         // プレイしたゲーム数
+	int32 totalGoldEarned = 0;     // これまでに獲得した総ゴールド
+	Category* lastAchievedCategory = nullptr; // 最後に達成した役
+};
+
 struct Status
 {
 	Array<Die> dices;
 	Array<Category> upperCategories;
 	Array<Category> lowerCategories;
+	Array<Item> items;
 	int maxRolls = 3;
 	int upperSectionBonusThreshold = Categories::UpperSectionBonusThreshold;
 	int UpperSectionBonusScore = Categories::UpperSectionBonusScore;
@@ -24,6 +37,8 @@ struct Status
 	int32 selectionsLeft = 5;    // 残りの役選択回数
 	int32 gold = 0;				 // 所持金
 	Quota quota;				 // ノルマ
+	GameStats gameStats;     // ゲーム統計情報
+
 
 	Array<Die> availableDices; // ショップで購入可能なダイス
 	Array<Category> availableCategories; // ショップで購入可能なカテゴリ
@@ -46,6 +61,7 @@ struct Status
 		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() }),
 		upperCategories(Categories::UpperCategories),
 		lowerCategories(Categories::LowerCategories),
+		items(),
 		maxRolls(3),
 		upperSectionBonusThreshold(Categories::UpperSectionBonusThreshold),
 		UpperSectionBonusScore(Categories::UpperSectionBonusScore),
@@ -66,6 +82,7 @@ struct Status
 		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() };
 		upperCategories = Categories::UpperCategories;
 		lowerCategories = Categories::LowerCategories;
+		items.clear();
 		maxRolls = 3;
 		upperSectionBonusThreshold = Categories::UpperSectionBonusThreshold;
 		UpperSectionBonusScore = Categories::UpperSectionBonusScore;
