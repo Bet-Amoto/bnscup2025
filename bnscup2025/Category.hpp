@@ -470,7 +470,27 @@ namespace Categories
 		Eights(),
 		Nines(),
 	};
+
+	const Array<Category> DefaultUpperCategories{
+		Ones(),
+		Twos(),
+		Threes(),
+		Fours(),
+		Fives(),
+		Sixes(),
+	};
+
 	const Array<Category> LowerCategories{
+		ThreeCards(),
+		FourCards(),
+		FullHouse(),
+		SmallStraight(),
+		LargeStraight(),
+		Chance(),
+		Yatzy()
+	};
+
+	const Array<Category> DefaultLowerCategories{
 		ThreeCards(),
 		FourCards(),
 		FullHouse(),

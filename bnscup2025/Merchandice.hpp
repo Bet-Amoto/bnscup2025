@@ -23,4 +23,7 @@ private:
 	Vec2 m_pos;
 	RoundRect m_box;
 	bool m_soldOut = false;
+
+	void DrawGlyphs(const Font& font, const String& text, const double fontSize, const Vec2& center, const ColorF& color) const;
+	Vec2 GlyphsSize(const Font& font, const String& text, const double fontSize) const;
 };

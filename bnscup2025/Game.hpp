@@ -19,8 +19,8 @@ public:
 private:
 	DiceBox m_diceBox;
 	Array<CategoryBox> m_categoryBoxes;
-	const RectF m_rollButton{ 500, 600, 150, 60 };
-	const Rect ShopButtonRect = Rect{ 900,580,250,100 };
+	const RectF m_rollButton{ 890, 630, 150, 60 };
+	const Rect ShopButtonRect = Rect{ 1030,610,250,100 };
 
 	void rollAllDicesButton();
 	int UpperCategoriesScore() const;
@@ -28,4 +28,8 @@ private:
 	bool isBonus() const { return UpperCategoriesScore() > Categories::UpperSectionBonusThreshold; }
 	const int maxRolls;
 	int m_rollsLeft;
+
+	int m_lastScore = 0;
+	Stopwatch m_animScoreTimer;
+	void drawScore(const Vec2& center) const;
 };
