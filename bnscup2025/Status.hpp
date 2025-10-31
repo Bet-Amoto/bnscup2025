@@ -66,8 +66,8 @@ struct Status
 
 	Status()
 		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() }),
-		upperCategories(Categories::UpperCategories),
-		lowerCategories(Categories::LowerCategories),
+		upperCategories(Categories::DefaultUpperCategories),
+		lowerCategories(Categories::DefaultLowerCategories),
 		artifacts(),
 		maxRolls(3),
 		upperSectionBonusThreshold(Categories::UpperSectionBonusThreshold),
@@ -93,8 +93,8 @@ struct Status
 	void init()
 	{
 		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() };
-		upperCategories = Categories::UpperCategories;
-		lowerCategories = Categories::LowerCategories;
+		upperCategories = Categories::DefaultUpperCategories;
+		lowerCategories = Categories::DefaultLowerCategories;
 		artifacts.clear();
 		maxRolls = 3;
 		upperSectionBonusThreshold = Categories::UpperSectionBonusThreshold;

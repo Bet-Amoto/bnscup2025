@@ -14,6 +14,7 @@ enum class ActivationTiming
 	OnTurnEnd,       // ターン終了時
 	OnDiceRoll,      // サイコロを振る時
 	OnDiceResult,    // サイコロの結果確定時
+	OnShopRoll,		 // ショップの更新時
 	OnScorePreview,  // スコアプレビュー時（予想スコア計算時）
 };
 
@@ -127,8 +128,8 @@ namespace Items
 
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
-				RoundRect{ pos, 60, 60, 5 }.draw(HSV(54, 0.77, 0.9));
-				SimpleGUI::GetFont()(U"💰").drawAt(pos.x + 30, pos.y + 30);
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(54, 0.77, 0.9));
+				SimpleGUI::GetFont()(U"💰").drawAt(pos.x, pos.y);
 			};
 
 		return item;
@@ -140,12 +141,28 @@ namespace Items
 	/// @brief 真・エース 
 	inline Artifact TrueOne();
 
+	/// @brief シソ 
 	inline Artifact Siso();
+
+	/// @brief アイテム入荷
+	inline Artifact ArtifactExpander();
+
+	/// @brief ダイス入荷
+	inline Artifact DieExpander();
+
+	/// @brief カテゴリ入荷
+	inline Artifact CategoryExpander();
+
+	inline Artifact AddDie();
 
 	const Array<Artifact> AllItems = {
 		GoldPouch(),
 		LuckyCharm(),
 		TrueOne(),
-		Siso()
+		Siso(),
+		ArtifactExpander(),
+		DieExpander(),
+		CategoryExpander(),
+		AddDie()
 	};
 }
