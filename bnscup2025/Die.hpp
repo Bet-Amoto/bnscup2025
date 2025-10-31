@@ -33,6 +33,10 @@ struct Die : ItemBase
 	bool canUnlock = true;
 	bool locked = false;
 
+	Optional<int> displayValue = none;
+	bool isSpinning = false;
+	Stopwatch flickSw{ StartImmediately::No };
+
 	String itemType() const override { return U"ダイス"; }
 
 	bool apply(Status& s) override { return true; }
@@ -50,6 +54,34 @@ struct Die : ItemBase
 		if (die.faces.isEmpty())die.value = 1;
 		else die.value = die.faces.sorted().front();
 		drawFunc(pos, die);
+	}
+
+	void beginSpin()
+	{
+		if (locked) return;
+		isSpinning = true;
+		flickSw.restart();
+		displayValue = faces.isEmpty() ? Random(1, 6) : faces.choice();
+	}
+
+	void updateSpin()
+	{
+		if (!isSpinning || locked) return;
+		if (flickSw.sF() >= 0.05)
+		{
+			displayValue = faces.isEmpty() ? Random(1, 6) : faces.choice();
+			flickSw.restart();
+		}
+	}
+
+	void stopSpin(Array<Die>& dices, Status& status)
+	{
+		if (locked) return;
+		isSpinning = false;
+		flickSw.reset();
+		value = rollFunc(*this, dices);
+		displayValue = value;
+		if (afterSelfFunc) afterSelfFunc(*this, dices, status);
 	}
 
 	void roll(Array<Die>& dices, Status& status)
@@ -97,7 +129,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		return d;
@@ -122,7 +154,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -153,7 +185,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -190,7 +222,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -220,7 +252,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -257,7 +289,7 @@ namespace Dice{
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -287,7 +319,7 @@ namespace Dice{
 				Circle faceCircle(centerPos, 30);
 				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceCircle.drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
 			};
 
 		return d;
@@ -312,7 +344,7 @@ namespace Dice{
 				Circle faceCircle(centerPos, 30);
 				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceCircle.drawFrame(1, ColorF{ 0 });
-				if (self.value)FontAsset(U"Bold")(Format(self.value.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
 			};
 
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)

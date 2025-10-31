@@ -22,7 +22,7 @@ Game::Game(const InitData& init)
 void Game::update()
 {
 	rollAllDicesButton();
-	m_diceBox.update();
+	m_diceBox.update(getData().status);
 	if(m_diceBox.getClickedDie())
 	{
 		m_diceBox.getClickedDie()->locked = !m_diceBox.getClickedDie()->locked || !m_diceBox.getClickedDie()->canUnlock;
@@ -95,7 +95,7 @@ void Game::draw() const
 
 void Game::rollAllDicesButton()
 {
-	if (m_rollButton.leftClicked() && m_rollsLeft > 0)
+	if (m_rollButton.leftClicked() && m_rollsLeft > 0 && !m_diceBox.isRolling())
 	{
 		m_diceBox.roll(getData().status);
 		m_rollsLeft--;

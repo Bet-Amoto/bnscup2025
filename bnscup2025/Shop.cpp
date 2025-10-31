@@ -27,7 +27,7 @@ void Shop::update()
 		const auto item = m_holdedItem->getItem();
 		if(item && item->itemType() == U"ダイス")
 		{
-			m_diceBox.update();
+			m_diceBox.update(getData().status);
 			const auto clickedDie = m_diceBox.getClickedDie();
 			if (clickedDie)
 			{

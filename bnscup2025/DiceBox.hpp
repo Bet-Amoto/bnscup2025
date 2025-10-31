@@ -10,7 +10,7 @@ public:
 	void roll(Status& status);
 	void draw() const;
 	void draw(const Rect& drawArea) const;
-	void update();
+	void update(Status& status);
 	Die* getClickedDie() const { return m_clickedDie; }
 	void clear()
 	{
@@ -18,6 +18,7 @@ public:
 			die.clear();
 		}
 	}
+	bool isRolling() { return m_isRolling; }
 private:
 	Vec2 m_position;
 	Die* m_clickedDie;
@@ -25,4 +26,10 @@ private:
 	Array<Die>& m_dice;
 	const double faceSize = 60;
 	bool m_locked = false;
+
+	bool m_isRolling = false;
+	Stopwatch m_rollSw{ StartImmediately::No };
+	Array<double> m_stopAt;	//各ダイスの停止予定時刻
+	double m_step = 0.18;	//各ダイスのロール停止間隔
+	double m_startStopping = 0.50;	//回し始めてから最初が止まるまでの時間
 };
