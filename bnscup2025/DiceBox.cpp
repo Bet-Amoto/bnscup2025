@@ -1,7 +1,7 @@
 ﻿#include "DiceBox.hpp"
 
-DiceBox::DiceBox(const Vec2& position, Array<Die>& dice)
-	: m_position(position), m_dice(dice), m_clickedDie(nullptr)
+DiceBox::DiceBox(const Vec2& centerPos, Array<Die>& dice)
+	: m_position(centerPos), m_dice(dice), m_clickedDie(nullptr)
 {
 }
 
@@ -46,18 +46,20 @@ void DiceBox::roll(Status& status)
 
 void DiceBox::draw() const
 {
+	const double basePosX = m_position.x - m_dice.size() * (faceSize + 10) / 2;
 	for (size_t i = 0; i < m_dice.size(); ++i)
 	{
-		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		m_dice[i].draw(box.center());
 	}
 }
 
 void DiceBox::draw(const Rect& drawArea) const
 {
+	const double basePosX = m_position.x - m_dice.size() * (faceSize + 10) / 2;
 	for (size_t i = 0; i < m_dice.size(); ++i)
 	{
-		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		m_dice[i].draw(box.center());
 	}
 }
@@ -66,9 +68,10 @@ void DiceBox::update(Status& status)
 {
 	m_clickedDie = nullptr;
 	m_hoveredDie = nullptr;
+	const double basePosX = m_position.x - m_dice.size() * (faceSize + 10) / 2;
 	for (const auto i : step(m_dice.size()))
 	{
-		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+		const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		if (box.leftClicked() && !m_isRolling)
 		{
 			m_clickedDie = &m_dice[i];
