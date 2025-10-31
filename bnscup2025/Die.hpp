@@ -92,6 +92,7 @@ struct Die : ItemBase
 		{
 			afterSelfFunc(*this, dices, status);
 		}
+		displayValue = value;
 	}
 	void clear()
 	{
