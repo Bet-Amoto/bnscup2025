@@ -151,6 +151,12 @@
     <Filter Include="Header Files\Shop">
       <UniqueIdentifier>{ba2c6d9a-af32-479d-b890-0446d32e6994}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameOver">
+      <UniqueIdentifier>{72318209-6661-4871-bab0-def0f6adbc77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Item">
+      <UniqueIdentifier>{3957a624-43e3-45df-a0b4-25564777306a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -181,6 +187,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -863,32 +872,35 @@
     <ClInclude Include="Common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Category.hpp">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Die.hpp">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="DiceBox.hpp">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Shop.hpp">
       <Filter>Header Files\Shop</Filter>
     </ClInclude>
+    <ClInclude Include="GameOver.hpp">
+      <Filter>Header Files\GameOver</Filter>
+    </ClInclude>
     <ClInclude Include="Item.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Explanation.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Merchandice.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemBase.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Category.hpp">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Die.hpp">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Explanation.hpp">
+      <Filter>Header Files\Item</Filter>
     </ClInclude>
     <ClInclude Include="Rarity.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Merchandice.hpp">
+      <Filter>Header Files\Shop</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

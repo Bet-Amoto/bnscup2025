@@ -4,6 +4,7 @@
 # include "Shop.hpp"
 # include "Rarity.hpp"
 # include "Explanation.hpp"
+# include "GameOver.hpp"
 
 void Main()
 {
@@ -21,6 +22,7 @@ void Main()
 	manager.add<Title>(State::Title);
 	manager.add<Game>(State::Game);
 	manager.add<Shop>(State::Shop);
+	manager.add<GameOver>(State::GameOver);
 
 	manager.init(State::Shop);
 	while (System::Update())
