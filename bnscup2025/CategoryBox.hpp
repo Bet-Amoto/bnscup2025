@@ -13,10 +13,11 @@ public:
 	CategoryBox(const Vec2& position, Category& category);
 	void draw(const Array<Die>& dices, const Status& status) const;
 	bool isClicked() const;
+	bool mouseOver() const;
 	void setScore(int score) { category->score = score; }
 	Optional<int> getScore() const { return category->score; }
 	int getProvisionalScore(const Array<Die>& dices, const Status& status) const;
-	const Category& getCategory() const { return *category; } // ★ constバージョンを追加
+	const Category& getCategory() const { return *category; }
 	void reset() { category->score = none; }
 
 	Category* category;

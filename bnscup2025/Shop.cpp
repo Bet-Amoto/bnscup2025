@@ -115,7 +115,7 @@ void Shop::update()
 void Shop::draw() const
 {
 	FontAsset(U"Bold")(U"ショップ").drawAt(Scene::CenterF().x, 50, ColorF{ 0.1 });
-	FontAsset(U"Bold")(U"所持: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"所持金: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });
 	for (const auto& merch : m_merchandises)
 	{
 		merch.draw();

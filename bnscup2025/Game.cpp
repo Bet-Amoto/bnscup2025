@@ -29,6 +29,9 @@ void Game::update()
 
 	}
 	for (auto& box : m_categoryBoxes) {
+		if (box.mouseOver()) {
+			GetExplanation().setItem(box.category);
+		}
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
 			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);

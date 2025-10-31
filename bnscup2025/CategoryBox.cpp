@@ -29,6 +29,11 @@ bool CategoryBox::isClicked() const
 	return m_scoreRect.leftClicked();
 }
 
+bool CategoryBox::mouseOver() const
+{
+	return m_boxRect.mouseOver();
+}
+
 int CategoryBox::getProvisionalScore(const Array<Die>& dices, const Status& status) const {
 	// 基本スコアを計算
 	int baseScore = category->calculateScore(dices);
