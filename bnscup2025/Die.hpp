@@ -2,6 +2,7 @@
 #include <Siv3D.hpp>
 #include "Rarity.hpp"
 #include "ItemBase.hpp"
+#include "Effect.hpp"
 
 struct Die;
 struct Status;
@@ -18,6 +19,7 @@ enum class RollOrder {
 using RollFunc = std::function<int(const Die&, const Array<Die>&)>;
 using DrawFunc = std::function<void(const Vec2&, const Die)>;
 using AfterRollFunc = std::function<void(Die&, Array<Die>&, Status&)>;
+using AddAfterEffectFunc = std::function<void(Die&, const Vec2&, Effect& effect)>;
 
 struct Die : ItemBase
 {
@@ -29,9 +31,13 @@ struct Die : ItemBase
 	DrawFunc drawFunc;
 	AfterRollFunc afterSelfFunc = nullptr;
 	AfterRollFunc afterAllFunc = nullptr;
+	AddAfterEffectFunc afterSelfEffect = nullptr;
+	double selfEffectDur = 0.0;
+	double allEffectDur = 0.0;
 
 	bool canUnlock = true;
 	bool locked = false;
+	bool playAfterSelf = false;
 
 	Optional<int> displayValue = none;
 	bool isSpinning = false;
@@ -53,6 +59,7 @@ struct Die : ItemBase
 		die.value = 1;
 		if (die.faces.isEmpty())die.value = 1;
 		else die.value = die.faces.sorted().front();
+		die.displayValue = die.value;
 		drawFunc(pos, die);
 	}
 
@@ -62,6 +69,7 @@ struct Die : ItemBase
 		isSpinning = true;
 		flickSw.restart();
 		displayValue = faces.isEmpty() ? Random(1, 6) : faces.choice();
+		playAfterSelf = false;
 	}
 
 	void updateSpin()
@@ -81,7 +89,8 @@ struct Die : ItemBase
 		flickSw.reset();
 		value = rollFunc(*this, dices);
 		displayValue = value;
-		if (afterSelfFunc) afterSelfFunc(*this, dices, status);
+		// afterSelfFuncはDiceBoxのスケジューラが行う
+		// if (afterSelfFunc) afterSelfFunc(*this, dices, status);
 	}
 
 	void roll(Array<Die>& dices, Status& status)
@@ -199,6 +208,7 @@ namespace Dice{
 				}
 
 				if (self.value && !self.locked) self.value.value() += heartNum / 2;
+				self.displayValue = self.value;
 			};
 
 		return d;
@@ -296,6 +306,12 @@ namespace Dice{
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
 			{
 				if (self.value) addGold(status, self.value.value());
+			};
+
+		d.selfEffectDur = 0.5;
+		d.afterSelfEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<GoldPopEffect>(pos, self.value.value(), self.selfEffectDur);
 			};
 
 		return d;

@@ -30,6 +30,11 @@ private:
 	bool m_isRolling = false;
 	Stopwatch m_rollSw{ StartImmediately::No };
 	Array<double> m_stopAt;	//各ダイスの停止予定時刻
-	double m_step = 0.18;	//各ダイスのロール停止間隔
+	double m_step = 0.25;	//各ダイスのロール停止間隔
 	double m_startStopping = 0.50;	//回し始めてから最初が止まるまでの時間
+
+	mutable Effect m_effect;
+
+	Array<double> m_startSelfAt;
+	double m_endSelfEffect = 0.0;
 };

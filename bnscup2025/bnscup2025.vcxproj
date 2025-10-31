@@ -340,6 +340,7 @@
     <ClInclude Include="Common.hpp" />
     <ClInclude Include="Die.hpp" />
     <ClInclude Include="DiceBox.hpp" />
+    <ClInclude Include="Effect.hpp" />
     <ClInclude Include="Explanation.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameOver.hpp" />

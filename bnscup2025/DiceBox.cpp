@@ -20,17 +20,22 @@ void DiceBox::roll(Status& status)
 	m_rollSw.restart();
 	m_stopAt.clear();
 	m_stopAt.resize(m_dice.size(), -1.0);
+	m_startSelfAt.clear();
+	m_startSelfAt.resize(m_dice.size(), -1.0);
 
 	for (auto& die : dice)
 	{
 		if (!die->locked) die->beginSpin();
 	}
 
-	for (size_t i = 0; i < m_dice.size(); i++)
+	m_stopAt[0] = m_startStopping;
+	m_startSelfAt[0] = m_startStopping + m_step;
+	for (size_t i = 0; i < m_dice.size() - 1; i++)
 	{
-		if (m_dice[i].locked) continue;
-		m_stopAt[i] = m_startStopping + i * m_step;
+		m_stopAt[i + 1] = m_stopAt[i] + m_step + m_dice[i].selfEffectDur;
+		m_startSelfAt[i + 1] = m_stopAt[i + 1] + m_step;
 	}
+	m_endSelfEffect = m_startSelfAt.back() + m_dice.back().selfEffectDur;
 
 	//for (auto* die : dice) {
 	//	die->roll(m_dice, status);
@@ -51,6 +56,7 @@ void DiceBox::draw() const
 		const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 		m_dice[i].draw(box.center());
 	}
+	m_effect.update();
 }
 
 void DiceBox::draw(const Rect& drawArea) const
@@ -95,12 +101,32 @@ void DiceBox::update(Status& status)
 		if (m_rollSw.sF() >= m_stopAt[i] && m_dice[i].isSpinning)
 		{
 			m_dice[i].stopSpin(m_dice, status);
+			const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+			m_effect.add<StopDiceEffect>(box.center());
 			m_stopAt[i] = -1.0;
 		}
 		allStopped &= (!m_dice[i].isSpinning);
 	}
 
-	if (allStopped)
+	for (size_t i = 0; i < m_dice.size(); i++)
+	{
+		if (m_startSelfAt[i] >= 0.0 && m_rollSw.sF() >= m_startSelfAt[i] && !m_dice[i].playAfterSelf)
+		{
+			if (m_dice[i].afterSelfFunc)
+			{
+				m_dice[i].afterSelfFunc(m_dice[i], m_dice, status);
+			}
+			if (m_dice[i].afterSelfEffect)
+			{
+				const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+				m_dice[i].afterSelfEffect(m_dice[i], box.center(), m_effect);
+			}
+			m_dice[i].playAfterSelf = true;
+			m_startSelfAt[i] = -1.0;
+		}
+	}
+
+	if (allStopped && m_rollSw.sF() >= m_endSelfEffect)
 	{
 		for (auto& die : m_dice)
 		{
