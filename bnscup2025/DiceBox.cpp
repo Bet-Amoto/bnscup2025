@@ -104,7 +104,7 @@ void DiceBox::update(Status& status)
 		if (m_rollSw.sF() >= m_stopAt[i] && m_dice[i].isSpinning)
 		{
 			m_dice[i].stopSpin(m_dice, status);
-			const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+			const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 			m_effect.add<StopDiceEffect>(box.center());
 			m_stopAt[i] = -1.0;
 		}
@@ -121,7 +121,7 @@ void DiceBox::update(Status& status)
 			}
 			if (m_dice[i].afterSelfEffect)
 			{
-				const RectF box{ m_position.x + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+				const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
 				m_dice[i].afterSelfEffect(m_dice[i], box.center(), m_effect);
 			}
 			m_dice[i].playAfterSelf = true;
