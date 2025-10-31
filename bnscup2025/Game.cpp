@@ -4,19 +4,20 @@ Game::Game(const InitData& init)
 	: IScene{ init },
 	maxRolls{ getData().status.maxRolls },
 	m_rollsLeft{ getData().status.maxRolls },
-	m_diceBox{ Vec2{250, 600}, getData().status.dices }
+	m_diceBox{ Vec2{640, 630}, getData().status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
 	for (int i : step(getData().status.upperCategories.size())) {
-		m_categoryBoxes << CategoryBox{ Vec2{ 50, 50 + i * 60 }, getData().status.upperCategories[i]};
+		m_categoryBoxes << CategoryBox{ Vec2{ 290, 100 + i * 60 }, getData().status.upperCategories[i]};
 	}
 	for (int i : step(getData().status.lowerCategories.size())) {
-		m_categoryBoxes << CategoryBox{ Vec2{ 400, 50 + i * 60 }, getData().status.lowerCategories[i] };
+		m_categoryBoxes << CategoryBox{ Vec2{ 640, 100 + i * 60 }, getData().status.lowerCategories[i] };
 	}
 	for (auto& cateBox : m_categoryBoxes) {
 		cateBox.reset();
 	}
 	m_diceBox.clear();
+	m_animScoreTimer.start();
 }
 
 void Game::update()
@@ -35,6 +36,8 @@ void Game::update()
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
 			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
+			m_lastScore = getData().status.quota.earned;
+			m_animScoreTimer.restart();
 			getData().status.quota.earned += prov;
 			getData().status.selectionsLeft -= 1;
 			getData().status.gameStats.lastAchievedCategory = box.category;
@@ -87,11 +90,12 @@ void Game::draw() const
 		category.draw(getData().status.dices, getData().status);
 	}
 	m_diceBox.draw();
-	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 55, 410, ColorF{ 0.1 });
+	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 285, 460, ColorF{ 0.1 });
 	if (isBonus()) {
-		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 190, 410, ColorF{ 1.0,1.0,0.0 });
+		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 415, 460, ColorF{ 1.0,1.0,0.0 });
 	}
-	FontAsset(U"Bold")(U"スコア　{}"_fmt(totalScore())).drawAt(Scene::CenterF().x, 22, ColorF{ 0.1 });
+
+	drawScore(Vec2{Scene::Center().x, 40});
 
 	FontAsset(U"Regular")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(24, 20, 500, ColorF{0.1});
 	FontAsset(U"Regular")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(24, 20, 530, ColorF{ 0.1 });
@@ -139,4 +143,11 @@ int Game::totalScore() const {
 	}
 
 	return score;
+}
+
+void Game::drawScore(const Vec2& center) const {
+	const double t = Min(1.0, EaseOutCubic(m_animScoreTimer.sF()));
+	const int score = totalScore() * t + m_lastScore * (1.0 - t);
+	const double fontSize = 48;
+	FontAsset(U"Bold")(U"スコア　{}"_fmt(score)).drawAt(fontSize, center, ColorF{ 0.1 });
 }
