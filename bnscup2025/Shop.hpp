@@ -36,4 +36,5 @@ private:
 	void categorySelectDraw() const;
 	void reroll();
 	void clearSelect();
+	Vec2 calcMerchPos(int itemCount);
 };

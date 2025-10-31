@@ -44,9 +44,9 @@ struct Status
 	Array<Die> availableDices; // ショップで購入可能なダイス
 	Array<Category> availableCategories; // ショップで購入可能な役
 	Array<Artifact> availableArtifacts; // ショップで購入可能なアイテム
-	int ShopDiceCount = 3;	// ショップで表示するダイスの数
-	int ShopCategoryCount = 3;	// ショップで表示するカテゴリの数
-	int ShopArtifactCount = 3;
+	int ShopDiceCount = 2;	// ショップで表示するダイスの数
+	int ShopCategoryCount = 2;	// ショップで表示するカテゴリの数
+	int ShopArtifactCount = 2;
 	int ShopRerollPrice = 50;          // 現在のリロール価格
 	int ShopRerollPriceIncrease = 50;  // リロールごとの値上げ幅
 	int ShopRerollBasePrice = 50;      // リロールの初期価格（リセット用）
@@ -79,9 +79,9 @@ struct Status
 		availableDices(Dice::AllDice),
 		availableCategories(Categories::AllCategories),
 		availableArtifacts(Items::AllItems),
-		ShopDiceCount(3),
-		ShopCategoryCount(3),
-		ShopArtifactCount(3),
+		ShopDiceCount(2),
+		ShopCategoryCount(2),
+		ShopArtifactCount(2),
 		rarityWeightCommon(1000.0),
 		rarityWeightRare(300.0),
 		rarityWeightEpic(100.0),
@@ -106,9 +106,9 @@ struct Status
 		availableDices = Dice::AllDice;
 		availableCategories = Categories::AllCategories;
 		availableArtifacts = Items::AllItems;
-		ShopDiceCount = 3;
-		ShopCategoryCount = 3;
-		ShopArtifactCount = 3;
+		ShopDiceCount = 2;
+		ShopCategoryCount = 2;
+		ShopArtifactCount = 2;
 		rarityWeightCommon = 1000.0;
 		rarityWeightRare = 300.0;
 		rarityWeightEpic = 100.0;

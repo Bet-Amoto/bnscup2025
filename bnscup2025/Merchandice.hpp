@@ -8,7 +8,7 @@ class Merchandise
 public:
 	Merchandise() = default;
 	Merchandise(std::shared_ptr<ItemBase> item,const Vec2& pos)
-		: m_item(item), m_pos(pos), m_box(pos.x - 70, pos.y - 100, 140, 200, 10)
+		: m_item(item), m_pos(pos), m_box(pos.x - 70, pos.y - 90, 140, 180, 10)
 	{
 	}
 	std::shared_ptr<ItemBase> getItem() const { return m_item; }
