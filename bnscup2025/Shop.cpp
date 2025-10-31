@@ -3,7 +3,7 @@
 Shop::Shop(const InitData& init)
 	: IScene{ init },
 	m_status{ getData().status },
-	m_diceBox{ Vec2{ 100, 300 }, m_status.dices }
+	m_diceBox{ Vec2{ 400, 300 }, m_status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.9, 0.9, 0.8 });
 	reroll();
@@ -55,6 +55,10 @@ void Shop::update()
 				}
 				m_holdedItem = nullptr;
 			}
+
+			if (Rect{ 370,120,60,60 }.mouseOver()) {
+				GetExplanation().setItem(item.get());
+			}
 			
 		}
 		else if(item && item->itemType() == U"役")
@@ -66,6 +70,10 @@ void Shop::update()
 				m_holdedItem->setSoldOut(true);
 				m_holdedItem = nullptr;
 				clearSelect();
+			}
+
+			if (FontAsset(U"Category")(item->name).regionAt(Vec2{400, 100}).mouseOver()) {
+				GetExplanation().setItem(item.get());
 			}
 		}
 
@@ -126,6 +134,7 @@ void Shop::draw() const
 	FontAsset(U"Bold")(U"更新").drawAt(28, RerollButtonRect.center().movedBy(0,-50), ColorF{0.1});
 	FontAsset(U"Bold")(U"{}G"_fmt(m_status.ShopRerollPrice)).drawAt(32, RerollButtonRect.center(), ColorF{0.1});
 	FontAsset(U"Bold")(U"次のターンへ").drawAt(40, NextTurnButtonRect.center(), ColorF{ 0.1 });
+
 	if (m_holdedItem) {
 		const Transformer2D t{ Mat3x2::Identity(), Mat3x2::Translate(240,60) };
 
@@ -141,10 +150,14 @@ void Shop::draw() const
 			const auto item = m_holdedItem->getItem();
 			if (item && item->itemType() == U"ダイス")
 			{
+				FontAsset(U"Bold")(U"入れ替えるダイスを選択").drawAt(32, Vec2{ 400, 40 }, ColorF{ 0.1 });
+				item->drawIcon(Vec2{ 400, 150 });
 				m_diceBox.draw(viewportRect.stretched(-10));
 			}
 			if(item && item->itemType() == U"役")
 			{
+				FontAsset(U"Bold")(U"入れ替える役を選択").drawAt(32, Vec2{ 400, 40 }, ColorF{ 0.1 });
+				FontAsset(U"Category")(item->name).drawAt(28, Vec2{ 400, 100 }, ColorF{ 0.1 });
 				categorySelectDraw();
 			}
 			GetExplanation().draw(Cursor::PosF(), viewportRect.stretched(-10));
@@ -248,7 +261,7 @@ void Shop::categorySelect() {
 	if (holdedCategory.type == CategoryType::Lower)
 	{
 		for (int i : step(m_status.lowerCategories.size())) {
-			const Rect selectBox = Rect(150, 100 + i * (categorySelectRectSize.y), categorySelectRectSize.x, categorySelectRectSize.y);
+			const Rect selectBox = Rect(150, 150 + i * (categorySelectRectSize.y), categorySelectRectSize.x, categorySelectRectSize.y);
 			if (selectBox.mouseOver()) {
 				GetExplanation().setItem(&m_status.lowerCategories[i]);
 			}
@@ -260,7 +273,7 @@ void Shop::categorySelect() {
 	else
 	{
 		for (int i : step(m_status.upperCategories.size())) {
-			const Rect selectBox = Rect(150, 100 + i * (categorySelectRectSize.y), categorySelectRectSize.x, categorySelectRectSize.y);
+			const Rect selectBox = Rect(150, 150 + i * (categorySelectRectSize.y), categorySelectRectSize.x, categorySelectRectSize.y);
 			if (selectBox.mouseOver()) {
 				GetExplanation().setItem(&m_status.upperCategories[i]);
 			}
@@ -279,15 +292,15 @@ void Shop::categorySelectDraw() const {
 	const Array<Category>& categorys = (holdedCategory.type == CategoryType::Lower)
 		? m_status.lowerCategories
 		: m_status.upperCategories;
-
+	const double BasePosY = 150;
 	for (int i : step(categorys.size())) {
-		FontAsset(U"Category")(categorys[i].name).draw(28, 180, 100 + i * (categorySelectRectSize.y), ColorF{ 0.1 });
-		Circle(165, 100 + i * (categorySelectRectSize.y) + categorySelectRectSize.y / 2, 8).drawFrame(2, ColorF{ 0 });
+		FontAsset(U"Category")(categorys[i].name).draw(28, 180, BasePosY + i * (categorySelectRectSize.y), ColorF{ 0.1 });
+		Circle(165, BasePosY + i * (categorySelectRectSize.y) + categorySelectRectSize.y / 2, 8).drawFrame(2, ColorF{ 0 });
 		if (selectedCategory == &categorys[i]) {
-			const double x = FontAsset(U"Category")(categorys[i].name).region(28, 180, 100 + i * (categorySelectRectSize.y)).rightX();
-			const double y = 100 + i * (categorySelectRectSize.y) + categorySelectRectSize.y / 2;
+			const double x = FontAsset(U"Category")(categorys[i].name).region(28, 180, BasePosY + i * (categorySelectRectSize.y)).rightX();
+			const double y = BasePosY + i * (categorySelectRectSize.y) + categorySelectRectSize.y / 2;
 			Shape2D::Arrow(Vec2{ x + 10,y }, Vec2{ x + 60, y }, 12, Vec2{ 17,20 }).draw(ColorF{ 1.0,0.1,0.1 });
-			FontAsset(U"Category")(holdedCategory.name).draw(28, x + 70, 100 + i * (categorySelectRectSize.y), ColorF{ 1.0,0.1,0.1 });
+			FontAsset(U"Category")(holdedCategory.name).draw(28, x + 70, BasePosY + i * (categorySelectRectSize.y), ColorF{ 1.0,0.1,0.1 });
 			Circle(165, y, 5).draw(ColorF{ 1.0,0.1,0.1 });
 		}
 	}

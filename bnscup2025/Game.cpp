@@ -4,7 +4,7 @@ Game::Game(const InitData& init)
 	: IScene{ init },
 	maxRolls{ getData().status.maxRolls },
 	m_rollsLeft{ getData().status.maxRolls },
-	m_diceBox{ Vec2{100, 600}, getData().status.dices }
+	m_diceBox{ Vec2{250, 600}, getData().status.dices }
 {
 	Scene::SetBackground(ColorF{ 0.7,0.7,1.0 });
 	for (int i : step(getData().status.upperCategories.size())) {
