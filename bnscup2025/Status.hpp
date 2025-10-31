@@ -65,7 +65,7 @@ struct Status
 	} };
 
 	Status()
-		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() }),
+		: dices({ Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::GoldDie() }),
 		upperCategories(Categories::DefaultUpperCategories),
 		lowerCategories(Categories::DefaultLowerCategories),
 		artifacts(),
@@ -92,7 +92,7 @@ struct Status
 
 	void init()
 	{
-		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::QuakeDie() };
+		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::GoldDie() };
 		upperCategories = Categories::DefaultUpperCategories;
 		lowerCategories = Categories::DefaultLowerCategories;
 		artifacts.clear();

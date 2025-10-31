@@ -308,7 +308,7 @@ namespace Dice{
 				if (self.value) addGold(status, self.value.value());
 			};
 
-		d.selfEffectDur = 0.5;
+		d.selfEffectDur = 0.35;
 		d.afterSelfEffect = [](Die& self, const Vec2& pos, Effect& effect)
 			{
 				effect.add<GoldPopEffect>(pos, self.value.value(), self.selfEffectDur);
