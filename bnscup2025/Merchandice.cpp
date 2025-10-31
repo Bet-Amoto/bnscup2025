@@ -15,7 +15,7 @@ void Merchandise::draw() const
 	
 	if (m_item)
 	{
-		m_item->drawIcon(m_pos.movedBy(0,-40));
+		m_item->drawIcon(m_pos.movedBy(0,-30));
 		DrawGlyphs(FontAsset(U"Bold"), m_item->name, 24, Vec2{ m_pos.x, m_pos.y + 30 }, ColorF{ 0.1 });
 		//FontAsset(U"Bold")(m_item->name).drawAt(24, m_pos.x, m_pos.y + 10, ColorF{ 0.1 });
 		FontAsset(U"Regular")(Format(m_item->cost) + U"G").drawAt(24, m_pos.x, m_pos.y + 70, ColorF{ 0.1 });
