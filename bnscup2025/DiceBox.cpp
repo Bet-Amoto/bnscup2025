@@ -104,7 +104,7 @@ void DiceBox::update(Status& status)
 	{
 		for (auto& die : m_dice)
 		{
-			if (die.afterAllFunc) die.afterAllFunc(die, m_dice, status);
+			if (die.afterAllFunc && !die.locked) die.afterAllFunc(die, m_dice, status);
 		}
 		m_isRolling = false;
 		m_rollSw.reset();
