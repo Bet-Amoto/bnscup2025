@@ -29,12 +29,14 @@ void Explanation::draw(Vec2 position, const Rect& drawArea) const
 {
 	if (m_t < m_startTime || !m_item) return;
 
-	constexpr int padding = 10;
+	constexpr int padding = 5;
 	const Vec2 NameGlyphsSize = GlyphsSize(FontAsset(U"Regular"), m_item->name, 20.0);
 	const Vec2 DescriptionGlyphsSize = GlyphsSize(FontAsset(U"Regular"), m_item->description, 16.0);
+	const Vec2 rollGlyphsSize = GlyphsSize(FontAsset(U"Regular"), U"#{}"_fmt(m_item->itemType()), 16.0);
 	const Vec2 size = DescriptionGlyphsSize
 		+ Vec2{ 0, NameGlyphsSize.y }
-		+ Vec2{ padding * 2, padding * 3 + 20 };
+		+ Vec2{ 0, rollGlyphsSize.y }
+		+ Vec2{ padding * 2, padding * 3 + 5 };
 
 	position.y = Min(position.y, drawArea.h - size.y);
 	position.x = Min(position.x, drawArea.w - size.x);
@@ -42,7 +44,13 @@ void Explanation::draw(Vec2 position, const Rect& drawArea) const
 	box.rounded(5).draw(ColorF{ 1.0, 0.97, 0.6 }).drawFrame(2, ColorF{ 0.1 });
 	DrawGlyphs(FontAsset(U"Regular"), m_item->name, 20, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
 	position.y += NameGlyphsSize.y + padding;
-	DrawGlyphs(FontAsset(U"Regular"), m_item->description, 16, Vec2{ position.x + padding, position.y + padding }, ColorF{ 0.0 });
+	DrawGlyphs(FontAsset(U"Regular"), U"#{}"_fmt(m_item->itemType()), 16.0, Vec2{ position.x + padding, position.y }, ColorF{ 0.0,0.1,0.4 });
+	if (m_item->isUnique) {
+		DrawGlyphs(FontAsset(U"Regular"), U"#ユニーク", 16.0, Vec2{ position.x + rollGlyphsSize.x + padding*3, position.y }, ColorF{ 0.95,0.15,0.15 });
+
+	}
+	position.y += rollGlyphsSize.y;
+	DrawGlyphs(FontAsset(U"Regular"), m_item->description, 16, Vec2{ position.x + padding, position.y }, ColorF{ 0.0 });
 }
 
 void Explanation::draw(Vec2 position) const {
