@@ -163,7 +163,19 @@ void Shop::reroll() {
 	for (const auto i : step(m_status.ShopDiceCount))
 	{
 		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
-		const Array<Die> filteredDices = m_status.availableDices.filter([&](const Die& d) { return d.rarity == rarity; });
+		const Array<Die> filteredDices = m_status.availableDices.filter([&](const Die& item) {
+			if (item.rarity != rarity) return false;
+
+			if (!item.isUnique) return true;
+			for (const auto& owned : m_status.artifacts)
+			{
+				if (owned.name == item.name)
+				{
+					return false;
+				}
+			}
+			return true;
+		});
 		if (not filteredDices.empty())
 		{
 			const Die dice = filteredDices.choice();
@@ -174,7 +186,19 @@ void Shop::reroll() {
 	for (const auto i : step(m_status.ShopCategoryCount))
 	{
 		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
-		const Array<Category> filteredCategories = m_status.availableCategories.filter([&](const Category& c) { return c.rarity == rarity; });
+		const Array<Category> filteredCategories = m_status.availableCategories.filter([&](const Category& item) {
+			if (item.rarity != rarity) return false;
+
+			if (!item.isUnique) return true;
+			for (const auto& owned : m_status.artifacts)
+			{
+				if (owned.name == item.name)
+				{
+					return false;
+				}
+			}
+			return true;
+		});
 		if (not filteredCategories.empty())
 		{
 			const Category category = filteredCategories.choice();
@@ -184,7 +208,22 @@ void Shop::reroll() {
 	}
 	for (const auto i : step(m_status.ShopArtifactCount)) {
 		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
-		const Array<Artifact> filteredItems = m_status.availableArtifacts.filter([&](const Artifact& c) { return c.rarity == rarity; });
+		
+		// ユニークアイテムを所持している場合は除外する
+		const Array<Artifact> filteredItems = m_status.availableArtifacts.filter([&](const Artifact& item){
+			if (item.rarity != rarity) return false;
+			
+			if (!item.isUnique) return true;
+			for (const auto& owned : m_status.artifacts)
+			{
+				if (owned.name == item.name)
+				{
+					return false;
+				}
+			}
+			return true;
+		});
+		
 		if (not filteredItems.empty())
 		{
 			const Artifact item = filteredItems.choice();

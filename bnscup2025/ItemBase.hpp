@@ -11,7 +11,7 @@ struct ItemBase
 	int32 cost = 0;
 	String description = U"";
 	String textureKey = U"";
-
+	bool isUnique = false;
 	virtual ~ItemBase() = default;
 
 	// 種類(カテゴリー、ダイスなど)

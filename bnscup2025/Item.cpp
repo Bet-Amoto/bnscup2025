@@ -1,4 +1,5 @@
 ﻿#include "Item.hpp"
+#include "ItemBase.hpp"
 #include "Status.hpp"
 namespace Items
 {
@@ -9,6 +10,8 @@ namespace Items
 		item.rarity = Rarity::Legendary;
 		item.cost = 500;
 		item.description = U"エースの役のスコアが10倍になる";
+		item.textureKey = U"TrueOne";
+		item.isUnique = true; // ユニークアイテムとして設定
 		item.timing = ActivationTiming::OnDiceResult;
 		item.usageLimit = none;
 

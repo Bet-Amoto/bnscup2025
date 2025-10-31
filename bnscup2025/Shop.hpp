@@ -1,6 +1,7 @@
 ﻿# pragma once
 #include "Common.hpp"
 #include "Status.hpp"
+#include "ItemBase.hpp"
 #include "DiceBox.hpp"
 #include "Merchandice.hpp"
 #include "Explanation.hpp"
