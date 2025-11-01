@@ -119,6 +119,8 @@ struct Status
 
 	void beginTurn()
 	{
+		quota.turn += 1;
+		quota.target *= 1.1;
 		selectionsLeft = selectionsPerTurn;
 		quota.earned = 0;
 	}
@@ -126,9 +128,6 @@ struct Status
 	void endTurn()
 	{
 		addGold(*this, quota.earned);
-		quota.turn += 1;
-		quota.target *= 1.1;
-		beginTurn();
 	}
 
 	/// @brief レアリティの出現確率分布を更新する

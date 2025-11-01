@@ -19,21 +19,39 @@ Game::Game(const InitData& init)
 	m_diceBox.clear();
 	m_animScoreTimer.start();
 	getData().status.gameStats.lastGoldEarned = 0;
+	getData().status.beginTurn();
 }
 
 void Game::update()
 {
+	if (m_isGameOver && !m_viewBoard)
+	{
+		if (ViewBoardButtonRect.leftClicked()) m_viewBoard = true;
+		if (TitleButtonRect.leftClicked()) changeScene(State::Title);
+		return;
+	}
+
 	rollAllDicesButton();
 	m_diceBox.update(getData().status);
+	for (auto& box : m_categoryBoxes) {
+		if (box.mouseOver()) {
+			GetExplanation().setItem(box.category);
+		}
+	}
+
+	if (m_isGameOver && m_viewBoard)
+	{
+		if (m_viewBoard && MouseL.down()) m_viewBoard = false;
+		return;
+	}
+
 	if(m_diceBox.getClickedDie())
 	{
 		m_diceBox.getClickedDie()->locked = !m_diceBox.getClickedDie()->locked || !m_diceBox.getClickedDie()->canUnlock;
 
 	}
+
 	for (auto& box : m_categoryBoxes) {
-		if (box.mouseOver()) {
-			GetExplanation().setItem(box.category);
-		}
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
 			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
@@ -61,6 +79,12 @@ void Game::update()
 			}
 		}
 		m_rollsLeft = 0;
+		getData().status.endTurn();
+
+		if (totalScore() < getData().status.quota.target) {
+			m_isGameOver = true;
+		}
+
 	}
 
 	if (getData().status.selectionsLeft <= 0 && KeyR.down()) {
@@ -113,6 +137,7 @@ void Game::draw() const
 	}
 
 	GetExplanation().draw(Cursor::PosF());
+	if(m_isGameOver && !m_viewBoard) drawGameOver();
 }
 
 void Game::rollAllDicesButton()
@@ -155,4 +180,17 @@ void Game::drawScore(const Vec2& center) const {
 	const int score = totalScore() * t + m_lastScore * (1.0 - t);
 	const double fontSize = 48;
 	FontAsset(U"Bold")(U"スコア　{}"_fmt(score)).drawAt(fontSize, center, ColorF{ 0.1 });
+}
+
+void Game::drawGameOver() const {
+	Rect{ 0, 0, Scene::Size() }.draw( ColorF{0.0, 0.98} );
+	FontAsset(U"Bold")(U"ゲームオーバー").drawAt(60, Scene::Center().x, 100, ColorF{1.0, 0.2, 0.2});
+	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).drawAt(40, Scene::Center().x, 180, ColorF{0.9});
+	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(40, Scene::Center().x, 220, ColorF{0.9});
+	TitleButtonRect.rounded(10).draw(ColorF{ 0.9 }).drawFrame(3, ColorF{0.1});
+	FontAsset(U"Bold")(U"タイトルへ"_fmt(getData().status.quota.earned)).drawAt(40, TitleButtonRect.center(), ColorF{0.1});
+
+	ViewBoardButtonRect.rounded(10).draw(ColorF{ 0.9 }).drawFrame(3, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"盤面を見る"_fmt(getData().status.quota.earned)).drawAt(40, ViewBoardButtonRect.center(), ColorF{ 0.1 });
+
 }

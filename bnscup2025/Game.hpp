@@ -32,4 +32,13 @@ private:
 	int m_lastScore = 0;
 	Stopwatch m_animScoreTimer;
 	void drawScore(const Vec2& center) const;
+
+	bool m_isGameOver = false;
+	bool m_viewBoard = false;
+	void drawGameOver() const;
+	Stopwatch m_gameOverAnimTimer;
+	const Rect TitleButtonRect = Rect{ Scene::Center().x + 100,500,250,100};
+	const Rect ViewBoardButtonRect = Rect{ Scene::Center().x - 350, 500, 250, 100};
+
+
 };
