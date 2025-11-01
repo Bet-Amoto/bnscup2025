@@ -113,6 +113,8 @@ void Shop::update()
 	if (NextTurnButtonRect.leftClicked()) {
 
 		getData().status.beginTurn();
+		getData().fromState = State::Shop;
+		getData().toState = State::Game;
 		changeScene(State::Game);
 	}
 }
@@ -309,4 +311,16 @@ void Shop::clearSelect() {
 	{
 		die.locked = false;
 	}
+}
+
+void Shop::drawFadeIn(double t) const
+{
+	draw();
+	getData().rec.drawFadeOut(1 - t);
+}
+
+void Shop::drawFadeOut(double t) const
+{
+	draw();
+	getData().rec.drawFadeOut(t);
 }

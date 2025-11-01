@@ -12,6 +12,10 @@ public:
 
 	void draw() const override;
 
+	void drawFadeIn(double t) const override;
+
+	void drawFadeOut(double t) const override;
+
 private:
 
 	RoundRect m_startButton{ Arg::center(Scene::Center().x, 400), 300, 60, 8 };

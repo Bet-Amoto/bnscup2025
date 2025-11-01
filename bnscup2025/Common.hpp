@@ -1,6 +1,7 @@
 ﻿# pragma once
 # include <Siv3D.hpp>
-#include "Status.hpp"
+# include "Status.hpp"
+# include "transition.hpp"
 // シーンのステート
 enum class State
 {
@@ -18,6 +19,14 @@ struct GameData
 
 	// ハイスコア
 	Array<int32> highScores = { 10, 8, 6, 4, 2 };
+
+	SplitCircle sc{ Scene::Size() };
+
+	RectSlide rec{ Scene::Size() };
+
+	State fromState = State::Title;
+
+	State toState = State::Title;
 
 	Status status;
 };

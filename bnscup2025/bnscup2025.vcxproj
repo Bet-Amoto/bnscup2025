@@ -353,6 +353,7 @@
     <ClInclude Include="Status.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Title.hpp" />
+    <ClInclude Include="Transition.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

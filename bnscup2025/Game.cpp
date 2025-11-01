@@ -28,13 +28,21 @@ void Game::update()
 	if (m_isGameOver && !m_viewBoard)
 	{
 		if (ViewBoardButtonRect.leftClicked()) m_viewBoard = true;
-		if (TitleButtonRect.leftClicked()) changeScene(State::Title);
+		if (TitleButtonRect.leftClicked()) {
+			getData().fromState = State::Game;
+			getData().toState = State::Title;
+			changeScene(State::Title);
+		}
 		return;
 	}
 
 	if (m_isTurnEnd)
 	{
-		if (MouseL.down()) changeScene(State::Shop);
+		if (MouseL.down()) {
+			getData().fromState = State::Game;
+			getData().toState = State::Shop;
+			changeScene(State::Shop);
+		}
 		return;
 	}
 
@@ -212,4 +220,18 @@ void Game::drawTurnEnd() const {
 	FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
 
 	FontAsset(U"Regular")(U"クリックでショップへ行く").drawAt(24, BGRect.centerX(), 600, ColorF{ 0.1 });
+}
+
+void Game::drawFadeIn(double t) const
+{
+	draw();
+	if(getData().fromState == State::Title) getData().sc.drawTransitionIn(t);
+	else if(getData().fromState == State::Shop) getData().rec.drawFadeIn(t);
+}
+
+void Game::drawFadeOut(double t) const
+{
+	draw();
+	if(getData().toState == State::Title) getData().sc.drawTransitionOut(t);
+	else if (getData().toState == State::Shop) getData().rec.drawFadeIn(1 - t);
 }

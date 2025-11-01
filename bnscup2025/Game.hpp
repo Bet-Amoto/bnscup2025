@@ -16,6 +16,10 @@ public:
 
 	void draw() const override;
 
+	void drawFadeIn(double t) const override;
+
+	void drawFadeOut(double t) const override;
+
 private:
 	DiceBox m_diceBox;
 	Array<CategoryBox> m_categoryBoxes;
@@ -43,5 +47,7 @@ private:
 	void drawTurnEnd() const;
 	const Rect BGRect = Rect{ Arg::center(Scene::Center()), 550, 650 };
 	int startedGold = 0;
+
+	State nextScene = State::Title;
 	
 };

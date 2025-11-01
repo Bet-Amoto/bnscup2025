@@ -23,6 +23,7 @@ void Title::update()
 	if (m_startButton.leftClicked()) // ゲームへ
 	{
 		getData().status.init();
+		getData().sc.init();
 		changeScene(State::Game);
 	}
 	else if (m_exitButton.leftClicked()) // 終了
@@ -48,4 +49,18 @@ void Title::draw() const
 		boldFont(U"PLAY").drawAt(36, m_startButton.center(), ColorF{ 0.1 });
 		boldFont(U"EXIT").drawAt(36, m_exitButton.center(), ColorF{ 0.1 });
 	}
+}
+
+void Title::drawFadeIn(double t) const
+{
+	draw();
+	getData().fromState = State::Title;
+	getData().toState = State::Game;
+	getData().sc.drawTransitionIn(t);
+}
+
+void Title::drawFadeOut(double t) const
+{
+	draw();
+	getData().sc.drawTransitionOut(t);
 }
