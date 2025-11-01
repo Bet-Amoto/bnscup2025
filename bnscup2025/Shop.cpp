@@ -11,15 +11,10 @@ Shop::Shop(const InitData& init)
 	for (auto& die : m_status.dices) {
 		die.setMinVal();
 	}
-	m_status.gold = 10000;
 }
 
 void Shop::update()
 {
-	if (KeySpace.down())
-	{
-		changeScene(State::Game);
-	}
 
 	if(m_holdedItem)
 	{
@@ -116,6 +111,8 @@ void Shop::update()
 		reroll();
 	}
 	if (NextTurnButtonRect.leftClicked()) {
+
+		getData().status.beginTurn();
 		changeScene(State::Game);
 	}
 }

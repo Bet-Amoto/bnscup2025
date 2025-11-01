@@ -22,9 +22,8 @@ void Main()
 	manager.add<Title>(State::Title);
 	manager.add<Game>(State::Game);
 	manager.add<Shop>(State::Shop);
-	manager.add<GameOver>(State::GameOver);
 
-	manager.init(State::Shop);
+	manager.init(State::Title);
 	while (System::Update())
 	{
 		GetExplanation().update(Cursor::PosF());

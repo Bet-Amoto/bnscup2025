@@ -19,7 +19,6 @@ Game::Game(const InitData& init)
 	m_diceBox.clear();
 	m_animScoreTimer.start();
 	getData().status.gameStats.lastGoldEarned = 0;
-	getData().status.beginTurn();
 
 	startedGold = getData().status.gold;
 }
@@ -186,7 +185,7 @@ void Game::drawGameOver() const {
 void Game::drawTurnEnd() const {
 	Rect{ 0, 0, Scene::Size() }.draw(ColorF{ 0.0, 0.7 });
 	BGRect.rounded(10).draw(ColorF{ 1.0 }).drawFrame(4, ColorF{0.3, 0.15, 0.02});
-	FontAsset(U"Bold")(U"ターン{} クリア！"_fmt(getData().status.quota.turn)).drawAt( BGRect.centerX(), 70 , ColorF{0.1});
+	FontAsset(U"Bold")(U"ターン{} クリア！"_fmt(getData().status.quota.turn)).drawAt( BGRect.centerX(), 80 , ColorF{0.1});
 	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(36,  BGRect.centerX(), 140 , ColorF{0.1});
 
 	double y = 250;
@@ -212,5 +211,5 @@ void Game::drawTurnEnd() const {
 	FontAsset(U"Bold")(U"現在の所持金").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
 
-	FontAsset(U"Regular")(U"クリックでショップへ行く").drawAt(20, BGRect.centerX(), 580, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"クリックでショップへ行く").drawAt(24, BGRect.centerX(), 600, ColorF{ 0.1 });
 }
