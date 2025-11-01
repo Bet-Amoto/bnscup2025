@@ -25,6 +25,10 @@ struct GameStats
 	Array<Die> lastAchievedDices; // 最後に達成した役のダイス
 };
 
+struct Status;
+inline void addGold(Status& s, int32 amount);
+inline int32 calcScoreToGold(Status& s, int32 score);
+
 struct Status
 {
 	Array<Die> dices;
@@ -127,7 +131,7 @@ struct Status
 
 	void endTurn()
 	{
-		addGold(*this, quota.earned);
+		gold += calcScoreToGold(*this, quota.earned);
 	}
 
 	/// @brief レアリティの出現確率分布を更新する
@@ -146,4 +150,8 @@ inline void addGold(Status& s, int32 amount)
 {
 	s.gold += amount;
 	s.gameStats.lastGoldEarned += amount;
+}
+
+inline int32 calcScoreToGold(Status& s, int32 score) {
+	return score;
 }

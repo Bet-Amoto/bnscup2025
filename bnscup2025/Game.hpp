@@ -20,7 +20,6 @@ private:
 	DiceBox m_diceBox;
 	Array<CategoryBox> m_categoryBoxes;
 	const RectF m_rollButton{ 890, 630, 150, 60 };
-	const Rect ShopButtonRect = Rect{ 1030,610,250,100 };
 
 	void rollAllDicesButton();
 	int UpperCategoriesScore() const;
@@ -41,5 +40,8 @@ private:
 	const Rect ViewBoardButtonRect = Rect{ Scene::Center().x - 350, 500, 250, 100};
 
 	bool m_isTurnEnd = false;
+	void drawTurnEnd() const;
+	const Rect BGRect = Rect{ Arg::center(Scene::Center()), 550, 650 };
+	int startedGold = 0;
 	
 };
