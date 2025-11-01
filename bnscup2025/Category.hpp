@@ -209,16 +209,25 @@ namespace Categories
 		cat.name = U"ヤッツィー";
 		cat.rarity = Rarity::Epic;
 		cat.cost = 400;
-		cat.description = U"全てのダイスの目が同じなら50点。";
+		cat.description = U"5つ以上のダイスの目が同じなら50点。";
 		cat.textureKey = U"Yatzy";
 
 		cat.type = CategoryType::Lower;
 		cat.calculateScore = [](const Array<Die>& dices) -> int
 			{
-				const auto firstValue = dices[0].value;
-				if (not firstValue) return 0;
-				bool allSame = dices.all([firstValue](const Die& d) { return d.value == firstValue; });
-				return allSame ? 50 : 0;
+				HashTable<int, int> counts;
+				for (const auto& dice : dices)
+				{
+					const auto value = dice.value;
+					if (not value) return 0;
+					counts[value.value()]++;
+				}
+
+				for (const auto& count : counts)
+				{
+					if (count.second >= 5) return 50;
+				}
+				return 0;
 			};
 
 		return cat;
@@ -331,7 +340,15 @@ namespace Categories
 				bool hasTwo = false;
 				for (const auto& count : counts)
 				{
-					if (count.second == 3) hasThree = true;
+					if (count.second >= 5) {
+						hasThree = true;
+						hasTwo = true;
+						break;
+					}
+					if (count.second >= 3) {
+						if (hasThree) hasTwo = true;
+						else hasThree = true;
+					}
 					else if (count.second == 2) hasTwo = true;
 				}
 
