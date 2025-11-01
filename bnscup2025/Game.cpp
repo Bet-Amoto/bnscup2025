@@ -36,6 +36,10 @@ void Game::update()
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
 			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
+			if (box.getCategory().onSelected)
+			{
+				box.getCategory().onSelected(getData().status.dices, getData().status);
+			}
 			m_lastScore = getData().status.quota.earned;
 			m_animScoreTimer.restart();
 			getData().status.quota.earned += prov;

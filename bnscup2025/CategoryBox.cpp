@@ -10,7 +10,7 @@ CategoryBox::CategoryBox(const Vec2& position, Category& category)
 {
 }
 
-void CategoryBox::draw(const Array<Die>& dices, const Status& status) const
+void CategoryBox::draw(const Array<Die>& dices, Status& status) const
 {
 	m_boxRect.draw(ColorF{ 1.0 }).drawFrame(1, ColorF{ 0 });
 	m_scoreRect.rounded(5).draw(category->score ? ColorF{ 0.7 } : ColorF{ 1.0 }).drawFrame(3, ColorF{ 0.1 });
@@ -34,9 +34,11 @@ bool CategoryBox::mouseOver() const
 	return m_boxRect.mouseOver();
 }
 
-int CategoryBox::getProvisionalScore(const Array<Die>& dices, const Status& status) const {
+int CategoryBox::getProvisionalScore(const Array<Die>& dices, Status& status) const {
 	// 基本スコアを計算
-	int baseScore = category->calculateScore(dices);
+	int baseScore = (category->calculateScoreWS)
+		? category->calculateScoreWS(dices, status)
+		: category->calculateScore(dices);
 	
 	// アイテムの効果を適用したスコアを計算
 	int modifiedScore = baseScore;

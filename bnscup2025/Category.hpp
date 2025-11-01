@@ -3,7 +3,13 @@
 #include "Die.hpp"
 #include "ItemBase.hpp"
 
+struct Status;
+
 using scoreFunc = std::function<int(const Array<Die>&)>;
+
+using scoreFuncWithStatus = std::function<int(const Array<Die>&, Status&)>;
+
+using onSelectedFunc = std::function<void(const Array<Die>&, Status&)>;
 
 enum class CategoryType
 {
@@ -15,6 +21,8 @@ struct Category : ItemBase
 {
 	CategoryType type = CategoryType::Upper;
 	scoreFunc calculateScore;
+	scoreFuncWithStatus calculateScoreWS = nullptr;
+	onSelectedFunc onSelected = nullptr;
 	Optional<int> score = none;
 	String itemType() const override { return U"役"; }
 
@@ -441,6 +449,35 @@ namespace Categories
 		return cat;
 	}
 
+	inline Category Hearts()
+	{
+		Category cat;
+		cat.name = U"一心同体";
+		cat.rarity = Rarity::Epic;
+		cat.cost = 250;
+		cat.description = U"心ダイスの出た目の合計点数が得点となる。";
+		cat.textureKey = U"Hearts";
+
+		cat.type = CategoryType::Lower;
+		cat.calculateScore = [](const Array<Die>& dices) -> int
+			{
+				int sum = 0;
+				for (const auto& dice : dices)
+				{
+					const auto value = dice.value;
+					if (not value) return 0;
+					if (dice.name == U"心ダイス") sum += value.value();
+				}
+				return sum;
+			};
+
+		return cat;
+	}
+
+	inline Category Exchange();  // 等価交換
+
+	inline Category CashOut();  // 換金（スコア0でゴールド獲得）
+
 	const Array<Category> AllCategories{
 		Ones(),
 		Twos(),
@@ -457,7 +494,10 @@ namespace Categories
 		SmallStraight(),
 		LargeStraight(),
 		Chance(),
-		Yatzy()
+		Yatzy(),
+		Hearts(),
+		Exchange(),
+		CashOut(),
 	};
 	const Array<Category> UpperCategories{
 		Ones(),
@@ -487,12 +527,15 @@ namespace Categories
 		SmallStraight(),
 		LargeStraight(),
 		Chance(),
-		Yatzy()
+		Yatzy(),
+		Hearts(),
+		Exchange(),
+		CashOut(),
 	};
 
 	const Array<Category> DefaultLowerCategories{
-		ThreeCards(),
-		FourCards(),
+		Exchange(),
+		CashOut(),
 		FullHouse(),
 		SmallStraight(),
 		LargeStraight(),

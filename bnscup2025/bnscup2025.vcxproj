@@ -116,6 +116,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Category.cpp" />
     <ClCompile Include="CategoryBox.cpp" />
     <ClCompile Include="DiceBox.cpp" />
     <ClCompile Include="Explantion.cpp" />
