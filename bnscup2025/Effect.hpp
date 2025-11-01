@@ -29,19 +29,18 @@ struct QuakeEffect : IEffect
 {
 	Vec2 m_pos;
 	double m_dur = 0.25;
-	double m_amp = 4.0; //揺れ幅
 
-	QuakeEffect(const Vec2& _pos, double _dur = 0.25, double _amp = 4.0)
+	QuakeEffect(const Vec2& _pos, double _dur = 0.25)
 		: m_pos(_pos),
-		m_dur(_dur),
-		m_amp(_amp) { }
+		m_dur(_dur) { }
 
 	bool update(double t) override
 	{
 		double k = t / m_dur;
-		double s = Sin(t * 50.0) * (1.0 - k);
+		double e = EaseOutExpo(k);
+		double a = 1.0 - e;
 
-		RectF(m_pos.x - 30 + s * m_amp, m_pos.y - 30, 60, 60).draw(ColorF(1, 1, 1, 0.08));
+		Circle(m_pos, e * 300).drawFrame(a * 5, HSV(16, 0.3, 0.54));
 
 		return (t < m_dur);
 	}

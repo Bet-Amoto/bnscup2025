@@ -32,12 +32,14 @@ struct Die : ItemBase
 	AfterRollFunc afterSelfFunc = nullptr;
 	AfterRollFunc afterAllFunc = nullptr;
 	AddAfterEffectFunc afterSelfEffect = nullptr;
+	AddAfterEffectFunc afterAllEffect = nullptr;
 	double selfEffectDur = 0.0;
 	double allEffectDur = 0.0;
 
 	bool canUnlock = true;
 	bool locked = false;
 	bool playAfterSelf = false;
+	bool playAfterAll = false;
 
 	Optional<int> displayValue = none;
 	bool isSpinning = false;
@@ -70,6 +72,7 @@ struct Die : ItemBase
 		flickSw.restart();
 		displayValue = faces.isEmpty() ? Random(1, 6) : faces.choice();
 		playAfterSelf = false;
+		playAfterAll = false;
 	}
 
 	void updateSpin()
@@ -278,6 +281,12 @@ namespace Dice{
 					t.roll(dices, status);
 				}
 			};
+		d.allEffectDur = 0.35;
+		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<QuakeEffect>(pos, self.allEffectDur);
+			};
+
 
 		return d;
 	}
@@ -368,6 +377,51 @@ namespace Dice{
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
 			{
 				if (self.value) addGold(status, self.value.value());
+			};
+		d.selfEffectDur = 0.35;
+		d.afterSelfEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<GoldPopEffect>(pos, self.value.value(), self.selfEffectDur);
+			};
+
+		return d;
+	}
+
+	inline Die GodDie()
+	{
+		Die d;
+		d.name = U"神ダイス";
+		d.rarity = Rarity::Legendary;
+		d.cost = 1000;
+		d.description = U"神が作り出したダイス。全てのダイスの出目を2倍にする。";
+		d.textureKey = U"GodDice";
+		d.isUnique = true;
+
+		d.faces = Array<int>{ 6, 6, 6 };
+		d.value = none;
+		d.order = RollOrder::PRIMARY;
+		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
+		d.drawFunc = [](const Vec2& centerPos, const Die self)
+			{
+				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				Circle faceCircle(centerPos, 30);
+				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
+				faceCircle.drawFrame(1, ColorF{ 0 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+			};
+
+		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
+			{
+				for (auto& die : dices)
+				{
+					if (die.value) die.value.value() *= 2;
+					die.displayValue = die.value;
+				}
+			};
+		d.allEffectDur = 0.45;
+		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<GoldPopEffect>(pos, self.value.value(), self.selfEffectDur);
 			};
 
 		return d;

@@ -22,6 +22,8 @@ void DiceBox::roll(Status& status)
 	m_stopAt.resize(m_dice.size(), -1.0);
 	m_startSelfAt.clear();
 	m_startSelfAt.resize(m_dice.size(), -1.0);
+	m_startAllAt.clear();
+	m_startAllAt.resize(m_dice.size(), -1.0);
 
 	for (auto& die : dice)
 	{
@@ -36,6 +38,13 @@ void DiceBox::roll(Status& status)
 		m_startSelfAt[i + 1] = m_stopAt[i + 1] + m_step;
 	}
 	m_endSelfEffect = m_startSelfAt.back() + m_dice.back().selfEffectDur;
+
+	m_startAllAt[0] = m_endSelfEffect;
+	for (size_t i = 0; i < m_dice.size() - 1; i++)
+	{
+		m_startAllAt[i + 1] = m_startAllAt[i] + m_dice[i].allEffectDur;
+	}
+	m_endAllEffect = m_startAllAt.back() + m_dice.back().allEffectDur;
 
 	//for (auto* die : dice) {
 	//	die->roll(m_dice, status);
@@ -113,7 +122,8 @@ void DiceBox::update(Status& status)
 
 	for (size_t i = 0; i < m_dice.size(); i++)
 	{
-		if (m_startSelfAt[i] >= 0.0 && m_rollSw.sF() >= m_startSelfAt[i] && !m_dice[i].playAfterSelf)
+		if (m_startSelfAt[i] >= 0.0 && m_rollSw.sF() >= m_startSelfAt[i] && !m_dice[i].playAfterSelf
+			&& !m_dice[i].locked)
 		{
 			if (m_dice[i].afterSelfFunc)
 			{
@@ -131,10 +141,28 @@ void DiceBox::update(Status& status)
 
 	if (allStopped && m_rollSw.sF() >= m_endSelfEffect)
 	{
-		for (auto& die : m_dice)
+		for (size_t i = 0; i < m_dice.size(); i++)
 		{
-			if (die.afterAllFunc && !die.locked) die.afterAllFunc(die, m_dice, status);
+			if (m_startAllAt[i] >= 0.0 && m_rollSw.sF() >= m_startAllAt[i] && !m_dice[i].playAfterAll
+				&& !m_dice[i].locked)
+			{
+				if (m_dice[i].afterAllFunc)
+				{
+					m_dice[i].afterAllFunc(m_dice[i], m_dice, status);
+				}
+				if (m_dice[i].afterAllEffect)
+				{
+					const RectF box{ basePosX + i * (faceSize + 10), m_position.y, faceSize, faceSize };
+					m_dice[i].afterAllEffect(m_dice[i], box.center(), m_effect);
+				}
+				m_dice[i].playAfterAll = true;
+				m_startAllAt[i] = -1.0;
+			}
 		}
+	}
+
+	if (allStopped && m_rollSw.sF() >= m_endAllEffect)
+	{
 		m_isRolling = false;
 		m_rollSw.reset();
 	}

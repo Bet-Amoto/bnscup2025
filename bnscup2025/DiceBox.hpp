@@ -37,4 +37,6 @@ private:
 
 	Array<double> m_startSelfAt;
 	double m_endSelfEffect = 0.0;
+	Array<double> m_startAllAt;
+	double m_endAllEffect = 0.0;
 };
