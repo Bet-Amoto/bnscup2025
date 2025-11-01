@@ -39,7 +39,7 @@ Category Categories::CashOut()  // 換金（スコア0でゴールド獲得）
 	cat.onSelected = [](const Array<Die>& dices, Status& s) {
 		int sum = 0;
 		for (const auto& d : dices) if (d.value) sum += *d.value;
-		s.gold += (sum / 2);
+		addGold(s, sum / 2);
 		};
 	return cat;
 }
