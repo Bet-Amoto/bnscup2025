@@ -239,6 +239,7 @@ namespace Dice{
 		d.afterSelfFunc = [](Die& self, Array<Die>& dices, Status& status)
 			{
 				if (dices.front().value) self.value = dices.front().value;
+				self.displayValue = self.value;
 			};
 
 		return d;
