@@ -18,6 +18,7 @@ Game::Game(const InitData& init)
 	}
 	m_diceBox.clear();
 	m_animScoreTimer.start();
+	getData().status.gameStats.lastGoldEarned = 0;
 }
 
 void Game::update()
@@ -85,6 +86,13 @@ void Game::update()
 void Game::draw() const
 {
 	constexpr int spacing = 80;
+
+	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(32, 80, 10, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(32, 80, 45, ColorF{ 0.1 });
+	drawScore(Vec2{ Scene::Center().x, 35 });
+	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).drawAt(28, Scene::Center().x,78, ColorF{0.1});
+	FontAsset(U"Bold")(U"獲得G {}"_fmt(getData().status.gameStats.lastGoldEarned)).drawAt(32, 1000, 30, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"所持G {}"_fmt(getData().status.gold)).drawAt(32, 1000, 70, ColorF{ 0.1 });
 	m_diceBox.draw();
 
 	m_rollButton.draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 });
@@ -99,13 +107,6 @@ void Game::draw() const
 		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 415, 460, ColorF{ 1.0,1.0,0.0 });
 	}
 
-	drawScore(Vec2{Scene::Center().x, 40});
-
-	FontAsset(U"Regular")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(24, 20, 500, ColorF{0.1});
-	FontAsset(U"Regular")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(24, 20, 530, ColorF{ 0.1 });
-	FontAsset(U"Regular")(U"達成 {}"_fmt(getData().status.quota.earned)).draw(24, 160, 530, ColorF{ 0.1 });
-	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).draw(24, 300, 530, ColorF{ 0.1 });
-	FontAsset(U"Regular")(U"所持G {}"_fmt(getData().status.gold)).draw(24, 450, 530, ColorF{ 0.1 });
 
 	if (getData().status.selectionsLeft <= 0) {
 		FontAsset(U"Bold")(U"ショップへ").drawAt(40, ShopButtonRect.center(), ColorF{ 0.1 });

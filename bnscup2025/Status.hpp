@@ -20,6 +20,7 @@ struct GameStats
 	int32 highScore = 0;           // ハイスコア
 	int32 gamesPlayed = 0;         // プレイしたゲーム数
 	int32 totalGoldEarned = 0;     // これまでに獲得した総ゴールド
+	int32 lastGoldEarned = 0;
 	Category* lastAchievedCategory = nullptr; // 最後に達成した役
 	Array<Die> lastAchievedDices; // 最後に達成した役のダイス
 };
@@ -124,7 +125,7 @@ struct Status
 
 	void endTurn()
 	{
-		gold += quota.earned;
+		addGold(*this, quota.earned);
 		quota.turn += 1;
 		quota.target *= 1.1;
 		beginTurn();
@@ -145,4 +146,5 @@ struct Status
 inline void addGold(Status& s, int32 amount)
 {
 	s.gold += amount;
+	s.gameStats.lastGoldEarned += amount;
 }

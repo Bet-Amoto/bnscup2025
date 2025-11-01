@@ -18,7 +18,7 @@ Category Categories::Exchange()  // 等価交換
 	// Goldを1/3 消費
 	cat.onSelected = [](const Array<Die>&, Status& s) {
 		const int spent = s.gold / 3;
-		s.gold -= spent;
+		addGold(s, -spent);
 		};
 	return cat;
 }
