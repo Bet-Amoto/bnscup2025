@@ -72,7 +72,7 @@ void Game::update()
 		}
 	}
 
-	if (getData().status.selectionsLeft == 0) {
+	if (getData().status.selectionsLeft == 0 && !m_isTurnEnd && !m_isGameOver) {
 		for (auto& box : m_categoryBoxes) {
 			if (!box.getScore()) {
 				box.setScore(0);
@@ -83,6 +83,9 @@ void Game::update()
 
 		if (totalScore() < getData().status.quota.target) {
 			m_isGameOver = true;
+		}
+		else {
+			m_isTurnEnd = true;
 		}
 
 	}

@@ -40,5 +40,6 @@ private:
 	const Rect TitleButtonRect = Rect{ Scene::Center().x + 100,500,250,100};
 	const Rect ViewBoardButtonRect = Rect{ Scene::Center().x - 350, 500, 250, 100};
 
-
+	bool m_isTurnEnd = false;
+	
 };
