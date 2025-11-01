@@ -26,4 +26,7 @@ private:
 	RectF m_boxRect;
 	RectF m_nameRect;
 	RectF m_scoreRect;
+
+	void DrawGlyphs(const Font& font, const String& text, const double fontSize, const Vec2& center, const ColorF& color) const;
+	Vec2 GlyphsSize(const Font& font, const String& text, const double fontSize) const;
 };
