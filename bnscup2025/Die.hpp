@@ -213,6 +213,11 @@ namespace Dice{
 				if (self.value && !self.locked) self.value.value() += heartNum / 2;
 				self.displayValue = self.value;
 			};
+		d.allEffectDur = 0.35;
+		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<BuffEffect>(pos, self.allEffectDur);
+			};
 
 		return d;
 	}

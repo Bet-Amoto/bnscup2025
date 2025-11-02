@@ -68,3 +68,53 @@ struct StopDiceEffect : IEffect
 		return (t < m_dur);
 	}
 };
+
+
+struct BuffEffect : IEffect
+{
+	struct BuffIcon
+	{
+		Vec2 m_pos;
+		double offset;
+		HSV color;
+
+		BuffIcon(const Vec2& _pos, double _offset)
+			:m_pos{ _pos },
+			offset{ _offset },
+			color{ HSV(Random(240, 280), 1.0, 1.0) }
+		{
+
+		}
+
+		void update(double t)
+		{
+			double k = Max(t - offset, 0.0);
+			double e = EaseOutExpo(k);
+			double a = Max(Sin(e * Math::Pi), 0.0);
+			color.a = a;
+			FontAsset(U"icon")(U"\U000F013F").drawAt(m_pos.movedBy(0, e * -40 + 25), color);
+		}
+	};
+
+	Vec2 m_pos;
+	double m_dur = 0.35;
+	Array<BuffIcon> icons;
+
+	BuffEffect(const Vec2& pos, double _dur)
+		:m_pos{ pos },
+		m_dur{ _dur }
+	{
+		for (auto i : step(5))
+		{
+			icons << BuffIcon(m_pos + RandomVec2(30), i * 0.05);
+		}
+	}
+
+	bool update(double t) override
+	{
+		double k = t / m_dur;
+		for (auto& icon : icons) icon.update(k);
+		return (t < m_dur);
+	}
+
+};
