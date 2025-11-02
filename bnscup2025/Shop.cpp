@@ -80,7 +80,7 @@ void Shop::update()
 		return;
 	}
 
-	for(auto& merch : m_merchandises)
+	for(auto& merch : m_status.merchandises)
 	{
 		merch.update();
 		if (merch.isClicked() && !merch.isSoldOut())
@@ -123,7 +123,7 @@ void Shop::draw() const
 {
 	FontAsset(U"Bold")(U"ショップ").drawAt(Scene::CenterF().x, 50, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"所持金: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });
-	for (const auto& merch : m_merchandises)
+	for (const auto& merch : m_status.merchandises)
 	{
 		merch.draw();
 	}
@@ -171,7 +171,7 @@ void Shop::draw() const
 
 void Shop::reroll() {
 	int itemCount = 0;
-	m_merchandises.clear();
+	m_status.merchandises.clear();
 	
 	// リロール中に追加されたユニークアイテムの名前を追跡
 	HashSet<String> addedUniqueNames;
@@ -204,7 +204,7 @@ void Shop::reroll() {
 		if (not filteredDices.empty())
 		{
 			const Die dice = filteredDices.choice();
-			m_merchandises << Merchandise{ dice.clone(), calcMerchPos(itemCount)};
+			m_status.merchandises << Merchandise{ dice.clone(), calcMerchPos(itemCount)};
 			if (dice.isUnique)
 			{
 				addedUniqueNames.insert(dice.name);
@@ -247,7 +247,7 @@ void Shop::reroll() {
 		if (not filteredCategories.empty())
 		{
 			const Category category = filteredCategories.choice();
-			m_merchandises << Merchandise{ category.clone(),  calcMerchPos(itemCount) };
+			m_status.merchandises << Merchandise{ category.clone(),  calcMerchPos(itemCount) };
 			if (category.isUnique)
 			{
 				addedUniqueNames.insert(category.name);
@@ -285,7 +285,7 @@ void Shop::reroll() {
 		if (not filteredItems.empty())
 		{
 			const Artifact item = filteredItems.choice();
-			m_merchandises << Merchandise{ item.clone(),  calcMerchPos(itemCount) };
+			m_status.merchandises << Merchandise{ item.clone(),  calcMerchPos(itemCount) };
 			if (item.isUnique)
 			{
 				addedUniqueNames.insert(item.name);

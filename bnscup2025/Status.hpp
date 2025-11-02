@@ -4,6 +4,7 @@
 #include "Die.hpp"
 #include "Item.hpp"
 #include "Rarity.hpp"
+#include "Merchandice.hpp"
 /// @brief ノルマ
 struct Quota
 {
@@ -55,6 +56,7 @@ struct Status
 	int ShopRerollPrice = 50;          // 現在のリロール価格
 	int ShopRerollPriceIncrease = 50;  // リロールごとの値上げ幅
 	int ShopRerollBasePrice = 50;      // リロールの初期価格（リセット用）
+	Array<Merchandise> merchandises;  // 商品
 
 	// レアリティごとの出現確率
 	double rarityWeightCommon = 1000.0;     // Common

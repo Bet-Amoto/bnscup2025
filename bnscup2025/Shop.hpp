@@ -24,7 +24,6 @@ private:
 	Status& m_status = getData().status;
 	Array<Die> m_availableDices = m_status.availableDices;
 	Array<Category> m_availableCategories = m_status.availableCategories;
-	Array<Merchandise> m_merchandises;
 
 	const Rect RerollButtonRect = Rect{ 750,600,120,60 };
 	const Rect NextTurnButtonRect = Rect{ 900,580,250,100 };
