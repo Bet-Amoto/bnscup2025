@@ -6,6 +6,7 @@
 #include "Merchandice.hpp"
 #include "Explanation.hpp"
 #include "Item.hpp"
+#include "Background.hpp"
 
 class Shop : public App::Scene
 {
@@ -27,6 +28,9 @@ private:
 
 	const Rect RerollButtonRect = Rect{ 750,600,120,60 };
 	const Rect NextTurnButtonRect = Rect{ 900,580,250,100 };
+
+	RectF backRect;
+	HorizonGrid bg;
 
 	Merchandise* m_holdedItem = nullptr;
 	DiceBox m_diceBox;

@@ -5,16 +5,23 @@ Shop::Shop(const InitData& init)
 	m_status{ getData().status },
 	m_diceBox{ Vec2{ 400, 300 }, m_status.dices }
 {
-	Scene::SetBackground(ColorF{ 0.9, 0.9, 0.8 });
+	Scene::SetBackground(Color{ 16, 20, 50 });
 	reroll();
 	m_status.ShopRerollPrice = m_status.ShopRerollBasePrice;
 	for (auto& die : m_status.dices) {
 		die.setMinVal();
 	}
+
+	backRect.setCenter(Scene::CenterF().movedBy(-550, -350));
+	backRect.w = 1100;
+	backRect.h = 700;
+
+	bg = HorizonGrid(Scene::CenterF().y, 60, 15);
 }
 
 void Shop::update()
 {
+	bg.update();
 
 	if(m_holdedItem)
 	{
@@ -121,6 +128,10 @@ void Shop::update()
 
 void Shop::draw() const
 {
+	bg.draw();
+	backRect.draw(ColorF(0.9));
+	backRect.drawFrame(5, ColorF(0));
+
 	FontAsset(U"Bold")(U"ショップ").drawAt(Scene::CenterF().x, 50, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"所持金: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });
 	for (const auto& merch : m_status.merchandises)

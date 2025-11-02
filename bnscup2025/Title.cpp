@@ -36,15 +36,15 @@ void Title::draw() const
 {
 	Scene::SetBackground(ColorF{ 0.2, 0.8, 0.8 });
 
-	double t = Scene::Time() * 50;
+	double t = Scene::Time() * 25;
 
 	// 背景描画
-	for (int y : step(Scene::Height() / 5))
+	for (int y : step(Scene::Height() / 10))
 	{
-		for (int x : step(Scene::Width() / 5))
+		for (int x : step(Scene::Width() / 10))
 		{
-			double alpha = Max(0.0, noise.octave2D0_1(x / 100.0, (y + t) / 100.0, 4) - 0.5);
-			Circle{ x * 5, y * 5, 10 }.draw(ColorF(1 - alpha, alpha));
+			double alpha = Max(0.0, noise.octave2D0_1(x / 50.0, (y + t) / 50.0, 4) - 0.5);
+			if (alpha > 0.0) Circle{ x * 10, y * 10, 20 }.draw(ColorF(1 - alpha, alpha));
 		}
 	}
 
