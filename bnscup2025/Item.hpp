@@ -155,6 +155,9 @@ namespace Items
 
 	inline Artifact AddDie();
 
+	///@brief 絶好調
+	inline Artifact InTopForm();
+
 	const Array<Artifact> AllItems = {
 		GoldPouch(),
 		LuckyCharm(),
@@ -163,6 +166,7 @@ namespace Items
 		ArtifactExpander(),
 		DieExpander(),
 		CategoryExpander(),
-		AddDie()
+		AddDie(),
+		InTopForm()
 	};
 }
