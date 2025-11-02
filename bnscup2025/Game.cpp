@@ -25,6 +25,8 @@ Game::Game(const InitData& init)
 
 void Game::update()
 {
+	bgfill.update();
+
 	if (m_isGameOver && !m_viewBoard)
 	{
 		const double t = Min(1.0, EaseOutCubic(m_gameOverAnimTimer.sF() * 3));
@@ -113,21 +115,23 @@ void Game::draw() const
 {
 	constexpr int spacing = 80;
 
-	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(32, 80, 10, ColorF{ 0.1 });
-	FontAsset(U"Bold")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(32, 80, 45, ColorF{ 0.1 });
+	bgfill.draw();
+
+	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).draw(32, 80, 10, ColorF{ 0.9 });
+	FontAsset(U"Bold")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(32, 80, 45, ColorF{ 0.9 });
 	drawScore(Vec2{ Scene::Center().x, 35 });
-	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).drawAt(28, Scene::Center().x,78, ColorF{0.1});
-	FontAsset(U"Bold")(U"所持G {}"_fmt(getData().status.gold)).drawAt(32, 1000, 70, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).drawAt(28, Scene::Center().x, 78, ColorF{ 0.9 });
+	FontAsset(U"Bold")(U"所持G {}"_fmt(getData().status.gold)).drawAt(32, 1000, 55, ColorF{ 0.9 });
 	m_diceBox.draw();
 
 	m_rollButton.draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 });
 	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
-	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.9 });
 	for (auto& category : m_categoryBoxes) {
 		category.draw(getData().status.dices, getData().status);
 	}
 	m_diceBox.draw();
-	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 285, 460, ColorF{ 0.1 });
+	FontAsset(U"Category")(U"小計 {}"_fmt(UpperCategoriesScore())).draw(32, 285, 460, ColorF{ 0.9 });
 	if (isBonus()) {
 		FontAsset(U"Category")(U"ボーナス +{}"_fmt(Categories::UpperSectionBonusScore)).draw(32, 415, 460, ColorF{ 1.0,1.0,0.0 });
 	}
@@ -176,7 +180,7 @@ void Game::drawScore(const Vec2& center) const {
 	const double t = Min(1.0, EaseOutCubic(m_animScoreTimer.sF()));
 	const int score = totalScore() * t + m_lastScore * (1.0 - t);
 	const double fontSize = 48;
-	FontAsset(U"Bold")(U"スコア　{}"_fmt(score)).drawAt(fontSize, center, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"スコア　{}"_fmt(score)).drawAt(fontSize, center, ColorF{ 0.9 });
 }
 
 void Game::drawGameOver() const {

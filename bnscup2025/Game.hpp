@@ -5,6 +5,7 @@
 # include "CategoryBox.hpp"
 # include "Category.hpp"
 # include "Item.hpp"
+# include "BG.hpp"
 // ゲームシーン
 class Game : public App::Scene
 {
@@ -50,5 +51,7 @@ private:
 	int startedGold = 0;
 
 	State nextScene = State::Title;
+
+	BGFill bgfill{ Scene::Size(), 100 };
 	
 };

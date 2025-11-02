@@ -911,5 +911,8 @@
     <ClInclude Include="Transition.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BG.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
