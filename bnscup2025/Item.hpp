@@ -109,14 +109,14 @@ inline void ActivateArtifactsByTiming(Array<Artifact>& artifacts, ActivationTimi
 
 namespace Items
 {
-	/// @brief 金貨袋
+	/// @brief ぽち袋
 	inline Artifact GoldPouch()
 	{
 		Artifact item;
-		item.name = U"金貨袋";
+		item.name = U"ぽち袋";
 		item.rarity = Rarity::Common;
-		item.cost = 30;
-		item.description = U"小さな金貨袋。購入時に50ゴールド獲得する。";
+		item.cost = 0;
+		item.description = U"お小遣いもらったよ";
 		item.textureKey = U"GoldPouch";
 		item.timing = ActivationTiming::OnPurchase;
 		item.usageLimit = 1; // 1回使い切り
@@ -165,8 +165,10 @@ namespace Items
 	/// @brief  タイムセール
 	inline Artifact TimeSale();
 
+	/// @brief 親族
+	inline Artifact Relatives();
+
 	const Array<Artifact> AllItems = {
-		GoldPouch(),
 		LuckyCharm(),
 		TrueOne(),
 		Siso(),
@@ -177,5 +179,6 @@ namespace Items
 		InTopForm(),
 		Diversity(),
 		TimeSale(),
+		Relatives(),
 	};
 }

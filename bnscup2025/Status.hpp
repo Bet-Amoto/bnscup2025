@@ -146,6 +146,40 @@ struct Status
 			rarityWeightLegendary
 		});
 	}
+
+	/// @brief 商品の配置位置を計算する
+	/// @param itemCount アイテムのインデックス
+	/// @return 商品の座標
+	Vec2 calcMerchPos(int itemCount) const
+	{
+		const int totalItem = ShopDiceCount + ShopCategoryCount + ShopArtifactCount;
+		const int itemsPerRow = totalItem / 2 + totalItem % 2;
+		const int row = itemCount / itemsPerRow;
+		const int col = itemCount % itemsPerRow;
+		return Vec2{ Scene::Center().x - (itemsPerRow - 1) * 75 + col * 150, 200 + row * 200 };
+	}
+
+	/// @brief 商品を2段に整列させる
+	void arrangeMerchandises()
+	{
+		const int totalItems = merchandises.size();
+		const int itemsPerRow = (totalItems + 1) / 2;  // 切り上げ除算で上段の商品数を決定
+		
+		for (int i : step(merchandises.size()))
+		{
+			const int row = i / itemsPerRow;  // 0: 上段, 1: 下段
+			const int col = i % itemsPerRow;  // 列位置
+			
+			// 各段の中央揃え
+			const int currentRowItems = (row == 0) ? itemsPerRow : (totalItems - itemsPerRow);
+			const Vec2 pos = Vec2{ 
+				Scene::Center().x - (currentRowItems - 1) * 75 + col * 150, 
+				200 + row * 200 
+			};
+			
+			merchandises[i].setPos(pos);
+		}
+	}
 };
 
 inline void addGold(Status& s, int32 amount)

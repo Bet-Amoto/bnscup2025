@@ -281,4 +281,29 @@ namespace Items
 			};
 		return item;
 	}
+
+	Artifact Relatives() {
+		Artifact item;
+		item.name = U"親族";
+		item.rarity = Rarity::Common;
+		item.cost = 100;
+		item.description = U"ショップをリロールしたとき、たまにお小遣いをくれる。";
+		item.textureKey = U"TimeSale";
+		item.timing = ActivationTiming::OnShopRoll;
+		item.usageLimit = none;
+
+		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
+			{
+				if (timing != self.timing) return;
+				if (RandomBool(0.75))return;
+				status.merchandises << Merchandise{ GoldPouch().clone(),  status.calcMerchPos(status.merchandises.size())};
+
+			};
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
+			{
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(50, 0.8, 0.9));
+				SimpleGUI::GetFont()(U"⏰").drawAt(pos.x, pos.y);
+			};
+		return item;
+	}
 }
