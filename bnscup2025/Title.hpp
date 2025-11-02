@@ -17,6 +17,7 @@ public:
 	void drawFadeOut(double t) const override;
 
 private:
+	PerlinNoise noise{ RandomUint32() };
 
 	RoundRect m_startButton{ Arg::center(Scene::Center().x, 400), 300, 60, 8 };
 	RoundRect m_exitButton{ Arg::center(Scene::Center().x, 500), 300, 60, 8 };
