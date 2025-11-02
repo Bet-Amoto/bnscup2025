@@ -607,8 +607,8 @@ namespace Categories
 	};
 
 	const Array<Category> DefaultLowerCategories{
-		Deep(),
-		Calm(),
+		ThreeCards(),
+		FourCards(),
 		FullHouse(),
 		SmallStraight(),
 		LargeStraight(),
