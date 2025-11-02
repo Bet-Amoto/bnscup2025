@@ -129,7 +129,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(54, 0.77, 0.9));
-				SimpleGUI::GetFont()(U"💰").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_MoneyBag").resized(40).drawAt(pos);
 			};
 
 		return item;

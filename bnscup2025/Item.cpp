@@ -27,7 +27,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
-				SimpleGUI::GetFont()(U"⭐").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Star").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -39,7 +39,7 @@ namespace Items
 		item.name = U"シソ";
 		item.rarity = Rarity::Epic;
 		item.cost = 500;
-		item.description = U"すべての役のスコアが1.2倍になる";
+		item.description = U"青じそ。すべての役のスコアが1.2倍になる";
 		item.timing = ActivationTiming::OnDiceResult;
 		item.usageLimit = none;
 
@@ -53,7 +53,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
-				SimpleGUI::GetFont()(U"⭐").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_yasai").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -83,7 +83,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(160, 0.5, 0.9));
-				SimpleGUI::GetFont()(U"🍀").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Clover").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -110,7 +110,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(280, 0.6, 0.9));
-				SimpleGUI::GetFont()(U"📦").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Package").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -137,7 +137,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(280, 0.6, 0.9));
-				SimpleGUI::GetFont()(U"📦").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Package").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -164,7 +164,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(280, 0.6, 0.9));
-				SimpleGUI::GetFont()(U"📦").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Package").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -191,7 +191,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(280, 0.6, 0.9));
-				SimpleGUI::GetFont()(U"📦").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Package").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -223,7 +223,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
-				SimpleGUI::GetFont()(U"🔥").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Fire").resized(40).drawAt(pos);
 			};
 		return item;
 	}
@@ -250,7 +250,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
-				SimpleGUI::GetFont()(U"🤝🏻").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Handshake").resized(40).drawAt(pos);
 			};
 
 		return item;
@@ -277,7 +277,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(50, 0.8, 0.9));
-				SimpleGUI::GetFont()(U"⏰").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Clock").resized(40).drawAt(pos);
 			};
 		return item;
 	}
@@ -302,7 +302,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(50, 0.8, 0.9));
-				SimpleGUI::GetFont()(U"⏰").drawAt(pos.x, pos.y);
+				TextureAsset(U"Emoji_Clock").resized(40).drawAt(pos);
 			};
 		return item;
 	}

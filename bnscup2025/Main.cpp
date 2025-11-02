@@ -20,6 +20,16 @@ void Main()
 	FontAsset::Register(U"iconM", FontMethod::MSDF, 32, Typeface::Icon_MaterialDesign);
 	FontAsset::Register(U"iconL", FontMethod::MSDF, 48, Typeface::Icon_MaterialDesign);
 
+	// Register emoji textures
+	TextureAsset::Register(U"Emoji_Star", Emoji(U"⭐"));
+	TextureAsset::Register(U"Emoji_Clover", Emoji(U"🍀"));
+	TextureAsset::Register(U"Emoji_Package", Emoji(U"📦"));
+	TextureAsset::Register(U"Emoji_Fire", Emoji(U"🔥"));
+	TextureAsset::Register(U"Emoji_Handshake", Emoji(U"🤝🏻"));
+	TextureAsset::Register(U"Emoji_Clock", Emoji(U"⏰"));
+	TextureAsset::Register(U"Emoji_MoneyBag", Emoji(U"💰"));
+	TextureAsset::Register(U"Emoji_yasai", Emoji(U"🥬"));
+
 	App manager;
 	manager.get()->status.init();
 	manager.add<Title>(State::Title);
