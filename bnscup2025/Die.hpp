@@ -553,5 +553,7 @@ namespace Dice{
 		Coin(),
 		GoldCoin(),
 		GodDie(),
+		AbyssDie(),
+		SinkDie(),
 	};
 }
