@@ -323,7 +323,7 @@ namespace Categories
 		cat.name = U"フルハウス";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"3つ同じ目と2つ同じ目があると25点";
+		cat.description = U"3つ同じ目と2つ同じ目があると25点を得る。";
 		cat.textureKey = U"FullHouse";
 
 		cat.type = CategoryType::Lower;
@@ -364,7 +364,7 @@ namespace Categories
 		cat.name = U"スモールストレート";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"4つ連続した目があると30点";
+		cat.description = U"4つ連続した目があると30点を得る。";
 		cat.textureKey = U"SmallStraight";
 
 		cat.type = CategoryType::Lower;
@@ -406,7 +406,7 @@ namespace Categories
 		cat.name = U"ラージストレート";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"5つ連続した目があると40点";
+		cat.description = U"5つ連続した目があると40点を得る。";
 		cat.textureKey = U"LargeStraight";
 
 		cat.type = CategoryType::Lower;
@@ -491,6 +491,58 @@ namespace Categories
 		return cat;
 	}
 
+	inline Category Deep()
+	{
+		Category cat;
+		cat.name = U"深読み";
+		cat.rarity = Rarity::Common;
+		cat.cost = 50;
+		cat.description = U"合計値が15以下なら15点を得る。";
+		cat.textureKey = U"Deep";
+
+		cat.type = CategoryType::Lower;
+		cat.calculateScore = [](const Array<Die>& dices) -> int
+			{
+				int sum = 0;
+				for (const auto& dice : dices)
+				{
+					const auto value = dice.value;
+					if (not value) return 0;
+					sum += value.value();
+				}
+
+				return (sum <= 15 ? 15 : 0);
+			};
+
+		return cat;
+	}
+
+	inline Category Calm()
+	{
+		Category cat;
+		cat.name = U"沈静化";
+		cat.rarity = Rarity::Rare;
+		cat.cost = 100;
+		cat.description = U"(6 - 目)の合計点数が得点となる(1→5点...6→0点)。";
+		cat.textureKey = U"Calm";
+
+		cat.type = CategoryType::Lower;
+		cat.calculateScore = [](const Array<Die>& dices) -> int
+			{
+				int sum = 0;
+				for (const auto& dice : dices)
+				{
+					const auto value = dice.value;
+					if (not value) return 0;
+					sum += 6 - value.value();
+				}
+
+				return sum;
+			};
+
+		return cat;
+	}
+
 	inline Category Exchange();  // 等価交換
 
 	inline Category CashOut();  // 換金（スコア0でゴールド獲得）
@@ -515,6 +567,8 @@ namespace Categories
 		Hearts(),
 		Exchange(),
 		CashOut(),
+		Deep(),
+		Calm(),
 	};
 	const Array<Category> UpperCategories{
 		Ones(),
@@ -548,11 +602,13 @@ namespace Categories
 		Hearts(),
 		Exchange(),
 		CashOut(),
+		Deep(),
+		Calm(),
 	};
 
 	const Array<Category> DefaultLowerCategories{
-		Exchange(),
-		CashOut(),
+		Deep(),
+		Calm(),
 		FullHouse(),
 		SmallStraight(),
 		LargeStraight(),
