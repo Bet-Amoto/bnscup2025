@@ -172,6 +172,10 @@ void Shop::draw() const
 void Shop::reroll() {
 	int itemCount = 0;
 	m_merchandises.clear();
+	
+	// リロール中に追加されたユニークアイテムの名前を追跡
+	HashSet<String> addedUniqueNames;
+	
 	for (const auto i : step(m_status.ShopDiceCount))
 	{
 		const Rarity rarity = DiscreteSample(AllRarities, m_status.distribution);
@@ -179,19 +183,32 @@ void Shop::reroll() {
 			if (item.rarity != rarity) return false;
 
 			if (!item.isUnique) return true;
-			for (const auto& owned : m_status.artifacts)
+			
+			// 既に所持している場合は除外
+			for (const auto& owned : m_status.dices)
 			{
 				if (owned.name == item.name)
 				{
 					return false;
 				}
 			}
+			
+			// このリロールで既に追加されている場合は除外
+			if (addedUniqueNames.contains(item.name))
+			{
+				return false;
+			}
+			
 			return true;
 		});
 		if (not filteredDices.empty())
 		{
 			const Die dice = filteredDices.choice();
 			m_merchandises << Merchandise{ dice.clone(), calcMerchPos(itemCount)};
+			if (dice.isUnique)
+			{
+				addedUniqueNames.insert(dice.name);
+			}
 			itemCount ++;
 		}
 	}
@@ -202,19 +219,39 @@ void Shop::reroll() {
 			if (item.rarity != rarity) return false;
 
 			if (!item.isUnique) return true;
-			for (const auto& owned : m_status.artifacts)
+			
+			// 既に所持している場合は除外
+			for (const auto& owned : m_status.upperCategories)
 			{
 				if (owned.name == item.name)
 				{
 					return false;
 				}
 			}
+			for (const auto& owned : m_status.lowerCategories)
+			{
+				if (owned.name == item.name)
+				{
+					return false;
+				}
+			}
+			
+			// このリロールで既に追加されている場合は除外
+			if (addedUniqueNames.contains(item.name))
+			{
+				return false;
+			}
+			
 			return true;
 		});
 		if (not filteredCategories.empty())
 		{
 			const Category category = filteredCategories.choice();
 			m_merchandises << Merchandise{ category.clone(),  calcMerchPos(itemCount) };
+			if (category.isUnique)
+			{
+				addedUniqueNames.insert(category.name);
+			}
 			itemCount++;
 		}
 	}
@@ -226,6 +263,8 @@ void Shop::reroll() {
 			if (item.rarity != rarity) return false;
 			
 			if (!item.isUnique) return true;
+			
+			// 既に所持している場合は除外
 			for (const auto& owned : m_status.artifacts)
 			{
 				if (owned.name == item.name)
@@ -233,6 +272,13 @@ void Shop::reroll() {
 					return false;
 				}
 			}
+			
+			// このリロールで既に追加されている場合は除外
+			if (addedUniqueNames.contains(item.name))
+			{
+				return false;
+			}
+			
 			return true;
 		});
 		
@@ -240,6 +286,10 @@ void Shop::reroll() {
 		{
 			const Artifact item = filteredItems.choice();
 			m_merchandises << Merchandise{ item.clone(),  calcMerchPos(itemCount) };
+			if (item.isUnique)
+			{
+				addedUniqueNames.insert(item.name);
+			}
 			itemCount ++;
 		}
 	}
