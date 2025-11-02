@@ -17,7 +17,8 @@ void Main()
 	FontAsset::Register(U"Regular", FontMethod::MSDF, 32, Typeface::Regular);
 	FontAsset::Register(U"Category", FontMethod::MSDF, 28, Typeface::Bold);
 
-	FontAsset::Register(U"icon", FontMethod::MSDF, 32, Typeface::Icon_MaterialDesign);
+	FontAsset::Register(U"iconM", FontMethod::MSDF, 32, Typeface::Icon_MaterialDesign);
+	FontAsset::Register(U"iconL", FontMethod::MSDF, 48, Typeface::Icon_MaterialDesign);
 
 	App manager;
 	manager.get()->status.init();

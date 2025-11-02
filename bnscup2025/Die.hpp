@@ -165,8 +165,9 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(180, 0.13, 0.80) : HSV(180, 0.13, 1.0));
+				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(264, 0.45, 0.66) : HSV(264, 0.45, 0.96));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				FontAsset(U"iconL")(U"\U000F0904").drawAt(faceRect.center(), (self.locked || !self.value) ? HSV(49, 0.79, 0.69) : HSV(49, 0.79, 0.99));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -174,6 +175,12 @@ namespace Dice{
 			{
 				self.locked = true;
 			};
+		d.selfEffectDur = 0.30;
+		d.afterSelfEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<SleepEffect>(pos, self.selfEffectDur);
+			};
+
 		d.canUnlock = false;
 
 		return d;

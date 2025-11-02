@@ -159,7 +159,7 @@ struct BuffEffect : IEffect
 			double e = EaseOutExpo(k);
 			double a = Max(Sin(e * Math::Pi), 0.0);
 			color.a = a;
-			FontAsset(U"icon")(U"\U000F013F").drawAt(m_pos.movedBy(0, e * -40 + 25), color);
+			FontAsset(U"iconM")(U"\U000F013F").drawAt(m_pos.movedBy(0, e * -40 + 25), color);
 		}
 	};
 
@@ -184,4 +184,25 @@ struct BuffEffect : IEffect
 		return (t < m_dur);
 	}
 
+};
+
+struct SleepEffect : IEffect
+{
+	Vec2 m_pos;
+	double m_dur = 0.35;
+
+	SleepEffect(const Vec2& _pos, double _dur)
+		: m_pos(_pos),
+		m_dur(_dur) { }
+
+	bool update(double t) override
+	{
+		double k = t / m_dur;
+		double e = EaseOutCubic(k);
+		double a = 1.0 - e;
+
+		FontAsset(U"iconL")(U"\U000F12D1").drawAt(m_pos.movedBy(20, e * -40 - 20), ColorF(0, a));
+
+		return (t < m_dur);
+	}
 };
