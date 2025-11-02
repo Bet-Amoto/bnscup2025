@@ -30,23 +30,23 @@ typedef struct _BGCir {
 	void update() {
 		speed += (nomalspeed - speed) * Scene::DeltaTime();
 		cir.moveBy(0, speed * Scene::DeltaTime());
-		if (renzoku) {
-			deray -= Scene::DeltaTime();
-			if (deray > 0)return;
-			deray = 0.5;
-			z += updown ? 1 : -1;
-			nomalspeed = (-5 - 20.0 / (z + 1));
-			if (z == 0 or z == 10)renzoku = false;
-			if (Random(0, 100) < 50)renzoku = false;
-		}
-		else if (Random(0, 1000) < 1) {
-			z += updown ? 1 : -1;
-			nomalspeed = (-5 - 20.0 / (z + 1));
-			deray = 20;
-			renzoku = true;
-		}
-		if (z == 0)updown = true;
-		if (z == 10)updown = false;
+		//if (renzoku) {
+		//	deray -= Scene::DeltaTime();
+		//	if (deray > 0)return;
+		//	deray = 0.5;
+		//	z += updown ? 1 : -1;
+		//	nomalspeed = (-5 - 20.0 / (z + 1));
+		//	if (z == 0 or z == 10)renzoku = false;
+		//	if (Random(0, 100) < 50)renzoku = false;
+		//}
+		//else if (Random(0, 1000) < 1) {
+		//	z += updown ? 1 : -1;
+		//	nomalspeed = (-5 - 20.0 / (z + 1));
+		//	deray = 20;
+		//	renzoku = true;
+		//}
+		//if (z == 0)updown = true;
+		//if (z == 10)updown = false;
 
 	}
 private:
@@ -62,10 +62,10 @@ public:
 		for (int i : step(circount)) {
 			cirs << BGCir(Point(Random(0, sceneSize.x), Random(0, sceneSize.y)));
 		}
-		for (int i : step(5)) {
+		/*for (int i : step(5)) {
 			aarea << Rect(Random(0, sceneSize.x), Random(0, 3 * sceneSize.y / 5), Random(100, 200), 5);
 			kasoku << Random(0.92, 1.08);
-		}
+		}*/
 		texture = Texture{ makeimage() };
 		gaussianA1 = RenderTexture{ sceneSize };
 		gaussianB1 = RenderTexture{ sceneSize };
