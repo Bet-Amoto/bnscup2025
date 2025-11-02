@@ -29,6 +29,8 @@ void Main()
 	TextureAsset::Register(U"Emoji_Clock", Emoji(U"⏰"));
 	TextureAsset::Register(U"Emoji_MoneyBag", Emoji(U"💰"));
 	TextureAsset::Register(U"Emoji_yasai", Emoji(U"🥬"));
+	TextureAsset::Register(U"Emoji_hakuzin", Emoji(U"👱🏻‍♂️"));
+
 
 	App manager;
 	manager.get()->status.init();
