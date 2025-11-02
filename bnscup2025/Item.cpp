@@ -302,7 +302,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(50, 0.8, 0.9));
-				TextureAsset(U"Emoji_Clock").resized(40).drawAt(pos);
+				TextureAsset(U"Emoji_hakuzin").resized(40).drawAt(pos);
 			};
 		return item;
 	}
