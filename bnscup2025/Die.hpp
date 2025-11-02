@@ -290,9 +290,9 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(16, 0.2, 0.54) : HSV(16, 0.3, 0.54));
+				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(16, 0.3, 0.34) : HSV(16, 0.3, 0.54));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
-				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(16, 0.3, 0.74) : HSV(16, 0.4, 0.74));
+				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(16, 0.4, 0.54) : HSV(16, 0.4, 0.74));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -430,10 +430,11 @@ namespace Dice{
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
-				Circle faceCircle(centerPos, 30);
-				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
-				faceCircle.drawFrame(1, ColorF{ 0 });
-				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceCircle.center, ColorF{ 0.1 });
+				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+				faceRect.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
+				faceRect.drawFrame(1, ColorF{ 0 });
+				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(64, 0.54, 0.8) : HSV(64, 0.54, 1));
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{0.1});
 			};
 
 		d.afterAllFunc = [](Die& self, Array<Die>& dices, Status& status)
@@ -444,10 +445,10 @@ namespace Dice{
 					die.displayValue = die.value;
 				}
 			};
-		d.allEffectDur = 0.45;
+		d.allEffectDur = 0.35;
 		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
 			{
-				effect.add<QuakeEffect>(pos, self.selfEffectDur);
+				effect.add<GodEffect>(pos, self.allEffectDur);
 			};
 
 		return d;

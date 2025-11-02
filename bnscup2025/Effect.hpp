@@ -1,6 +1,41 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 
+
+//ライトブルームクラス
+class LightBloom {
+public:
+	const RenderTexture gaussianA1, gaussianB1;
+	const RenderTexture gaussianA4, gaussianB4;
+	const RenderTexture gaussianA8, gaussianB8;
+	const Size area;
+	const ColorF colorA1, colorA4, colorA8;
+
+	LightBloom(const Size& size, const ColorF& colorA1 = ColorF(0.1), const ColorF& colorA4 = ColorF(0.4), const ColorF& colorA8 = ColorF(0.8))
+		:area{ size },
+		gaussianA1{ size }, gaussianB1{ size },
+		gaussianA4{ size / 4 }, gaussianB4{ size / 4 },
+		gaussianA8{ size / 8 }, gaussianB8{ size / 8 },
+		colorA1{ colorA1 },
+		colorA4{ colorA4 },
+		colorA8{ colorA8 } {
+	}
+
+	void draw()
+	{
+		Shader::GaussianBlur(gaussianA1, gaussianB1, gaussianA1);
+		Shader::Downsample(gaussianA1, gaussianA4);
+		Shader::GaussianBlur(gaussianA4, gaussianB4, gaussianA4);
+		Shader::Downsample(gaussianA4, gaussianA8);
+		Shader::GaussianBlur(gaussianA8, gaussianB8, gaussianA8);
+		const ScopedRenderStates2D blend{ BlendState::Additive };
+		gaussianA1.resized(area).draw(colorA1);
+		gaussianA4.resized(area).draw(colorA4);
+		gaussianA8.resized(area).draw(colorA8);
+	}
+};
+
+
 struct GoldPopEffect : IEffect
 {
 	Vec2 m_pos;
@@ -41,6 +76,38 @@ struct QuakeEffect : IEffect
 		double a = 1.0 - e;
 
 		Circle(m_pos, e * 300).drawFrame(a * 5, HSV(16, 0.3, 0.54));
+
+		return (t < m_dur);
+	}
+};
+
+
+struct GodEffect : IEffect
+{
+	Vec2 m_pos;
+	double m_dur = 0.35;
+	const Texture m_texture{ U"example/particle.png", TextureDesc::Mipped };
+	LightBloom light{ Scene::Size(), ColorF{1}, ColorF{1}, ColorF{1} };
+
+	GodEffect(const Vec2& _pos, double _dur)
+		: m_pos(_pos),
+		m_dur(_dur) { }
+
+	bool update(double t) override
+	{
+		double k = t / m_dur;
+		double e = EaseOutExpo(k);
+		double a = EaseInOutExpo(k);
+
+		{
+			const ScopedRenderTarget2D target{ light.gaussianA1.clear(ColorF{ 0.0 }) };
+			const ScopedRenderStates2D blend{ BlendState::Additive };
+			m_texture.scaled(2.0 - a * 2.0).drawAt(m_pos, HSV(48, 1, 0.8, 1.2 - a));
+			m_texture.scaled(2.0 - a * 2.0).drawAt(m_pos, HSV(48, 0.3, 1, 1.2 - a));
+
+			m_texture.scaled(Vec2(e * 10.0, 4 * (1 - e))).drawAt(m_pos, HSV(300, 0.5, 0.8, 1 - a));
+		}
+		light.draw();
 
 		return (t < m_dur);
 	}
