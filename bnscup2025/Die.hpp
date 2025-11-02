@@ -143,8 +143,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -169,8 +169,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(264, 0.45, 0.66) : HSV(264, 0.45, 0.96));
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(264, 0.45, 0.66) : HSV(264, 0.45, 0.96));
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				FontAsset(U"iconL")(U"\U000F0904").drawAt(faceRect.center(), (self.locked || !self.value) ? HSV(49, 0.79, 0.69) : HSV(49, 0.79, 0.99));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
@@ -208,8 +208,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 
 				const Spline2D sp1
 				{
@@ -272,7 +272,7 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				for (int y : step(12))
 				{
 					for (int x : step(12))
@@ -283,7 +283,7 @@ namespace Dice{
 						RectF{ centerPos.movedBy(-30 + x * 5, -30 + y * 5), 5 }.draw(ColorF(color));
 					}
 				}
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -320,8 +320,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(16, 0.3, 0.34) : HSV(16, 0.3, 0.54));
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(16, 0.3, 0.34) : HSV(16, 0.3, 0.54));
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(16, 0.4, 0.54) : HSV(16, 0.4, 0.74));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
@@ -365,8 +365,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
-				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -465,8 +465,8 @@ namespace Dice{
 			{
 				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
-				faceRect.drawFrame(1, ColorF{ 0 });
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
 				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(64, 0.54, 0.8) : HSV(64, 0.54, 1));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{0.1});
 			};
@@ -483,6 +483,61 @@ namespace Dice{
 		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
 			{
 				effect.add<GodEffect>(pos, self.allEffectDur);
+			};
+
+		return d;
+	}
+
+	inline Die AbyssDie()
+	{
+		Die d;
+		d.name = U"深ダイス";
+		d.rarity = Rarity::Common;
+		d.cost = 20;
+		d.faces = Array<int>{ 0, 1, 1, 2, 2, 3 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"非常に深いダイス。ダイスの出目が低い。" + faceText;
+		d.textureKey = U"AbyssDice";
+
+		d.value = none;
+		d.order = RollOrder::PRIMARY;
+		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
+		d.drawFunc = [](const Vec2& centerPos, const Die self)
+			{
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+				Circle faceCircle(centerPos, 29);
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(199, 0.31, 0.3) : HSV(199, 0.31, 0.5));
+				faceCircle.draw((self.locked || !self.value) ? HSV(0, 0, 0.8) : HSV(0, 0, 1));
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
+			};
+
+		return d;
+	}
+
+	inline Die SinkDie()
+	{
+		Die d;
+		d.name = U"沈ダイス";
+		d.rarity = Rarity::Rare;
+		d.cost = 50;
+		d.faces = Array<int>{ -2, -1, 0, 1, 2, 3 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"底に沈んだダイス。ダイスの出目が非常に低い。" + faceText;
+		d.textureKey = U"SinkDice";
+
+		d.value = none;
+		d.order = RollOrder::PRIMARY;
+		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
+		d.drawFunc = [](const Vec2& centerPos, const Die self)
+			{
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
+				faceRect.rounded(2).draw((self.locked || !self.value) ? HSV(176, 0.11, 0.57) : HSV(176, 0.11, 0.77));
+				FontAsset(U"iconL")(U"\U000F1978").drawAt(50, centerPos);
+				faceRect.rounded(2).drawFrame(1, ColorF{ 0 });
+				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
 		return d;

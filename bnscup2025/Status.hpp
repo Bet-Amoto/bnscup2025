@@ -99,7 +99,7 @@ struct Status
 
 	void init()
 	{
-		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::SleepDie() };
+		dices = { Dice::HeartDie(), Dice::HeartDie(), Dice::MirageDie(), Dice::GoldDie(), Dice::SinkDie() };
 		upperCategories = Categories::DefaultUpperCategories;
 		lowerCategories = Categories::DefaultLowerCategories;
 		artifacts.clear();
