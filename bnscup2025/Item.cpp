@@ -39,7 +39,7 @@ namespace Items
 		item.name = U"シソ";
 		item.rarity = Rarity::Epic;
 		item.cost = 500;
-		item.description = U"すべての役のスコアが1.2倍になる";
+		item.description = U"青じそ。すべての役のスコアが1.2倍になる";
 		item.timing = ActivationTiming::OnDiceResult;
 		item.usageLimit = none;
 
@@ -53,7 +53,7 @@ namespace Items
 		item.drawFunc = [](const Vec2& pos, const Artifact& self)
 			{
 				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
-				TextureAsset(U"Emoji_Star").resized(40).drawAt(pos);
+				TextureAsset(U"Emoji_yasai").resized(40).drawAt(pos);
 			};
 
 		return item;
