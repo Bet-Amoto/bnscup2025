@@ -5,7 +5,7 @@ Shop::Shop(const InitData& init)
 	m_status{ getData().status },
 	m_diceBox{ Vec2{ 400, 300 }, m_status.dices }
 {
-	Scene::SetBackground(Color{ 16, 20, 50 });
+	Scene::SetBackground(ColorF{ 0.9, 0.9, 0.8 });
 	reroll();
 	m_status.ShopRerollPrice = m_status.ShopRerollBasePrice;
 	for (auto& die : m_status.dices) {
@@ -129,8 +129,8 @@ void Shop::update()
 void Shop::draw() const
 {
 	bg.draw();
-	backRect.draw(ColorF(0.9));
-	backRect.drawFrame(5, ColorF(0));
+	//backRect.draw(ColorF(0.9));
+	//backRect.drawFrame(5, ColorF(0));
 
 	FontAsset(U"Bold")(U"ショップ").drawAt(Scene::CenterF().x, 50, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"所持金: {}G"_fmt(m_status.gold)).drawAt(40,Scene::CenterF().x + 300, 50, ColorF{ 0.1 });

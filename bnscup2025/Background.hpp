@@ -55,7 +55,7 @@ public:
 		}
 	}
 
-	void draw(double thick = 1, ColorF color = Palette::White) const
+	void draw(double thick = 1, ColorF color = Palette::Black) const
 	{
 		for (auto y : step(points.height()))
 		{
