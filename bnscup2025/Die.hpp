@@ -288,10 +288,11 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(16, 0.2, 0.54) : HSV(16, 0.3, 0.54));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+				Shape2D::NStar(20, 30, 25, centerPos).draw((self.locked || !self.value) ? HSV(16, 0.3, 0.74) : HSV(16, 0.4, 0.74));
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
@@ -331,7 +332,7 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
@@ -367,7 +368,7 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				Circle faceCircle(centerPos, 30);
 				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceCircle.drawFrame(1, ColorF{ 0 });
@@ -392,7 +393,7 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				Circle faceCircle(centerPos, 30);
 				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceCircle.drawFrame(1, ColorF{ 0 });
@@ -428,7 +429,7 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				Circle faceCircle(centerPos, 30);
 				faceCircle.draw((self.locked || !self.value) ? HSV(54, 0.77, 0.8) : HSV(54, 0.77, 1));
 				faceCircle.drawFrame(1, ColorF{ 0 });
@@ -446,7 +447,7 @@ namespace Dice{
 		d.allEffectDur = 0.45;
 		d.afterAllEffect = [](Die& self, const Vec2& pos, Effect& effect)
 			{
-				effect.add<GoldPopEffect>(pos, self.value.value(), self.selfEffectDur);
+				effect.add<QuakeEffect>(pos, self.selfEffectDur);
 			};
 
 		return d;
@@ -461,5 +462,6 @@ namespace Dice{
 		QuakeDie(),
 		Coin(),
 		GoldCoin(),
+		GodDie(),
 	};
 }
