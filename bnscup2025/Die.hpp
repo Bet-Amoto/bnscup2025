@@ -275,6 +275,7 @@ namespace Dice{
 					{
 						double color = noise.octave2D0_1(x / 10.0, y / 10.0, 4);
 						color = Math::Lerp(0.7, 1.0, color);
+						color -= (self.locked || !self.value) ? 0.2 : 0;
 						RectF{ centerPos.movedBy(-30 + x * 5, -30 + y * 5), 5 }.draw(ColorF(color));
 					}
 				}
@@ -286,6 +287,12 @@ namespace Dice{
 			{
 				if (dices.front().value) self.value = dices.front().value;
 				self.displayValue = self.value;
+			};
+
+		d.selfEffectDur = 0.35;
+		d.afterSelfEffect = [](Die& self, const Vec2& pos, Effect& effect)
+			{
+				effect.add<MirrorEffect>(pos, self.selfEffectDur);
 			};
 
 		return d;
