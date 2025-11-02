@@ -27,8 +27,11 @@ void Game::update()
 {
 	if (m_isGameOver && !m_viewBoard)
 	{
+		const double t = Min(1.0, EaseOutCubic(m_gameOverAnimTimer.sF() * 3));
+		const RectF BGRect = BGRectStart.lerp(BGRectEnd, t);
+		ViewBoardButtonRect = RectF{ Arg::center(BGRect.center().movedBy(0, -50)), 150, 50 };
 		if (ViewBoardButtonRect.leftClicked()) m_viewBoard = true;
-		if (TitleButtonRect.leftClicked()) {
+		else if (MouseL.down()) {
 			getData().fromState = State::Game;
 			getData().toState = State::Title;
 			changeScene(State::Title);
@@ -95,7 +98,7 @@ void Game::update()
 		}
 		m_rollsLeft = 0;
 		getData().status.endTurn();
-
+		m_gameOverAnimTimer.restart();
 		if (totalScore() < getData().status.quota.target) {
 			m_isGameOver = true;
 		}
@@ -114,7 +117,6 @@ void Game::draw() const
 	FontAsset(U"Bold")(U"ノルマ {}"_fmt(getData().status.quota.target)).draw(32, 80, 45, ColorF{ 0.1 });
 	drawScore(Vec2{ Scene::Center().x, 35 });
 	FontAsset(U"Regular")(U"残り選択 {}"_fmt(getData().status.selectionsLeft)).drawAt(28, Scene::Center().x,78, ColorF{0.1});
-	FontAsset(U"Bold")(U"獲得G {}"_fmt(getData().status.gameStats.lastGoldEarned)).drawAt(32, 1000, 30, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"所持G {}"_fmt(getData().status.gold)).drawAt(32, 1000, 70, ColorF{ 0.1 });
 	m_diceBox.draw();
 
@@ -178,48 +180,61 @@ void Game::drawScore(const Vec2& center) const {
 }
 
 void Game::drawGameOver() const {
-	Rect{ 0, 0, Scene::Size() }.draw( ColorF{0.0, 0.98} );
-	FontAsset(U"Bold")(U"ゲームオーバー").drawAt(60, Scene::Center().x, 100, ColorF{1.0, 0.2, 0.2});
-	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).drawAt(40, Scene::Center().x, 180, ColorF{0.9});
-	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(40, Scene::Center().x, 220, ColorF{0.9});
-	TitleButtonRect.rounded(10).draw(ColorF{ 0.9 }).drawFrame(3, ColorF{0.1});
-	FontAsset(U"Bold")(U"タイトルへ"_fmt(getData().status.quota.earned)).drawAt(40, TitleButtonRect.center(), ColorF{0.1});
+	const double t = Min(1.0, EaseOutCubic(m_gameOverAnimTimer.sF() * 3));
+	const RectF BGRect = BGRectStart.lerp(BGRectEnd, t);
+	Rect{ 0, 0, Scene::Size() }.draw(ColorF{ 0.0, t * 0.7 });
+	BGRect.rounded(10).draw(ColorF{ 1.0 }).drawFrame(4, ColorF{ 0.3, 0.15, 0.02 });
+	FontAsset(U"Bold")(U"ゲームオーバー").drawAt(60, BGRect.center().movedBy(0, -225), ColorF{1.0, 0.2, 0.2});
+	FontAsset(U"Bold")(U"ターン {}"_fmt(getData().status.quota.turn)).drawAt(40, BGRect.center().movedBy(0, -145), ColorF{0.1});
+	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(40, BGRect.center().movedBy(0, -105), ColorF{0.1});
+	FontAsset(U"Regular")(U"クリックでタイトルへ戻る").drawAt(24, BGRect.center().movedBy(0, 275), ColorF{ 0.1 });
 
-	ViewBoardButtonRect.rounded(10).draw(ColorF{ 0.9 }).drawFrame(3, ColorF{ 0.1 });
-	FontAsset(U"Bold")(U"盤面を見る"_fmt(getData().status.quota.earned)).drawAt(40, ViewBoardButtonRect.center(), ColorF{ 0.1 });
+	
+	ViewBoardButtonRect.rounded(10).draw(ColorF{ 0.9 }).drawFrame(2, ColorF{ 0.1 });
+	FontAsset(U"Regular")(U"盤面を見る"_fmt(getData().status.quota.earned)).drawAt(24, ViewBoardButtonRect.center(), ColorF{ 0.1 });
 
 }
 
 void Game::drawTurnEnd() const {
-	Rect{ 0, 0, Scene::Size() }.draw(ColorF{ 0.0, 0.7 });
+	const double t = Min(1.0, EaseOutCubic(m_gameOverAnimTimer.sF() * 3));
+	const RectF BGRect = BGRectStart.lerp(BGRectEnd, t);
+	Rect{ 0, 0, Scene::Size() }.draw(ColorF{ 0.0, t * 0.7 });
 	BGRect.rounded(10).draw(ColorF{ 1.0 }).drawFrame(4, ColorF{0.3, 0.15, 0.02});
-	FontAsset(U"Bold")(U"ターン{} クリア！"_fmt(getData().status.quota.turn)).drawAt( BGRect.centerX(), 80 , ColorF{0.1});
-	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(36,  BGRect.centerX(), 140 , ColorF{0.1});
+	FontAsset(U"Bold")(U"ターン{} クリア！"_fmt(getData().status.quota.turn)).drawAt( BGRect.center().movedBy(0, -245), ColorF{1.0, 0.1, 0.1});
+	FontAsset(U"Bold")(U"スコア {}"_fmt(getData().status.quota.earned)).drawAt(36,  BGRect.center().movedBy(0, -185), ColorF{0.1});
 
 	double y = 250;
 	const double distY = 35;
-	FontAsset(U"Bold")(U"元の所持金").draw(32, BGRect.centerX() - 220, y , ColorF{0.1});
-	FontAsset(U"Bold")(U"{}G"_fmt(startedGold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
-	y += distY;
-
-	FontAsset(U"Bold")(U"スコアボーナス").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
-	FontAsset(U"Bold")(U"{}G"_fmt(calcScoreToGold(getData().status, totalScore()))).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
-	y += distY;
-
-	if (getData().status.gameStats.lastGoldEarned != 0) {
-		const ColorF c = getData().status.gameStats.lastGoldEarned > 0 ? ColorF{ 0.1 } : ColorF{ 1.0, 0.0, 0.0 };
-		FontAsset(U"Bold")(U"ゲーム中に獲得").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
-		FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gameStats.lastGoldEarned)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), c);
+	double resultViewTime = 1.2;
+	if (m_gameOverAnimTimer.sF() > 0.6) {
+		FontAsset(U"Bold")(U"元の所持金").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
+		FontAsset(U"Bold")(U"{}G"_fmt(startedGold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
 		y += distY;
 	}
 
-	y += 5;
-	Line{ BGRect.centerX() - 220 , y , BGRect.centerX() + 220, y }.draw(2, ColorF{ 0.1 });
+	if (m_gameOverAnimTimer.sF() > 0.9) {
+		FontAsset(U"Bold")(U"スコアボーナス").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
+		FontAsset(U"Bold")(U"{}G"_fmt(calcScoreToGold(getData().status, totalScore()))).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
+		y += distY;
+	}
+	if (getData().status.gameStats.lastGoldEarned != 0) {
+		resultViewTime += 0.3;
+		if (m_gameOverAnimTimer.sF() > resultViewTime - 0.3) {
+			const ColorF c = getData().status.gameStats.lastGoldEarned > 0 ? ColorF{ 0.1 } : ColorF{ 1.0, 0.0, 0.0 };
+			FontAsset(U"Bold")(U"ゲーム中に獲得").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
+			FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gameStats.lastGoldEarned)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), c);
+			y += distY;
+		}
+	}
 
-	FontAsset(U"Bold")(U"現在の所持金").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
-	FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
+	if (m_gameOverAnimTimer.sF() > resultViewTime) {
+		y += 5;
+		Line{ BGRect.centerX() - 220 , y , BGRect.centerX() + 220, y }.draw(2, ColorF{ 0.1 });
 
-	FontAsset(U"Regular")(U"クリックでショップへ行く").drawAt(24, BGRect.centerX(), 600, ColorF{ 0.1 });
+		FontAsset(U"Bold")(U"現在の所持金").draw(32, BGRect.centerX() - 220, y, ColorF{ 0.1 });
+		FontAsset(U"Bold")(U"{}G"_fmt(getData().status.gold)).draw(32, Arg::topRight(BGRect.centerX() + 220, y), ColorF{ 0.1 });
+	}
+	FontAsset(U"Regular")(U"クリックでショップへ行く").drawAt(24, BGRect.center().movedBy(0, 275), ColorF{ 0.1 });
 }
 
 void Game::drawFadeIn(double t) const

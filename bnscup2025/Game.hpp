@@ -36,16 +36,17 @@ private:
 	Stopwatch m_animScoreTimer;
 	void drawScore(const Vec2& center) const;
 
+	const RectF BGRectStart = Rect{ Arg::center(Scene::Center().x, -650), 550, 650 };
+	const RectF BGRectEnd = Rect{ Arg::center(Scene::Center()), 550, 650 };
+
 	bool m_isGameOver = false;
 	bool m_viewBoard = false;
 	void drawGameOver() const;
 	Stopwatch m_gameOverAnimTimer;
-	const Rect TitleButtonRect = Rect{ Scene::Center().x + 100,500,250,100};
-	const Rect ViewBoardButtonRect = Rect{ Scene::Center().x - 350, 500, 250, 100};
+	RectF ViewBoardButtonRect = RectF{ Arg::center(BGRectEnd.center().movedBy(0, -50)), 150, 50};
 
 	bool m_isTurnEnd = false;
 	void drawTurnEnd() const;
-	const Rect BGRect = Rect{ Arg::center(Scene::Center()), 550, 650 };
 	int startedGold = 0;
 
 	State nextScene = State::Title;

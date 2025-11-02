@@ -153,7 +153,14 @@ namespace Items
 	/// @brief カテゴリ入荷
 	inline Artifact CategoryExpander();
 
+	/// @brief  ダイス増し
 	inline Artifact AddDie();
+
+	///@brief 絶好調
+	inline Artifact InTopForm();
+
+	/// @brief ダイバーシティ
+	inline Artifact Diversity();
 
 	const Array<Artifact> AllItems = {
 		GoldPouch(),
@@ -163,6 +170,8 @@ namespace Items
 		ArtifactExpander(),
 		DieExpander(),
 		CategoryExpander(),
-		AddDie()
+		AddDie(),
+		InTopForm(),
+		Diversity()
 	};
 }

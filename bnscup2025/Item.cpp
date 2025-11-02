@@ -196,4 +196,63 @@ namespace Items
 
 		return item;
 	}
+
+	Artifact InTopForm() {
+		Artifact item;
+		item.name = U"絶好調";
+		item.rarity = Rarity::Epic;
+		item.cost = 200;
+		item.description = U"ダイスの目が5つ以上同じである場合、ダイスをふれる回数が1回増える";
+		item.textureKey = U"InTopForm";
+		item.timing = ActivationTiming::OnDiceResult;
+		item.usageLimit = none; // 無制限
+		item.isUnique = true;
+		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
+			{
+				if (timing != self.timing) return;
+				for (auto& die : status.dices)
+				{
+					const int val = die.displayValue.value_or(0);
+					const int count = status.dices.count_if([val](const Die& d) { return d.displayValue.value_or(0) == val; });
+					if (count >= 5) {
+						status.selectionsLeft += 1;
+						break;
+					}
+				}
+			};
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
+			{
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
+				SimpleGUI::GetFont()(U"🔥").drawAt(pos.x, pos.y);
+			};
+		return item;
+	}
+
+	Artifact Diversity() {
+		Artifact item;
+		item.name = U"ダイバーシティ";
+		item.rarity = Rarity::Rare;
+		item.cost = 200;
+		item.description = U"ダイスの種類1つにつき、スコアが+0.3倍される";
+		item.timing = ActivationTiming::OnDiceResult;
+		item.usageLimit = none;
+		item.isUnique = true;
+		// 予想スコア計算時の処理
+		item.scoreModifier = [](int baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
+			{
+				HashSet<String> diceName;
+				for (const auto& d : dices) {
+					diceName.insert(d.name);
+				}
+				return baseScore * (1.0 + diceName.size() * 0.3);
+			};
+
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
+			{
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
+				SimpleGUI::GetFont()(U"🤝🏻").drawAt(pos.x, pos.y);
+			};
+
+		return item;
+	}
 }
