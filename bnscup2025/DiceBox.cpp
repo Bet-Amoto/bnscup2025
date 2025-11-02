@@ -34,7 +34,8 @@ void DiceBox::roll(Status& status)
 	m_startSelfAt[0] = m_startStopping + m_step;
 	for (size_t i = 0; i < m_dice.size() - 1; i++)
 	{
-		m_stopAt[i + 1] = m_stopAt[i] + m_step + m_dice[i].selfEffectDur;
+		double next = m_step + m_dice[i].selfEffectDur;
+		m_stopAt[i + 1] = m_stopAt[i] + (m_dice[i + 1].locked ? 0 : next);
 		m_startSelfAt[i + 1] = m_stopAt[i + 1] + m_step;
 	}
 	m_endSelfEffect = m_startSelfAt.back() + m_dice.back().selfEffectDur;
@@ -42,7 +43,7 @@ void DiceBox::roll(Status& status)
 	m_startAllAt[0] = m_endSelfEffect;
 	for (size_t i = 0; i < m_dice.size() - 1; i++)
 	{
-		m_startAllAt[i + 1] = m_startAllAt[i] + m_dice[i].allEffectDur;
+		m_startAllAt[i + 1] = m_startAllAt[i] + (m_dice[i + 1].locked ? 0 : m_dice[i].allEffectDur);
 	}
 	m_endAllEffect = m_startAllAt.back() + m_dice.back().allEffectDur;
 
