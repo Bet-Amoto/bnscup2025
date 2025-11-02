@@ -38,7 +38,7 @@ void Main()
 	manager.add<Game>(State::Game);
 	manager.add<Shop>(State::Shop);
 
-	manager.init(State::Title);
+	manager.init(State::Title, 0s);
 	while (System::Update())
 	{
 		GetExplanation().update(Cursor::PosF());
