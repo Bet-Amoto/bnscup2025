@@ -70,7 +70,7 @@ void Game::update()
 	}
 
 	for (auto& box : m_categoryBoxes) {
-		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0) {
+		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0 && !m_diceBox.isRolling()) {
 			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
 			if (box.getCategory().onSelected)
