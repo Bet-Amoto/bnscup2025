@@ -17,6 +17,11 @@ public:
 	bool isClicked() const { return m_box.leftClicked(); }
 	void setSoldOut(bool soldOut) { m_soldOut = soldOut; }
 	bool isSoldOut() const { return m_soldOut; }
+	void setPos(const Vec2& pos) {
+		m_pos = pos;
+		m_box = RoundRect{ pos.x - 70, pos.y - 90, 140, 180, 10 };
+	}
+
 private:
 
 	std::shared_ptr<ItemBase> m_item;

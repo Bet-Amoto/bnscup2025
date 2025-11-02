@@ -204,7 +204,7 @@ void Shop::reroll() {
 		if (not filteredDices.empty())
 		{
 			const Die dice = filteredDices.choice();
-			m_status.merchandises << Merchandise{ dice.clone(), calcMerchPos(itemCount)};
+			m_status.merchandises << Merchandise{ dice.clone(), m_status.calcMerchPos(itemCount)};
 			if (dice.isUnique)
 			{
 				addedUniqueNames.insert(dice.name);
@@ -247,7 +247,7 @@ void Shop::reroll() {
 		if (not filteredCategories.empty())
 		{
 			const Category category = filteredCategories.choice();
-			m_status.merchandises << Merchandise{ category.clone(),  calcMerchPos(itemCount) };
+			m_status.merchandises << Merchandise{ category.clone(),  m_status.calcMerchPos(itemCount) };
 			if (category.isUnique)
 			{
 				addedUniqueNames.insert(category.name);
@@ -285,7 +285,7 @@ void Shop::reroll() {
 		if (not filteredItems.empty())
 		{
 			const Artifact item = filteredItems.choice();
-			m_status.merchandises << Merchandise{ item.clone(),  calcMerchPos(itemCount) };
+			m_status.merchandises << Merchandise{ item.clone(),  m_status.calcMerchPos(itemCount) };
 			if (item.isUnique)
 			{
 				addedUniqueNames.insert(item.name);
@@ -295,14 +295,8 @@ void Shop::reroll() {
 	}
 
 	ActivateArtifactsByTiming(getData().status.artifacts, ActivationTiming::OnShopRoll, getData().status);
-}
 
-Vec2 Shop::calcMerchPos(int itemCount) {
-	const int totalItem = m_status.ShopDiceCount + m_status.ShopCategoryCount + m_status.ShopArtifactCount;
-	const int itemsPerRow = totalItem / 2 + totalItem % 2;
-	const int row = itemCount / itemsPerRow;
-	const int col = itemCount % itemsPerRow;
-	return Vec2{ Scene::Center().x - (itemsPerRow - 1) * 75 + col * 150, 200 + row * 200};
+	m_status.arrangeMerchandises();
 }
 
 void Shop::categorySelect() {
