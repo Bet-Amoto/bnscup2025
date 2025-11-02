@@ -255,4 +255,30 @@ namespace Items
 
 		return item;
 	}
+
+	Artifact TimeSale() {
+		Artifact item;
+		item.name = U"タイムセール";
+		item.rarity = Rarity::Common;
+		item.cost = 100;
+		item.description = U"ショップに並ぶ商品のうち、ランダムに1つ30%OFFされる。";
+		item.textureKey = U"TimeSale";
+		item.timing = ActivationTiming::OnShopRoll;
+		item.usageLimit = none;
+
+		item.activateFunc = [](Artifact& self, ActivationTiming timing, Status& status)
+			{
+				if (timing != self.timing) return;
+				if (status.merchandises.size() == 0) return;
+				const auto index = Random((unsigned long long)0, status.merchandises.size() - 1);
+				status.merchandises[index].getItem()->cost = static_cast<int>(status.merchandises[index].getItem()->cost * 0.7);
+
+			};
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
+			{
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(50, 0.8, 0.9));
+				SimpleGUI::GetFont()(U"⏰").drawAt(pos.x, pos.y);
+			};
+		return item;
+	}
 }

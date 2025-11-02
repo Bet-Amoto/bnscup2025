@@ -162,6 +162,9 @@ namespace Items
 	/// @brief ダイバーシティ
 	inline Artifact Diversity();
 
+	/// @brief  タイムセール
+	inline Artifact TimeSale();
+
 	const Array<Artifact> AllItems = {
 		GoldPouch(),
 		LuckyCharm(),
@@ -172,6 +175,7 @@ namespace Items
 		CategoryExpander(),
 		AddDie(),
 		InTopForm(),
-		Diversity()
+		Diversity(),
+		TimeSale(),
 	};
 }

@@ -293,6 +293,8 @@ void Shop::reroll() {
 			itemCount ++;
 		}
 	}
+
+	ActivateArtifactsByTiming(getData().status.artifacts, ActivationTiming::OnShopRoll, getData().status);
 }
 
 Vec2 Shop::calcMerchPos(int itemCount) {
