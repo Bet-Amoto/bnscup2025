@@ -138,7 +138,7 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
@@ -163,9 +163,9 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
-				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				faceRect.rounded(3).draw((self.locked || !self.value) ? HSV(180, 0.13, 0.80) : HSV(180, 0.13, 1.0));
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
@@ -194,10 +194,30 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
+
+				const Spline2D sp1
+				{
+					{ centerPos.movedBy(-30, -5), centerPos.movedBy(-25, -7), centerPos.movedBy(-20, -5),
+					  centerPos.movedBy(-10, 5), centerPos.movedBy(-5, 7), centerPos.movedBy(0, 5),
+					  centerPos.movedBy(10, -5), centerPos.movedBy(15, -7), centerPos.movedBy(20, -5),
+					  centerPos.movedBy(30, 5) }
+				};
+
+				const Spline2D sp2
+				{
+					{ centerPos.movedBy(-30, 5), centerPos.movedBy(-25, 7), centerPos.movedBy(-20, 5),
+					  centerPos.movedBy(-10, -5), centerPos.movedBy(-5, -7), centerPos.movedBy(0, -5),
+					  centerPos.movedBy(10, 5), centerPos.movedBy(15, 7), centerPos.movedBy(20, 5),
+					  centerPos.movedBy(30, -5) }
+				};
+
+				sp1.draw(1, ColorF(0));
+				sp2.draw(1, ColorF(0));
+
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
 
