@@ -15,6 +15,8 @@ enum class RollOrder {
 	FINAL = 30
 };
 
+// 苦し紛れのグローバル変数
+inline PerlinNoise noise{ 0 };
 
 using RollFunc = std::function<int(const Die&, const Array<Die>&)>;
 using DrawFunc = std::function<void(const Vec2&, const Die)>;
@@ -264,9 +266,18 @@ namespace Dice{
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
 		d.drawFunc = [](const Vec2& centerPos, const Die self)
 			{
-				SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
+				//SimpleGUI::GetFont()(self.name).drawAt(centerPos.x, centerPos.y - 45, ColorF(0));
 				RectF faceRect(centerPos.x - 30, centerPos.y - 30, 60, 60);
 				faceRect.rounded(3).draw((self.locked || !self.value) ? ColorF{ 0.6 } : ColorF{ 1.0 });
+				for (int y : step(12))
+				{
+					for (int x : step(12))
+					{
+						double color = noise.octave2D0_1(x / 10.0, y / 10.0, 4);
+						color = Math::Lerp(0.7, 1.0, color);
+						RectF{ centerPos.movedBy(-30 + x * 5, -30 + y * 5), 5 }.draw(ColorF(color));
+					}
+				}
 				faceRect.rounded(3).drawFrame(1, ColorF{ 0 });
 				if (self.displayValue)FontAsset(U"Bold")(Format(self.displayValue.value())).drawAt(faceRect.center(), ColorF{ 0.1 });
 			};
