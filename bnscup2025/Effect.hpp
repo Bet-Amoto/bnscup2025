@@ -206,3 +206,26 @@ struct SleepEffect : IEffect
 		return (t < m_dur);
 	}
 };
+
+struct MirrorEffect : IEffect
+{
+	Vec2 m_pos;
+	double m_dur = 0.35;
+
+	MirrorEffect(const Vec2& _pos, double _dur)
+		: m_pos(_pos),
+		  m_dur(_dur) { }
+
+	bool update(double t) override
+	{
+		double k = t / m_dur;
+		double l = Max(k - 0.5, 0.0);
+		double e = EaseOutExpo(l);
+
+
+		FontAsset(U"iconL")(U"\U000F17A0").drawAt(48 + k * 32, m_pos, ColorF(0.2, 0.5 - k / 2));
+		FontAsset(U"iconL")(U"\U000F17A0").drawAt(48, m_pos.movedBy(0, e * -40), ColorF(0.2, 1.0 - e));
+
+		return (t < m_dur);
+	}
+};
