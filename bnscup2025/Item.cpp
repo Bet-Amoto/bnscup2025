@@ -227,4 +227,32 @@ namespace Items
 			};
 		return item;
 	}
+
+	Artifact Diversity() {
+		Artifact item;
+		item.name = U"ダイバーシティ";
+		item.rarity = Rarity::Rare;
+		item.cost = 200;
+		item.description = U"ダイスの種類1つにつき、スコアが+0.3倍される";
+		item.timing = ActivationTiming::OnDiceResult;
+		item.usageLimit = none;
+		item.isUnique = true;
+		// 予想スコア計算時の処理
+		item.scoreModifier = [](int baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
+			{
+				HashSet<String> diceName;
+				for (const auto& d : dices) {
+					diceName.insert(d.name);
+				}
+				return baseScore * (1.0 + diceName.size() * 0.3);
+			};
+
+		item.drawFunc = [](const Vec2& pos, const Artifact& self)
+			{
+				RoundRect{ pos.movedBy(-30, -30), 60, 60, 5 }.draw(HSV(40, 0.9, 1.0));
+				SimpleGUI::GetFont()(U"🤝🏻").drawAt(pos.x, pos.y);
+			};
+
+		return item;
+	}
 }
