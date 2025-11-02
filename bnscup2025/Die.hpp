@@ -131,10 +131,11 @@ namespace Dice{
 		d.name = U"新ダイス";
 		d.rarity = Rarity::Common;
 		d.cost = 20;
-		d.description = U"新品のダイス。1～6の普通のダイス。";
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"新品のダイス。1～6の普通のダイス。" + faceText;
 		d.textureKey = U"StandardDice";
 
-		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -156,10 +157,11 @@ namespace Dice{
 		d.name = U"寝ダイス";
 		d.rarity = Rarity::Common;
 		d.cost = 20;
-		d.description = U"寝ているダイス。高い出目を持つが、一度振ると寝てしまいリロールをすることができない。";
+		d.faces = Array<int>{ 2, 3, 4, 5, 6, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"寝ているダイス。高い出目を持つが、一度振ると寝てしまいリロールをすることができない。" + faceText;
 		d.textureKey = U"SleepDice";
 
-		d.faces = Array<int>{ 2, 3, 4, 5, 6, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -194,10 +196,11 @@ namespace Dice{
 		d.name = U"心ダイス";
 		d.rarity = Rarity::Common;
 		d.cost = 20;
-		d.description = U"心を通わせているダイス。場にある心ダイスの数÷2の値だけ出目が高くなる。";
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"心を通わせているダイス。場にある心ダイスの数÷2の値だけ出目が高くなる。" + faceText;
 		d.textureKey = U"HeartDice";
 
-		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -257,10 +260,11 @@ namespace Dice{
 		d.name = U"蜃ダイス";
 		d.rarity = Rarity::Rare;
 		d.cost = 50;
-		d.description = U"蜃気楼が写るダイス。場の最も左にあるダイスの目をコピーする。";
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"蜃気楼が写るダイス。場の最も左にあるダイスの目をコピーする。" + faceText;
 		d.textureKey = U"MirageDice";
 
-		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::FINAL;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -304,10 +308,11 @@ namespace Dice{
 		d.name = U"震ダイス";
 		d.rarity = Rarity::Epic;
 		d.cost = 200;
-		d.description = U"震えるダイス。振った後、ロックされていない全てのダイスをもう一度振る。";
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"震えるダイス。振った後、ロックされていない全てのダイスをもう一度振る。" + faceText;
 		d.textureKey = U"QuakeDice";
 
-		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -348,10 +353,11 @@ namespace Dice{
 		d.name = U"金ダイス";
 		d.rarity = Rarity::Epic;
 		d.cost = 200;
-		d.description = U"黄金に輝くダイス。出た目と同じ値のゴールドを獲得する。";
+		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"黄金に輝くダイス。出た目と同じ値のゴールドを獲得する。" + faceText;
 		d.textureKey = U"GoldDice";
 
-		d.faces = Array<int>{ 1, 2, 3, 4, 5, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -384,10 +390,11 @@ namespace Dice{
 		d.name = U"コイン";
 		d.rarity = Rarity::Common;
 		d.cost = 50;
-		d.description = U"普通のコイン。二分の一の確率で1か6が出る。";
+		d.faces = Array<int>{ 1, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"普通のコイン。二分の一の確率で1か6が出る。" + faceText;
 		d.textureKey = U"Coin";
 
-		d.faces = Array<int>{ 1, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -409,10 +416,11 @@ namespace Dice{
 		d.name = U"金コイン";
 		d.rarity = Rarity::Rare;
 		d.cost = 100;
-		d.description = U"黄金に輝くコイン。二分の一の確率で0か5が出る。出た目と同じ値のゴールドを獲得する。";
+		d.faces = Array<int>{ 0, 5 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"黄金に輝くコイン。二分の一の確率で0か5が出る。出た目と同じ値のゴールドを獲得する。" + faceText;
 		d.textureKey = U"GoldCoin";
 
-		d.faces = Array<int>{ 0, 5 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
@@ -444,11 +452,12 @@ namespace Dice{
 		d.name = U"神ダイス";
 		d.rarity = Rarity::Legendary;
 		d.cost = 1000;
-		d.description = U"神が作り出したダイス。全てのダイスの出目を2倍にする。";
+		d.faces = Array<int>{ 6, 6, 6 };
+		String faceText = U"\n出る目:" + Format(d.faces);
+		d.description = U"神が作り出したダイス。全てのダイスの出目を2倍にする。" + faceText;
 		d.textureKey = U"GodDice";
 		d.isUnique = true;
 
-		d.faces = Array<int>{ 6, 6, 6 };
 		d.value = none;
 		d.order = RollOrder::PRIMARY;
 		d.rollFunc = [](const Die& self, const Array<Die>& dices) { return self.faces.choice(); };
