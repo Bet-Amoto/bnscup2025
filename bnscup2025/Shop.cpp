@@ -17,6 +17,7 @@ Shop::Shop(const InitData& init)
 	backRect.h = 700;
 
 	bg = HorizonGrid(Scene::CenterF().y, 60, 15);
+	bg.update();
 }
 
 void Shop::update()
