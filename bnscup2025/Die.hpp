@@ -475,7 +475,7 @@ namespace Dice{
 			{
 				for (auto& die : dices)
 				{
-					if (die.value) die.value.value() *= 2;
+					if (die.value && !die.locked) die.value.value() *= 2;
 					die.displayValue = die.value;
 				}
 			};
