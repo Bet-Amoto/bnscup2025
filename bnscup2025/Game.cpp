@@ -92,6 +92,11 @@ void Game::update()
 		}
 	}
 
+
+	if (m_turnEndButton.leftClicked()) { 
+		getData().status.selectionsLeft = 0;
+	}
+
 	if (getData().status.selectionsLeft == 0 && !m_isTurnEnd && !m_isGameOver) {
 		for (auto& box : m_categoryBoxes) {
 			if (!box.getScore()) {
@@ -109,6 +114,7 @@ void Game::update()
 		}
 
 	}
+
 }
 
 void Game::draw() const
@@ -124,7 +130,10 @@ void Game::draw() const
 	FontAsset(U"Bold")(U"所持G {}"_fmt(getData().status.gold)).drawAt(32, 1000, 55, ColorF{ 0.9 });
 	m_diceBox.draw();
 
-	m_rollButton.draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 });
+	m_turnEndButton.rounded(10).draw(ColorF{ 1.0 }).drawFrame(2, ColorF{ 0.1 });
+	FontAsset(U"Bold")(U"ターン終了").drawAt(30, m_turnEndButton.center(), ColorF{ 0.1 });
+
+	m_rollButton.rounded(10).draw(m_rollsLeft > 0 ? ColorF{ 1.0 } : ColorF{ 0.7 }).drawFrame(2, ColorF{ 0.1 });
 	FontAsset(U"Bold")(U"Roll").drawAt(m_rollButton.center(), ColorF{ 0.1 });
 	FontAsset(U"Regular")(U"リロール {}回"_fmt(m_rollsLeft)).draw(24, m_rollButton.x, m_rollButton.y - 30, ColorF{ 0.9 });
 	for (auto& category : m_categoryBoxes) {
