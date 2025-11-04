@@ -12,12 +12,12 @@ Category Categories::Exchange()  // 等価交換
 	cat.type = CategoryType::Lower;
 
 	// プレビュー：⌊ Gold/6 ⌋
-	cat.calculateScoreWS = [](const Array<Die>&, const Status& s)->int {
+	cat.calculateScoreWS = [](const Array<Die>&, const Status& s)->int64 {
 		return (s.gold / 3) / 2;  // = floor(gold / 6)
 		};
 	// Goldを1/3 消費
 	cat.onSelected = [](const Array<Die>&, Status& s) {
-		const int spent = s.gold / 3;
+		const int64 spent = s.gold / 3;
 		addGold(s, -spent);
 		};
 	return cat;
@@ -33,11 +33,11 @@ Category Categories::CashOut()  // 換金（スコア0でゴールド獲得）
 	cat.textureKey = U"CashOut";
 	cat.type = CategoryType::Lower;
 
-	cat.calculateScore = [](const Array<Die>&)->int { return 0; };
+	cat.calculateScore = [](const Array<Die>&)->int64 { return 0; };
 
 	// Gold += ⌊(合計)/2⌋
 	cat.onSelected = [](const Array<Die>& dices, Status& s) {
-		int sum = 0;
+		int64 sum = 0;
 		for (const auto& d : dices) if (d.value) sum += *d.value;
 		addGold(s, sum / 2);
 		};

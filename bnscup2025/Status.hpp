@@ -9,8 +9,8 @@
 struct Quota
 {
 	int32 turn = 1;		// 何ターン目か
-	int32 target = 50;  // ノルマ
-	int32 earned = 0;   // そのターンに稼いだスコア
+	int64 target = 50;  // ノルマ
+	int64 earned = 0;   // そのターンに稼いだスコア
 };
 
 /// @brief ゲーム統計情報
@@ -18,17 +18,17 @@ struct GameStats
 {
 	int32 totalRerolls = 0;        // これまでの総リロール回数
 	int32 currentGameRerolls = 0;  // 現在のゲームでのリロール回数
-	int32 highScore = 0;           // ハイスコア
+	int64 highScore = 0;           // ハイスコア
 	int32 gamesPlayed = 0;         // プレイしたゲーム数
-	int32 totalGoldEarned = 0;     // これまでに獲得した総ゴールド
+	int64 totalGoldEarned = 0;     // これまでに獲得した総ゴールド
 	int32 lastGoldEarned = 0;
 	Category* lastAchievedCategory = nullptr; // 最後に達成した役
 	Array<Die> lastAchievedDices; // 最後に達成した役のダイス
 };
 
 struct Status;
-inline void addGold(Status& s, int32 amount);
-inline int32 calcScoreToGold(Status& s, int32 score);
+inline void addGold(Status& s, int64 amount);
+inline int64 calcScoreToGold(Status& s, int64 score);
 
 struct Status
 {
@@ -42,7 +42,7 @@ struct Status
 
 	int32 selectionsPerTurn = 5; // 1ターンの役選択回数
 	int32 selectionsLeft = 5;    // 残りの役選択回数
-	int32 gold = 0;				 // 所持金
+	int64 gold = 0;				 // 所持金
 	Quota quota;				 // ノルマ
 	GameStats gameStats;     // ゲーム統計情報
 
@@ -99,7 +99,7 @@ struct Status
 
 	void init()
 	{
-		dices = { Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie(), Dice::StandardDie() };
+		dices = { Dice::GodDie(), Dice::GodDie(), Dice::GodDie(), Dice::GodDie(), Dice::GodDie() };
 		upperCategories = Categories::DefaultUpperCategories;
 		lowerCategories = Categories::DefaultLowerCategories;
 		artifacts.clear();
@@ -182,12 +182,12 @@ struct Status
 	}
 };
 
-inline void addGold(Status& s, int32 amount)
+inline void addGold(Status& s, int64 amount)
 {
 	s.gold += amount;
 	s.gameStats.lastGoldEarned += amount;
 }
 
-inline int32 calcScoreToGold(Status& s, int32 score) {
+inline int64 calcScoreToGold(Status& s, int64 score) {
 	return score;
 }

@@ -21,13 +21,13 @@ enum class ActivationTiming
 struct Artifact;
 struct Status;
 
-void addGold(Status& s, int32 amount);
+void addGold(Status& s, int64 amount);
 
 using ActivateFunc = std::function<void(Artifact&, ActivationTiming, Status&)>;
 using ConditionFunc = std::function<bool(const Artifact&, ActivationTiming, const Status&)>;
 using ItemDrawFunc = std::function<void(const Vec2&, const Artifact&)>;
 // スコア修正用の関数型
-using ScoreModifierFunc = std::function<int(int baseScore, const Category&, const Array<Die>&, const Status&)>;
+using ScoreModifierFunc = std::function<int64(int64 baseScore, const Category&, const Array<Die>&, const Status&)>;
 
 struct Artifact : ItemBase
 {

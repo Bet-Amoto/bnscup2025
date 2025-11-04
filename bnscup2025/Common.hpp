@@ -15,10 +15,10 @@ enum class State
 struct GameData
 {
 	// 直前のゲームのスコア
-	int32 lastScore = 0;
+	int64 lastScore = 0;
 
 	// ハイスコア
-	Array<int32> highScores = { 10, 8, 6, 4, 2 };
+	Array<int64> highScores = { 10, 8, 6, 4, 2 };
 
 	SplitCircle sc{ Scene::Size() };
 

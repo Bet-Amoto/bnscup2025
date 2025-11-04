@@ -5,9 +5,9 @@
 
 struct Status;
 
-using scoreFunc = std::function<int(const Array<Die>&)>;
+using scoreFunc = std::function<int64(const Array<Die>&)>;
 
-using scoreFuncWithStatus = std::function<int(const Array<Die>&, Status&)>;
+using scoreFuncWithStatus = std::function<int64(const Array<Die>&, Status&)>;
 
 using onSelectedFunc = std::function<void(const Array<Die>&, Status&)>;
 
@@ -23,7 +23,7 @@ struct Category : ItemBase
 	scoreFunc calculateScore;
 	scoreFuncWithStatus calculateScoreWS = nullptr;
 	onSelectedFunc onSelected = nullptr;
-	Optional<int> score = none;
+	Optional<int64> score = none;
 	String itemType() const override { return U"役"; }
 
 	bool apply(Status& s) override { return true; }
@@ -51,7 +51,7 @@ namespace Categories
 		cat.textureKey = U"Ones";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 1; }).size() * 1;
 			};
@@ -69,7 +69,7 @@ namespace Categories
 		cat.textureKey = U"Twos";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 2; }).size() * 2;
 			};
@@ -87,7 +87,7 @@ namespace Categories
 		cat.textureKey = U"Threes";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 3; }).size() * 3;
 			};
@@ -105,7 +105,7 @@ namespace Categories
 		cat.textureKey = U"Fours";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 4; }).size() * 4;
 			};
@@ -123,7 +123,7 @@ namespace Categories
 		cat.textureKey = U"Fives";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 5; }).size() * 5;
 			};
@@ -141,7 +141,7 @@ namespace Categories
 		cat.textureKey = U"Sixes";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 6; }).size() * 6;
 			};
@@ -159,7 +159,7 @@ namespace Categories
 		cat.textureKey = U"Sevens";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 7; }).size() * 7;
 			};
@@ -177,7 +177,7 @@ namespace Categories
 		cat.textureKey = U"Eights";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 8; }).size() * 8;
 			};
@@ -195,7 +195,7 @@ namespace Categories
 		cat.textureKey = U"Nines";
 
 		cat.type = CategoryType::Upper;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				return dices.filter([](const Die& d) { return d.value == 9; }).size() * 9;
 			};
@@ -213,7 +213,7 @@ namespace Categories
 		cat.textureKey = U"Yatzy";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				HashTable<int, int> counts;
 				for (const auto& dice : dices)
@@ -243,7 +243,7 @@ namespace Categories
 		cat.textureKey = U"ThreeDice";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				// 各目の出現回数をカウント
 				HashTable<int, int> counts;
@@ -286,7 +286,7 @@ namespace Categories
 		cat.textureKey = U"FourDice";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				HashTable<int, int> counts;
 				for (const auto& dice : dices)
@@ -327,7 +327,7 @@ namespace Categories
 		cat.textureKey = U"FullHouse";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				HashTable<int, int> counts;
 				for (const auto& dice : dices)
@@ -368,7 +368,7 @@ namespace Categories
 		cat.textureKey = U"SmallStraight";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				// ハッシュセットで重複を消す
 				HashSet<int> set;
@@ -410,7 +410,7 @@ namespace Categories
 		cat.textureKey = U"LargeStraight";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
 				HashSet<int> set;
 
@@ -451,9 +451,9 @@ namespace Categories
 		cat.textureKey = U"Chance";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				int sum = 0;
+				int64 sum = 0;
 				for (const auto& dice : dices)
 				{
 					const auto value = dice.value;
@@ -476,9 +476,9 @@ namespace Categories
 		cat.textureKey = U"Hearts";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				int sum = 0;
+				int64 sum = 0;
 				for (const auto& dice : dices)
 				{
 					const auto value = dice.value;
@@ -501,9 +501,9 @@ namespace Categories
 		cat.textureKey = U"Deep";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				int sum = 0;
+				int64 sum = 0;
 				for (const auto& dice : dices)
 				{
 					const auto value = dice.value;
@@ -527,9 +527,9 @@ namespace Categories
 		cat.textureKey = U"Calm";
 
 		cat.type = CategoryType::Lower;
-		cat.calculateScore = [](const Array<Die>& dices) -> int
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				int sum = 0;
+				int64 sum = 0;
 				for (const auto& dice : dices)
 				{
 					const auto value = dice.value;
@@ -607,15 +607,25 @@ namespace Categories
 	};
 
 	const Array<Category> DefaultLowerCategories{
-		ThreeCards(),
-		FourCards(),
-		FullHouse(),
-		SmallStraight(),
-		LargeStraight(),
-		Chance(),
-		Yatzy()
+	Chance(),
+	Chance(),
+	Chance(),
+	Chance(),
+	Chance(),
+	Chance(),
+	Chance(),
 	};
 
-	const int UpperSectionBonusThreshold = 63;
-	const int UpperSectionBonusScore = 35;
+	//const Array<Category> DefaultLowerCategories{
+	//	ThreeCards(),
+	//	FourCards(),
+	//	FullHouse(),
+	//	SmallStraight(),
+	//	LargeStraight(),
+	//	Chance(),
+	//	Yatzy()
+	//};
+
+	const int64 UpperSectionBonusThreshold = 63;
+	const int64 UpperSectionBonusScore = 35;
 }

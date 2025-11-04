@@ -27,13 +27,13 @@ private:
 	const RectF m_rollButton{ 890, 630, 150, 60 };
 
 	void rollAllDicesButton();
-	int UpperCategoriesScore() const;
-	int totalScore() const;
+	int64 UpperCategoriesScore() const;
+	int64 totalScore() const;
 	bool isBonus() const { return UpperCategoriesScore() > Categories::UpperSectionBonusThreshold; }
 	const int maxRolls;
 	int m_rollsLeft;
 
-	int m_lastScore = 0;
+	int64 m_lastScore = 0;
 	Stopwatch m_animScoreTimer;
 	void drawScore(const Vec2& center) const;
 
@@ -48,7 +48,7 @@ private:
 
 	bool m_isTurnEnd = false;
 	void drawTurnEnd() const;
-	int startedGold = 0;
+	int64 startedGold = 0;
 
 	State nextScene = State::Title;
 

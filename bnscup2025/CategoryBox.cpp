@@ -34,14 +34,14 @@ bool CategoryBox::mouseOver() const
 	return m_boxRect.mouseOver();
 }
 
-int CategoryBox::getProvisionalScore(const Array<Die>& dices, Status& status) const {
+int64 CategoryBox::getProvisionalScore(const Array<Die>& dices, Status& status) const {
 	// 基本スコアを計算
-	int baseScore = (category->calculateScoreWS)
+	int64 baseScore = (category->calculateScoreWS)
 		? category->calculateScoreWS(dices, status)
 		: category->calculateScore(dices);
 	
 	// アイテムの効果を適用したスコアを計算
-	int modifiedScore = baseScore;
+	int64 modifiedScore = baseScore;
 	
 	// scoreModifierを持つアイテムを適用
 	for (const auto& artifact : status.artifacts)

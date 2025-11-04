@@ -16,7 +16,7 @@ namespace Items
 		item.usageLimit = none;
 
 		// 予想スコア計算時の処理
-		item.scoreModifier = [](int baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
+		item.scoreModifier = [](int64 baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int64
 			{
 				if (category.name == U"エース") {
 					return baseScore * 10;
@@ -44,7 +44,7 @@ namespace Items
 		item.usageLimit = none;
 
 		// 予想スコア計算時の処理
-		item.scoreModifier = [](int baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
+		item.scoreModifier = [](int64 baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int64
 			{
 				baseScore *= 1.2;
 				return baseScore;
@@ -212,7 +212,7 @@ namespace Items
 				if (timing != self.timing) return;
 				for (auto& die : status.dices)
 				{
-					const int val = die.displayValue.value_or(0);
+					const int64 val = die.displayValue.value_or(0);
 					const int count = status.dices.count_if([val](const Die& d) { return d.displayValue.value_or(0) == val; });
 					if (count >= 5) {
 						status.selectionsLeft += 1;
@@ -238,7 +238,7 @@ namespace Items
 		item.usageLimit = none;
 		item.isUnique = true;
 		// 予想スコア計算時の処理
-		item.scoreModifier = [](int baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
+		item.scoreModifier = [](int64 baseScore, const Category& category, const Array<Die>& dices, const Status& status) -> int
 			{
 				HashSet<String> diceName;
 				for (const auto& d : dices) {

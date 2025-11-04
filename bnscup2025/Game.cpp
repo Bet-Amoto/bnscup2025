@@ -73,7 +73,7 @@ void Game::update()
 
 	for (auto& box : m_categoryBoxes) {
 		if (box.isClicked() &&  !box.getScore() && getData().status.selectionsLeft > 0 && !m_diceBox.isRolling()) {
-			const int prov = box.getProvisionalScore(getData().status.dices, getData().status);
+			const int64 prov = box.getProvisionalScore(getData().status.dices, getData().status);
 			box.setScore(prov);
 			if (box.getCategory().onSelected)
 			{
@@ -150,9 +150,9 @@ void Game::rollAllDicesButton()
 	}
 }
 
-int Game::UpperCategoriesScore() const
+int64 Game::UpperCategoriesScore() const
 {
-	int score = 0;
+	int64 score = 0;
 	for (const auto& box : m_categoryBoxes) {
 		if (box.getCategory().type == CategoryType::Upper && box.getScore()) {
 			score += box.getScore().value();
@@ -161,8 +161,8 @@ int Game::UpperCategoriesScore() const
 	return score;
 }
 
-int Game::totalScore() const {
-	int score = 0;
+int64 Game::totalScore() const {
+	int64 score = 0;
 	for (const auto& box : m_categoryBoxes) {
 		if (box.getScore()) {
 			score += box.getScore().value();
@@ -178,7 +178,7 @@ int Game::totalScore() const {
 
 void Game::drawScore(const Vec2& center) const {
 	const double t = Min(1.0, EaseOutCubic(m_animScoreTimer.sF()));
-	const int score = totalScore() * t + m_lastScore * (1.0 - t);
+	const int64 score = totalScore() * t + m_lastScore * (1.0 - t);
 	const double fontSize = 48;
 	FontAsset(U"Bold")(U"スコア　{}"_fmt(score)).drawAt(fontSize, center, ColorF{ 0.9 });
 }

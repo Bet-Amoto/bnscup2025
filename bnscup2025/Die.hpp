@@ -7,7 +7,7 @@
 struct Die;
 struct Status;
 
-void addGold(Status& s, int32 amount);
+void addGold(Status& s, int64 amount);
 
 enum class RollOrder {
 	PRIMARY = 10,

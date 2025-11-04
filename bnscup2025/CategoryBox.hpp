@@ -14,9 +14,9 @@ public:
 	void draw(const Array<Die>& dices, Status& status) const;
 	bool isClicked() const;
 	bool mouseOver() const;
-	void setScore(int score) { category->score = score; }
-	Optional<int> getScore() const { return category->score; }
-	int getProvisionalScore(const Array<Die>& dices, Status& status) const;
+	void setScore(int64 score) { category->score = score; }
+	Optional<int64> getScore() const { return category->score; }
+	int64 getProvisionalScore(const Array<Die>& dices, Status& status) const;
 	const Category& getCategory() const { return *category; }
 	void reset() { category->score = none; }
 
