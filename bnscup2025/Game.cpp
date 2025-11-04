@@ -81,7 +81,7 @@ void Game::update()
 			}
 			m_lastScore = getData().status.quota.earned;
 			m_animScoreTimer.restart();
-			getData().status.quota.earned += prov;
+			getData().status.quota.earned = totalScore();
 			getData().status.selectionsLeft -= 1;
 			getData().status.gameStats.lastAchievedCategory = box.category;
 			getData().status.gameStats.lastAchievedDices = getData().status.dices;
