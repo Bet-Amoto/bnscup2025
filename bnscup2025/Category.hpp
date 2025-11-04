@@ -149,59 +149,150 @@ namespace Categories
 		return cat;
 	}
 
-	inline Category Sevens()
+	inline Category OnesPlus()
 	{
 		Category cat;
-		cat.name = U"セブン";
+		cat.name = U"エース+";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"7の目の合計点数が得点となる。";
-		cat.textureKey = U"Sevens";
-
+		cat.description = U"6で割ったときあまりが1になる出目の合計点数が得点となる。\n得点になる出目の例: 1, 7, 13";
+		cat.textureKey = U"AcePlus";
 		cat.type = CategoryType::Upper;
 		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				return dices.filter([](const Die& d) { return d.value == 7; }).size() * 7;
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 1))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
 			};
-
 		return cat;
 	}
 
-	inline Category Eights()
+	inline Category TwosPlus()
 	{
 		Category cat;
-		cat.name = U"エイト";
+		cat.name = U"デュース+";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"8の目の合計点数が得点となる。";
-		cat.textureKey = U"Eights";
-
+		cat.description = U"6で割ったときあまりが2になる出目の合計点数が得点となる。\n得点になる出目の例: 2, 8, 14";
+		cat.textureKey = U"TwoPlus";
 		cat.type = CategoryType::Upper;
 		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				return dices.filter([](const Die& d) { return d.value == 8; }).size() * 8;
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 2))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
 			};
-
 		return cat;
 	}
-
-	inline Category Nines()
+	
+	inline Category ThreesPlus()
 	{
 		Category cat;
-		cat.name = U"ナイン";
+		cat.name = U"トレイ+";
 		cat.rarity = Rarity::Rare;
 		cat.cost = 200;
-		cat.description = U"9の目の合計点数が得点となる。";
-		cat.textureKey = U"Nines";
-
+		cat.description = U"6で割ったときあまりが3になる出目の合計点数が得点となる。\n得点になる出目の例: 3, 9, 15";
+		cat.textureKey = U"ThreePlus";
 		cat.type = CategoryType::Upper;
 		cat.calculateScore = [](const Array<Die>& dices) -> int64
 			{
-				return dices.filter([](const Die& d) { return d.value == 9; }).size() * 9;
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 3))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
 			};
-
 		return cat;
 	}
+
+	inline Category FoursPlus()
+	{
+		Category cat;
+		cat.name = U"フォー+";
+		cat.rarity = Rarity::Rare;
+		cat.cost = 200;
+		cat.description = U"6で割ったときあまりが4になる出目の合計点数が得点となる。\n得点になる出目の例: 4, 10, 16";
+		cat.textureKey = U"FourPlus";
+		cat.type = CategoryType::Upper;
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
+			{
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 4))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
+			};
+		return cat;
+	}
+
+	inline Category FivesPlus()
+	{
+		Category cat;
+		cat.name = U"ファイブ+";
+		cat.rarity = Rarity::Rare;
+		cat.cost = 200;
+		cat.description = U"6で割ったときあまりが5になる出目の合計点数が得点となる。\n得点になる出目の例: 5, 11, 17";
+		cat.textureKey = U"FivePlus";
+		cat.type = CategoryType::Upper;
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
+			{
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 5))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
+			};
+		return cat;
+	}
+
+	inline Category SixesPlus()
+	{
+		Category cat;
+		cat.name = U"シックス+";
+		cat.rarity = Rarity::Rare;
+		cat.cost = 200;
+		cat.description = U"6で割ったときあまりが0になる出目の合計点数が得点となる。\n得点になる出目の例: 6, 12, 18";
+		cat.textureKey = U"SixPlus";
+		cat.type = CategoryType::Upper;
+		cat.calculateScore = [](const Array<Die>& dices) -> int64
+			{
+				int64 score = 0;
+				for (const auto& d : dices)
+				{
+					if (d.value && (d.value.value() % 6 == 0))
+					{
+						score += d.value.value();
+					}
+				}
+				return score;
+			};
+		return cat;
+	}
+
 
 	inline Category Yatzy()
 	{
@@ -554,9 +645,12 @@ namespace Categories
 		Fours(),
 		Fives(),
 		Sixes(),
-		Sevens(),
-		Eights(),
-		Nines(),
+		OnesPlus(),
+		TwosPlus(),
+		ThreesPlus(),
+		FoursPlus(),
+		FivesPlus(),
+		SixesPlus(),
 		ThreeCards(),
 		FourCards(),
 		FullHouse(),
@@ -577,19 +671,31 @@ namespace Categories
 		Fours(),
 		Fives(),
 		Sixes(),
-		Sevens(),
-		Eights(),
-		Nines(),
+		OnesPlus(),
+		TwosPlus(),
+		ThreesPlus(),
+		FoursPlus(),
+		FivesPlus(),
+		SixesPlus(),
 	};
 
 	const Array<Category> DefaultUpperCategories{
+		OnesPlus(),
+		TwosPlus(),
+		ThreesPlus(),
+		FoursPlus(),
+		FivesPlus(),
+		SixesPlus(),
+	};
+
+	/*const Array<Category> DefaultUpperCategories{
 		Ones(),
 		Twos(),
 		Threes(),
 		Fours(),
 		Fives(),
 		Sixes(),
-	};
+	};*/
 
 	const Array<Category> LowerCategories{
 		ThreeCards(),
